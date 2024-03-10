@@ -156,7 +156,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
             </button>    
             <ul className={dropdownGap ? "dropdownMini" : "dropdownNone"} ref={refTask}>
                 <li><button onClick={() => {setModalActive(true), setDropdownGap(false)}} className={style.btnDropdown}>Установить цвет</button></li>
-                <li><button onClick={(e:any) => deleteBourd( Task, list)} className={style.btnDropdownDelete}>Удалить</button></li>
+                <li><button onClick={() => deleteBourd( Task, list)} className={style.btnDropdownDelete}>Удалить</button></li>
             </ul> 
             <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                 <div className='ModalContent' onClick={e => e.stopPropagation()}>

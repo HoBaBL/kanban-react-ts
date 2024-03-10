@@ -1,8 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import { createClient } from "@supabase/supabase-js";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { useAppDispatch } from '../../hooks';
-import {setUserId} from "../../redux/slice/UserId";
+// import { useAppDispatch } from '../../hooks';
 import style from './auth.module.css'
 import { Link, useNavigate } from "react-router-dom";
 
@@ -13,7 +12,6 @@ type Inputs = {
   }
 
 const Registration: FC = () => {
-    const dispatch = useAppDispatch()
     const supabase = createClient("https://ynelcdqjjejcylduvmjy.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluZWxjZHFqamVqY3lsZHV2bWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0ODE0NjcsImV4cCI6MjAyMzA1NzQ2N30.nvBnJPg5HG57sSU2JGLeQIi2zBbbInRnar2qWTIUhKc");
     const { register, handleSubmit} = useForm<Inputs>()
     const [loading, setLoading] = useState(false)
@@ -38,6 +36,7 @@ const Registration: FC = () => {
         )
         AddData(data.user?.id)
         console.log(data.user?.id)
+        console.log(error)
         setLoading(true)
     }
     
@@ -75,6 +74,7 @@ const Registration: FC = () => {
         .from('boba')
         .insert({ id: user, todo_data: sample})
         .select()
+        console.log(error)
     }
 
     useEffect(() => {

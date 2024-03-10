@@ -46,7 +46,7 @@ const TaskMini: FC<TaskMiniProps> = ({
     setAllTask
 
     }) => {
-    const [isShown, setIsShown] = useState(true); // показывает всплывающие объекты
+    // const [isShown, setIsShown] = useState(true); // показывает всплывающие объекты
     const [titleActive, setTitleActive] = useState(false) // активирует изменение названия у колонки
     const [AddTaskDown, setAddTaskDown] = useState(false) // активирует добавление задачи снизу
     const [dropdown, setDropdown] = useState(false)
@@ -170,7 +170,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                         <h3 onClick={() => setTitleActive(true)} className={style.TodoH3}>{Task.title}</h3>
                     }
                     <div>
-                        <IoIosMore onClick={() => setDropdown(true)} className={isShown ? style.TodoObjHeaderMore : style.TodoObjHeaderNoneMore}/>
+                        <IoIosMore onClick={() => setDropdown(true)} className={style.TodoObjHeaderMore}/>
                         <ul className={dropdown ? "dropdown" : "dropdownNone"} ref={ref}>
                             <li><button onClick={() => {setModalActive(true), setDropdown(false)}} className={style.btnDropdown}>Установить цвет колонки</button></li>
                             <li><button onClick={() => deleteBourd(Task.id)} className={style.btnDropdownDelete}>Удалить</button></li>
@@ -219,7 +219,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                         </button>
                     </div>
                     :
-                    <button onClick={() => setAddTaskDown(true)} className={isShown ? style.btnAddTask : style.btnAddTaskNone}>
+                    <button onClick={() => setAddTaskDown(true)} className={ style.btnAddTask}>
                         <FiPlus size={16}/> Добавить задачу                       
                     </button>
                 }

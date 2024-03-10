@@ -32,6 +32,7 @@ const Main: FC = () => {
         if (data.session?.user.id === undefined) {
             navigate("/login")
         }
+        console.log(error)
     }
 
     async function Proverka(userId:any) {
@@ -41,6 +42,7 @@ const Main: FC = () => {
         .eq('id', userId);
         setAllTask(data);
         setLoading(false)
+        console.log(error)
     }
     
     
@@ -68,12 +70,12 @@ const Main: FC = () => {
     const [indexBoard, setIndexBoard] = useState<any>(null)
     const BoardH1Ref = useRef<any>(null)
 
-    function dragHadler(e:any, Task:any) {
+    function dragHadler( Task:any) {
         setCurrentBoard(Task)
         setIndexBoard(Task)
     }
     
-    function dragEndHadler(e:any) {}
+    // function dragEndHadler(e:any) {}
 
     function dragOverHandler(e:any) {
         e.preventDefault()
@@ -148,9 +150,9 @@ const Main: FC = () => {
                                     AllTask[0].todo_data.Baza[0].Arrey.map((Task:any) => 
                                     <div className="noneClickTwo" key={Task.id} 
                                     draggable={true}
-                                    onDrag={(e:any) => dragHadler(e, Task)}
-                                    onDragLeave={(e:any) => dragEndHadler(e)}
-                                    onDragEnd={(e:any) => dragEndHadler(e)}
+                                    onDrag={() => dragHadler( Task)}
+                                    // onDragLeave={(e:any) => dragEndHadler(e)}
+                                    // onDragEnd={(e:any) => dragEndHadler(e)}
                                     onDragOver={(e:any) => dragOverHandler(e)}
                                     onDrop={(e:any) => {dropHandler(e, Task)}}
                                     >

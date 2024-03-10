@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import style from './auth.module.css'
 import { Link, useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
@@ -30,6 +30,7 @@ const Login: FC = () => {
             password: dataForm.pasword,
         })
         console.log(data)
+        console.log(error)
         setLoading(true)
     }
 

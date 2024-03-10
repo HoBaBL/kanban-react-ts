@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react"
 import style from './sidebar.module.css'
 import { CiMenuFries } from "react-icons/ci";
-import { RiHome2Line, RiSearchLine } from "react-icons/ri";
+import { RiHome2Line } from "react-icons/ri";
 import { BiBell } from "react-icons/bi";
 import { FiPlus, FiBook } from "react-icons/fi";
 import { MdOutlineAccountCircle } from "react-icons/md";
-import { useAppDispatch } from '../../hooks';
+// import { useAppDispatch } from '../../hooks';
 import { Link } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 
@@ -17,7 +17,7 @@ const Sidebar: FC = () => {
 
     async function exitUser() {
         const { error } = await supabase.auth.signOut()
-
+        console.log(error)
     }
 
     useEffect(() => {
@@ -28,6 +28,7 @@ const Sidebar: FC = () => {
         const { data, error } = await supabase.auth.getSession()
         setName(data.session?.user.user_metadata.first_name)
         Proverka(data.session?.user.id)
+        console.log(error)
     }
 
     async function Proverka(userId:any) {
@@ -37,6 +38,7 @@ const Sidebar: FC = () => {
         .eq('id', userId);
         setList(data);
         setLoading(false)
+        console.log(error)
     }
     
 
