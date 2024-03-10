@@ -1,0 +1,110 @@
+.sidebar {
+    color: rgb(212, 208, 208);
+    background-color: rgb(31, 29, 36);
+    height: 100%;
+    width: 13%;
+    position: fixed;
+    z-index: 1000; 
+    top: 0; 
+    left: 0;
+    overflow-x: hidden;
+    padding: 0 20px;
+}
+
+
+
+.sidebarHeader {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebarHeader img {
+    border-radius: 10px;
+    width: 35px;
+    height: auto;
+    
+}
+
+.sidebarHeader button {
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    height: auto;
+    padding: 3px;
+}
+
+.sidebarHeader button:hover {
+    background-color: rgb(43, 41, 49);
+    transition: 0.4s;
+}
+
+.menu {
+    margin: 20px 0;
+}
+
+.menu p{
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+}
+
+.btnMenu {
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    color: rgb(212, 208, 208);
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.btnMenu:hover {
+    background-color: rgb(43, 41, 49);
+    transition: 0.4s;
+}
+
+.AllProject {
+    font-size: 14px;
+}
+
+.addProject {
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    color: rgb(212, 208, 208);
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 30px;
+}
+
+.addProject:hover {
+    background-color: rgb(43, 41, 49);
+    transition: 0.4s;
+}
+
+.textProject {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+}
+
+.projectPosition {
+    margin-bottom: 50px;
+    max-height: 450px;
+}

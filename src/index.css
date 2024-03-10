@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background-color: rgb(216, 214, 213);
+}
+
+a {
+  text-decoration: none
+}
+
+input {outline:none;}
+
+textarea {outline:none;}

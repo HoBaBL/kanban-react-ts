@@ -1,0 +1,128 @@
+.item {
+    border-radius: 5px;
+    min-height: 42px;
+    width: 100%;
+    /* margin-top: 10px; */
+    background-color: white;
+    /* z-index: 100; */
+    position: relative;
+}
+
+.taskMini {
+    padding: 10px;
+    min-height: 42px;
+    word-wrap: normal;
+    word-break: break-word;
+    width: 240px;
+    position: relative;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: solid rgb(219, 219, 219) 1px;
+}
+
+.bigTable {
+    min-height: 50px;
+}
+
+.main {
+    margin-left: 15.3%;
+}
+
+.noneClick {
+    display: flex;
+    gap: 15px;
+}
+
+.dropdown {
+    border: solid 1px gray;
+    list-style-type:none;
+    padding: 5px;
+    margin: 0;
+    position: absolute;
+    background-color: white;
+    z-index: 20000;
+    /* left: -50px; */
+    cursor: auto;
+    border-radius: 5px;
+    transform:translate(-40%, 0);
+}
+
+.dropdownNone {
+    display: none;
+}
+
+.btnDropdown {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.btnDropdown:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+}
+
+.btnDropdownDelete {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+    margin-top: 6px;
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.btnDropdownDelete:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+}
+
+.dropdownMini {
+    border: solid 1px gray;
+    list-style-type:none;
+    padding: 5px;
+    margin: 0;
+    position: absolute;
+    background-color: white;
+    z-index: 20000;
+    /* left: -50px; */
+    cursor: auto;
+    border-radius: 5px;
+    transform:translate(145%, 0);
+}
+
+.modal {
+    position: fixed;
+    background-color: rgb(0, 0, 0, 0.5);
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 100000;
+    transition: 0.5s;
+    display: none;
+    cursor: auto;
+} 
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+    display: block;
+}
+
+.ModalContent {
+    width:  300px;
+    height: 200px;
+    padding: 20px;
+    background-color: white;
+    position: absolute;
+    border-radius: 30px;
+    top: 10%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 50%);
+    transition: 0.5s;
+}

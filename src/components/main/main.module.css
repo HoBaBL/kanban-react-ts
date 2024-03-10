@@ -1,0 +1,283 @@
+.mainH1 {
+    padding-left: 30px;
+}
+
+
+.TodoObj {
+    background-color: white;
+    width: 260px;
+    padding: 15px;
+    border-radius: 10px;
+    min-height: 150px;
+}
+
+.TodoH3 {
+    margin: 0;
+    font-size: 16px;
+    cursor: pointer;
+    width: 80%;
+}
+
+.numTask {
+    font-size: 12px;
+    color: gray;
+}
+
+.taskMini {
+    /* background-color: antiquewhite; */
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 42px;
+    margin-top: 10px;
+    border: solid rgb(219, 219, 219) 1px;
+    word-wrap: normal;
+    word-break: break-word;
+    width: 240px;
+    position: relative;
+}
+
+.taskMiniText {
+    font-size: 14px;
+    margin: 0;
+}
+
+.addСolumn {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    font-weight: 600;
+    padding-top: 20px;
+    color: gray;
+    cursor: pointer;
+    width: 156px;
+}
+
+.addСolumn:hover {
+    color: black;
+    transition: 0.4s;
+}
+
+.TodoObjActive {
+    background-color: white;
+    width: 260px;
+    padding: 15px;
+    border-radius: 10px;
+    min-height: 150px;
+    cursor: grab;
+}
+
+.TodoObjHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.TodoObjHeaderNoneMore {
+    opacity: 0;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.TodoObjHeaderMore {
+    transition: 0.5s;
+    cursor: pointer;
+    position: relative;
+}
+
+.btnAddTask {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    padding: 5px;
+    gap: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 5px;
+    border: none;
+    transition: 0.5s;
+    color: gray;
+}
+
+.btnAddTask:hover {
+    color: black;
+}
+
+.btnAddTaskNone {
+    opacity: 0;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    padding: 5px;
+    gap: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 5px;
+    border: none;
+    transition: 0.5s;
+}
+
+.flexTable {
+    display: flex;
+    gap: 15px;
+    overflow: auto;
+    height: 90vh;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.TitleInput {
+    border-radius: 8px;
+    border: 1px gray solid;
+    padding: 5px;
+    width: 80%;
+}
+
+.AddTaskDown {
+    width: 80%;
+    max-width: 238px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px gray solid;
+    padding: 10px;
+    resize: none;
+}
+
+.CheckBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.moreMini {
+    position: absolute;
+    left: 240px;
+    top: 10px;
+    z-index: 10;
+    display: flex;
+    justify-content: left;
+    padding: 0;
+    border: solid 1px rgb(182, 181, 181);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.moreMiniNone {
+    position: absolute;
+    left: 240px;
+    top: 10px;
+    z-index: 10;
+    display: flex;
+    justify-content: left;
+    padding: 0;
+    border: solid 1px rgb(182, 181, 181);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: 0.5s;
+    opacity: 0;
+}
+
+.addBoard {
+    background-color: white;
+    width: 260px;
+    padding: 15px;
+    border-radius: 10px;
+    min-height: 150px;
+}
+
+.addBoardHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.h3Title {
+    padding-left: 30px;
+    font-size: 26px;
+}
+
+.dropdown {
+    border: solid 1px gray;
+    list-style-type:none;
+    padding: 5px;
+    margin: 0;
+    position: absolute;
+    background-color: white;
+    z-index: 2000;
+    /* left: -50px; */
+    cursor: auto;
+    border-radius: 5px;
+    transform:translate(-40%, 0);
+}
+
+.dropdownNone {
+    display: none;
+}
+
+.btnDropdown {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.btnDropdown:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+}
+
+.btnDropdownDelete {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+    margin-top: 6px;
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.btnDropdownDelete:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+}
+
+.colorFlex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.color {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+}
+
+.colorNone {
+    background-color: transparent;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.colorNone:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+}
