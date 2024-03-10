@@ -1,7 +1,7 @@
 # Kanban (ещё в разработке)
 Канбан доска с бэкендом. Для бэкенда используется сервис Supabase
 # Используемые технологии: 
-React, TS, Vite, CSS.module, Redux-Toolkit, Supabase(бэкенд)
+React, TS, Vite, CSS.module, Redux-Toolkit, Supabase(бэкенд), React Router, React Icons, React Hook Form
 # Возможности
 Регистрация и вход, добавление досок задач, измение цветов досок и списков, сохранение данных на сервере.
 # Планы
