@@ -1,5 +1,5 @@
 # Kanban (ещё в разработке)
-Канбан доска с бэкендом. Для бэкенда используется сервис Supabase
+Канбан доска с бэкендом. drag and drop. Для бэкенда используется сервис Supabase
 # Используемые технологии: 
 React, TS, Vite, CSS.module, Redux-Toolkit, Supabase(бэкенд), React Router, React Icons, React Hook Form
 # Возможности
