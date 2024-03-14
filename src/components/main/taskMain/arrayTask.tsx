@@ -3,6 +3,8 @@ import { IoMdMore } from "react-icons/io";
 import style from '../main.module.css';
 import './styleDraggable.css';
 import { RxCross2 } from "react-icons/rx";
+import { useSelector } from "react-redux";
+import { RootState } from '../../../redux/store';
 
 type TaskMiniProps = {
     list: {
@@ -39,6 +41,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     const [dropdownGap, setDropdownGap] = useState(false)
     const refTask = useRef<any>();
     const [modalActive, setModalActive] = useState(false)
+    const numProd = useSelector((state: RootState) => state.numProd.numProd)
     const color = ['#ffb5b5', '#f9eeda', '#fff6e5', '#d8f8ff', '#d8fff7', '#f3ddff'
     , '#ffaecc', '#fce7ca', '#fff5c2', '#bde0fe', '#c3f8f1',
     '#f1dbf2', '#ffc8d4', '#fde2d3', '#e5ffcf', '#caecde',
@@ -117,28 +120,28 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
 
     function deleteBourd( Task:any, list:any) {
         const copy = [...AllTask]
-        const index = copy[0].todo_data.Baza[0].Arrey.findIndex((n:any) => n.id === Task.id);
-        const indexTop = copy[0].todo_data.Baza[0].Arrey[index].items.indexOf(list)
+        const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === Task.id);
+        const indexTop = copy[0].todo_data.Baza[numProd].Arrey[index].items.indexOf(list)
         // Task.items.splice(index, 1)
         if (index !== -1) {
-            copy[0].todo_data.Baza[0].Arrey[index].items.splice(indexTop, 1)
+            copy[0].todo_data.Baza[numProd].Arrey[index].items.splice(indexTop, 1)
         }
         setAllTask(copy)
     }
 
     function colorTask(Task:any, list:any, block:string) {
         const copy = [...AllTask]
-        const index = copy[0].todo_data.Baza[0].Arrey.findIndex((n:any) => n.id === Task.id);
-        const indexTop = copy[0].todo_data.Baza[0].Arrey[index].items.indexOf(list)
-        copy[0].todo_data.Baza[0].Arrey[index].items[indexTop].colorTask = block
+        const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === Task.id);
+        const indexTop = copy[0].todo_data.Baza[numProd].Arrey[index].items.indexOf(list)
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].colorTask = block
         setAllTask(copy)
     }
 
     function colorTaskDefault(Task:any, list:any) {
         const copy = [...AllTask]
-        const index = copy[0].todo_data.Baza[0].Arrey.findIndex((n:any) => n.id === Task.id);
-        const indexTop = copy[0].todo_data.Baza[0].Arrey[index].items.indexOf(list)
-        copy[0].todo_data.Baza[0].Arrey[index].items[indexTop].colorTask = 'white'
+        const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === Task.id);
+        const indexTop = copy[0].todo_data.Baza[numProd].Arrey[index].items.indexOf(list)
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].colorTask = 'white'
         setAllTask(copy)
     }
     

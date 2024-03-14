@@ -7,6 +7,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import ArrayTask from './arrayTask';
 import './styleDraggable.css';
 import { RxCross2 } from "react-icons/rx";
+import { useSelector } from "react-redux";
+import { RootState } from '../../../redux/store';
 
 
 type TaskMiniProps = {
@@ -55,6 +57,7 @@ const TaskMini: FC<TaskMiniProps> = ({
     const TodoH3Ref = useRef<any>(null)
     const AddTaskDownRef = useRef<any>(null)
     const ref = useRef<any>();
+    const numProd = useSelector((state: RootState) => state.numProd.numProd)
     const [modalActive, setModalActive] = useState(false)
     const color = ['#ffb5b5', '#f9eeda', '#fff6e5', '#d8f8ff', '#d8fff7', '#f3ddff'
     , '#ffaecc', '#fce7ca', '#fff5c2', '#bde0fe', '#c3f8f1',
@@ -129,9 +132,9 @@ const TaskMini: FC<TaskMiniProps> = ({
     
     function deleteBourd(idClick:number) {
         const copy = [...AllTask]
-        const index = copy[0].todo_data.Baza[0].Arrey.findIndex((n:any) => n.id === idClick);
+        const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === idClick);
         if (index !== -1) {
-            copy[0].todo_data.Baza[0].Arrey.splice(index, 1)
+            copy[0].todo_data.Baza[numProd].Arrey.splice(index, 1)
         }
         setDropdown(false)
         setAllTask(copy)
@@ -140,17 +143,17 @@ const TaskMini: FC<TaskMiniProps> = ({
 
     function colorTask(idClick:number, block:string) {
         const copy = [...AllTask]
-        const index = copy[0].todo_data.Baza[0].Arrey.findIndex((n:any) => n.id === idClick);
-        copy[0].todo_data.Baza[0].Arrey[index].color = block
-        console.log(copy[0].todo_data.Baza[0].Arrey[index])
+        const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === idClick);
+        copy[0].todo_data.Baza[numProd].Arrey[index].color = block
+        console.log(copy[0].todo_data.Baza[numProd].Arrey[index])
         setAllTask(copy)
     }
 
     function colorTaskDefault(idClick:number) {
         const copy = [...AllTask]
-        const index = copy[0].todo_data.Baza[0].Arrey.findIndex((n:any) => n.id === idClick);
-        copy[0].todo_data.Baza[0].Arrey[index].color = 'white'
-        console.log(copy[0].todo_data.Baza[0].Arrey[index])
+        const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === idClick);
+        copy[0].todo_data.Baza[numProd].Arrey[index].color = 'white'
+        console.log(copy[0].todo_data.Baza[numProd].Arrey[index])
         setAllTask(copy)
     }
 

@@ -3,21 +3,32 @@ import style from './sidebar.module.css'
 import { CiMenuFries } from "react-icons/ci";
 import { RiHome2Line } from "react-icons/ri";
 import { BiBell } from "react-icons/bi";
-import { FiPlus, FiBook } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import { MdOutlineAccountCircle } from "react-icons/md";
-// import { useAppDispatch } from '../../hooks';
 import { Link } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
+import { useSelector } from "react-redux";
+import { RootState } from '../../redux/store';
+import TitleSidebar from "./titleSidebar";
 
-const Sidebar: FC = () => {
-    const supabase = createClient("https://ynelcdqjjejcylduvmjy.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluZWxjZHFqamVqY3lsZHV2bWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0ODE0NjcsImV4cCI6MjAyMzA1NzQ2N30.nvBnJPg5HG57sSU2JGLeQIi2zBbbInRnar2qWTIUhKc");
+type sidebarType = {
+    AllTask:any,
+    supabase:any, 
+    setAllTask:any,
+    loading:boolean
+}
+
+const Sidebar: FC<sidebarType> = ({AllTask, supabase, setAllTask, loading}) => {
     const [name, setName] = useState('')
-    const [list, setList] = useState<any>()
-    const [loading, setLoading] = useState(true)
+    const UserId = useSelector((state: RootState) => state.UserId.UserId)
+    const [modalActive, setModalActive] = useState(false)
+    const [title, setTitle] = useState('')
+    
 
     async function exitUser() {
         const { error } = await supabase.auth.signOut()
-        console.log(error)
+        if (error !== null) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
@@ -27,20 +38,53 @@ const Sidebar: FC = () => {
     async function test() {
         const { data, error } = await supabase.auth.getSession()
         setName(data.session?.user.user_metadata.first_name)
-        Proverka(data.session?.user.id)
-        console.log(error)
+        if (error !== null) {
+            console.log(error)
+        }
     }
 
-    async function Proverka(userId:any) {
-        const { data, error } = await supabase
-        .from("boba")
-        .select()
-        .eq('id', userId);
-        setList(data);
-        setLoading(false)
-        console.log(error)
+    async function UpsertData() {
+        if (!loading) {
+            const { error } = await supabase
+            .from('boba')
+            .update({
+                todo_data : AllTask[0].todo_data
+            })
+            .eq('id', UserId)
+            console.log(error) 
+        }
     }
     
+    function addBaza() {
+        const Baza ={
+                title: title,
+                Arrey: [
+                    {
+                        id: 1,
+                        title: "Неразобранное",
+                        color: "",
+                        items: []
+                    },
+                    {
+                        id: 2,
+                        title: "В работе",
+                        color: "",
+                        items: []
+                    },
+                    {
+                        id: 3,
+                        title: "Готово",
+                        color: "",
+                        items: []
+                    }
+                ]
+        }
+        const copy = [...AllTask]
+        copy[0].todo_data.Baza.push(Baza)
+        setAllTask(copy)
+        UpsertData()
+        console.log(AllTask)
+    }
 
     return (
         <div className={style.sidebar}>
@@ -63,15 +107,23 @@ const Sidebar: FC = () => {
                 <p className={style.AllProject}>Ваши проекты</p>
                 <div className={style.projectPosition}>
                     {loading ? <p>Загрузка</p> :
-                      list[0].todo_data.Baza.map((title:any) => (
-                        <button key={title.title} className={style.btnMenu}>
-                            <p className={style.textProject}><FiBook size={22}/> {title.title}</p>
-                        </button>
+                      AllTask[0].todo_data.Baza.map((title:any) => (
+                        <TitleSidebar key={title.title} title={title} AllTask={AllTask} setAllTask={setAllTask}/>
                       ))
                         
                     }
                 </div>
-                <button className={style.addProject}><FiPlus /> Добавить проект</button>
+                <button onClick={() => setModalActive(true)} className={style.addProject}><FiPlus /> Добавить проект</button>
+                <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
+                    <div className='ModalContent' onClick={e => e.stopPropagation()}>
+                        <div className={style.flexAdd}>
+                            <p className={style.flexBigText}>Добавить проект</p>  
+                            <p className={style.flexText}>Название:</p>  
+                            <input value={title} onChange={event => setTitle(event.target.value)} type="text" />
+                            <button onClick={() => addBaza()} className={style.addTitle}>Добавить проект</button>
+                        </div>
+                    </div>    
+                </div> 
             </div>
             <Link to={`login`}>
                 <button onClick={() => exitUser()}>Выход</button>

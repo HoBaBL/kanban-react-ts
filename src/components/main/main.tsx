@@ -4,53 +4,21 @@ import TaskMini from "./taskMain/taskMain"
 import { FiPlus } from "react-icons/fi";
 import { FaCheck } from "react-icons/fa6";
 import './taskMain/styleDraggable.css';
-import { createClient } from "@supabase/supabase-js";
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
-import { useAppDispatch } from '../../hooks';
-import {setUserId} from "../../redux/slice/UserId";
-// import { setSupabase } from "../../redux/slice/Supabase";
-import { useNavigate } from "react-router-dom";
 
-const supabase = createClient("https://ynelcdqjjejcylduvmjy.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluZWxjZHFqamVqY3lsZHV2bWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0ODE0NjcsImV4cCI6MjAyMzA1NzQ2N30.nvBnJPg5HG57sSU2JGLeQIi2zBbbInRnar2qWTIUhKc");
+type AllTask ={
+    AllTask:any,
+    supabase:any, 
+    setAllTask:any,
+    loading:boolean
+}
 
-const Main: FC = () => {
+const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     const UserId = useSelector((state: RootState) => state.UserId.UserId)
-    const [AllTask, setAllTask] = useState<any>([])
-    const [loading, setLoading] = useState(true)
-    const navigate = useNavigate();
+    const numProd = useSelector((state: RootState) => state.numProd.numProd)
 
-    const dispatch = useAppDispatch()
-    useEffect(() => {
-            test()
-    },[])
-
-    async function test() {
-        const { data, error } = await supabase.auth.getSession()
-        Proverka(data.session?.user.id)
-        dispatch(setUserId(data.session?.user.id))
-        if (data.session?.user.id === undefined) {
-            navigate("/login")
-        }
-        console.log(error)
-    }
-
-    async function Proverka(userId:any) {
-        const { data, error } = await supabase
-        .from("boba")
-        .select()
-        .eq('id', userId);
-        setAllTask(data);
-        setLoading(false)
-        console.log(error)
-    }
     
-    
-    useEffect(() => {
-        // getData();
-        UpsertData()
-    }, [AllTask]);
-
     async function UpsertData() {
         if (!loading) {
             const { error } = await supabase
@@ -59,9 +27,11 @@ const Main: FC = () => {
                 todo_data : AllTask[0].todo_data
             })
             .eq('id', UserId)
-            console.log(error)
+            if (error !== null) {
+                console.log(error)
+            }
         }
-    }
+        }
 
     const [addCard, setAddCard] = useState<boolean>(false)
     const [addTitle, setAddTitle] = useState<string>('')
@@ -84,11 +54,11 @@ const Main: FC = () => {
     function dropHandler(e:any, Task:any) {
         e.preventDefault()
         if (e.target.className !== 'bigTable') {
-            const BoardIndex = AllTask[0].todo_data.Baza[0].Arrey.indexOf(indexBoard)
-            const BoardDropIndex = AllTask[0].todo_data.Baza[0].Arrey.indexOf(Task)
+            const BoardIndex = AllTask[0].todo_data.Baza[numProd].Arrey.indexOf(indexBoard)
+            const BoardDropIndex = AllTask[0].todo_data.Baza[numProd].Arrey.indexOf(Task)
             const copy = [...AllTask]
-            copy[0].todo_data.Baza[0].Arrey.splice(BoardDropIndex, 1, indexBoard)
-            copy[0].todo_data.Baza[0].Arrey.splice(BoardIndex, 1, Task)
+            copy[0].todo_data.Baza[numProd].Arrey.splice(BoardDropIndex, 1, indexBoard)
+            copy[0].todo_data.Baza[numProd].Arrey.splice(BoardIndex, 1, Task)
             setAllTask(copy)
             
         } else if (e.target.className !=='taskMini' && currentItem !== null){
@@ -127,7 +97,7 @@ const Main: FC = () => {
                 items: []
             }
             let copy = [...AllTask]
-            copy[0].todo_data.Baza[0].Arrey.push(BoardObj)
+            copy[0].todo_data.Baza[numProd].Arrey.push(BoardObj)
             // setAllTask(copy)
             setAddCard(false)
             setAddTitle('')
@@ -141,13 +111,13 @@ const Main: FC = () => {
                 <div>
                     <h3 className={style.h3Title}>
                         {loading ? <p>Загрузка</p> :
-                            AllTask[0].todo_data.Baza[0].title
+                            AllTask[0].todo_data.Baza[numProd].title
                         }
                     </h3>
                     <div className={style.flexTable}>
                         <div className="noneClick">
                             {loading ? <p>Загрузка</p> :
-                                    AllTask[0].todo_data.Baza[0].Arrey.map((Task:any) => 
+                                    AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
                                     <div className="noneClickTwo" key={Task.id} 
                                     draggable={true}
                                     onDrag={() => dragHadler( Task)}

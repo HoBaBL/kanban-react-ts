@@ -3,7 +3,7 @@
     background-color: rgb(31, 29, 36);
     height: 100%;
     width: 13%;
-    position: fixed;
+    /* position: absolute; */
     z-index: 1000; 
     top: 0; 
     left: 0;
@@ -55,7 +55,7 @@
 }
 
 .btnMenu {
-    margin-top: 10px;
+    /* margin-top: 10px; */
     width: 100%;
     border: none;
     background-color: transparent;
@@ -107,4 +107,106 @@
 .projectPosition {
     margin-bottom: 50px;
     max-height: 450px;
+}
+
+.flexAdd {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.addTitle {
+    margin-top: 40px;
+    padding: 10px 20px;
+    /* max-width: 150px; */
+    border-radius: 20px;
+    border: none;
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.flexBigText {
+    color: black;
+    font-size: 20px;
+    margin-top: 0;
+}
+
+.flexAdd input {
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    border: solid 1px gray;
+}
+
+.flexText {
+    font-size: 16px;
+    color: black;
+    margin-top: 0;
+}
+
+.flexBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.pointBtn:hover {
+    background-color: rgb(43, 41, 49);
+    transition: 0.4s;
+}
+
+.pointBtn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}  
+
+.dropdownMini {
+    border: solid 1px gray;
+    list-style-type:none;
+    padding: 5px;
+    margin: 0;
+    position: absolute;
+    background-color: white;
+    /* left: -50px; */
+    cursor: auto;
+    border-radius: 5px;
+    transform:translate(-38%, 0);
+}
+
+.dropdownNone {
+    display: none;
+}
+
+.btnDropdown {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.btnDropdown:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+}
+
+.btnDropdownDelete {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+    margin-top: 6px;
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.btnDropdownDelete:hover {
+    background-color: rgba(240, 238, 238, 0.966);
 }
