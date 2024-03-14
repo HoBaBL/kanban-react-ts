@@ -62,10 +62,10 @@ const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
             <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                 <div className='ModalContent' onClick={e => e.stopPropagation()}>
                     <div className={style.flexAdd}>
-                        <p className={style.flexBigText}>Добавить проект</p>  
+                        <p className={style.flexBigText}>Изменить название</p>  
                         <p className={style.flexText}>Название:</p>  
                         <input value={titleСhange} onChange={event => setTitleСhange(event.target.value)} type="text" />
-                        <button onClick={() => titleChange(AllTask[0].todo_data.Baza.indexOf(title))} className={style.addTitle}>Добавить проект</button>
+                        <button onClick={() => titleChange(AllTask[0].todo_data.Baza.indexOf(title))} className={style.addTitle}>Изменить название</button>
                     </div>
                 </div> 
             </div>
