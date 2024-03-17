@@ -193,7 +193,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                     
                 </div>
                 <div className={style.TodoObjHeader}>
-                    <p className={style.numTask}>Задачи {Task.numTask}</p>
+                    <p className={style.numTask}>Задачи {Task.items.length}</p>
                 </div>
                 <div
                 className='bigTable'>
