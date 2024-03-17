@@ -40,6 +40,7 @@ const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
     }
 
     function deleteBaza(index:number) {
+        console.log(index)
         const copy = [...AllTask]
         if (index !== -1) {
             copy[0].todo_data.Baza.splice(index, 1)
