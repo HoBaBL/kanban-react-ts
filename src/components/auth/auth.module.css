@@ -83,3 +83,14 @@
 .textFotter button:hover {
     color: rgb(177, 3, 3);
 }
+
+.eximple {
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    width: 300px;
+    background-color: rgb(31, 29, 36);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}

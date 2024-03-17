@@ -44,7 +44,13 @@ const Login: FC = () => {
     
     return (
         <div className={style.windowPosition}>
-            
+            <div className={style.eximple}>
+                <p>Можете создать свой аккаунт или воспользоваться примером</p>
+                <p>Электронная почта: eximple@gmail.com</p>
+                <p>Пароль: eximple</p>
+                <p>Приложение находится в разработке, по-этому пока не работают вкладки "Уведомления", "Аккаунт", "Главная"</p>
+                <p>Можете добавлять свои записи или проекты. Всё переносится на сервер</p>
+            </div>
             <div className={style.window}>
                 <h3 className={style.authH3}>Выполните вход</h3>
                 <div className={style.inputPosition}>
