@@ -83,7 +83,8 @@ const Sidebar: FC<sidebarType> = ({AllTask, supabase, setAllTask, loading}) => {
         copy[0].todo_data.Baza.push(Baza)
         setAllTask(copy)
         UpsertData()
-        console.log(AllTask)
+        setModalActive(false)
+        setTitle('')
     }
 
     return (
