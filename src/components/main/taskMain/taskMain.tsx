@@ -64,7 +64,7 @@ const TaskMini: FC<TaskMiniProps> = ({
     '#f1dbf2', '#ffc8d4', '#fde2d3', '#e5ffcf', '#caecde',
     '#e1e6ff', '#e7e0ff', '#fcc6b7', '#fad5c0', '#e5f5dd', '#bdd4d1',
     '#d9ddf3', '#e7e7e7']
-    Task.numTask = Task.items.length
+    // Task.numTask = Task.items.length 
 
     const handleClick = (event:any) => {
         if (AddTaskDownRef.current && AddTaskDownRef.current.contains(event.target)) {
@@ -193,7 +193,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                     
                 </div>
                 <div className={style.TodoObjHeader}>
-                    <p className={style.numTask}>Задачи {Task.numTask}</p>
+                    <p className={style.numTask}>Задачи {Task.items.length}</p>
                 </div>
                 <div
                 className='bigTable'>
