@@ -28,11 +28,6 @@
     margin-left: 15.3%;
 } */
 
-.noneClick {
-    display: flex;
-    gap: 15px;
-}
-
 .dropdown {
     border: solid 1px gray;
     list-style-type:none;
@@ -45,6 +40,7 @@
     cursor: auto;
     border-radius: 5px;
     transform:translate(-40%, 0);
+    text-align: center;
 }
 
 .dropdownNone {
@@ -68,7 +64,7 @@
     border: none;
     cursor: pointer;
     color: red;
-    margin-top: 6px;
+    /* margin-top: 6px; */
     width: 100%;
     border-radius: 5px;
     padding: 5px;
@@ -86,10 +82,14 @@
     position: absolute;
     background-color: white;
     z-index: 20000;
-    /* left: -50px; */
     cursor: auto;
     border-radius: 5px;
-    transform:translate(145%, 0);
+    transform:translate(223%, 3px);
+}
+
+.dropdownMini li {
+    width: 100%;
+    text-align: left;
 }
 
 .modal {
@@ -115,7 +115,7 @@
 
 .ModalContent {
     width:  300px;
-    height: 200px;
+    /* height: 200px; */
     padding: 20px;
     background-color: white;
     position: absolute;
@@ -123,6 +123,13 @@
     top: 10%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, 50%);
+    transform: translate(-50%, 0%);
     transition: 0.5s;
+}
+
+.noneClick {
+  display: flex;
+  gap: 15px;
+  margin-left: 30px;
+  padding-right: 30px;
 }

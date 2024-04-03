@@ -1,0 +1,54 @@
+.container {
+    width: 100% - 40px;
+    border: solid gray 1px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+.column {
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+}
+
+.input {
+    width: 780px;
+    border: none;
+}
+
+.time {
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer p{
+    margin: 5px 0;
+}
+
+.text {
+    font-size: 18px;
+}
+
+.inputFlex {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: solid gray 1px;
+    background-color: white;
+    padding: 10px 10px;
+    gap: 10px;
+}
+
+.noneTasks {
+    text-align: center;
+}
+
+.noneTasksTextBig {
+    font-size: 24px;
+    font-weight: 600;
+}

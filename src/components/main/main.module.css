@@ -1,7 +1,10 @@
-.mainH1 {
-    padding-left: 30px;
-}
 
+.main {
+    width: 100%;
+    padding-left: 10px;
+    /* padding-right: 30px; */
+    margin-left: 280px;
+}
 
 .TodoObj {
     background-color: white;
@@ -124,10 +127,9 @@
 .flexTable {
     display: flex;
     gap: 15px;
-    overflow: auto;
-    height: 90vh;
-    padding-left: 30px;
-    padding-right: 30px;
+    /* width: 92.7%; */
+    /* height: 88vh; */
+    margin-top: 100px;
 }
 
 .TitleInput {
@@ -202,7 +204,6 @@
 }
 
 .h3Title {
-    padding-left: 30px;
     font-size: 26px;
 }
 
@@ -230,6 +231,8 @@
     cursor: pointer;
     padding: 5px;
     border-radius: 5px;
+    /* text-align: center; */
+    width: 100%;
 }
 
 .btnDropdown:hover {
@@ -241,7 +244,7 @@
     border: none;
     cursor: pointer;
     color: red;
-    margin-top: 6px;
+    /* margin-top: 6px; */
     width: 100%;
     border-radius: 5px;
     padding: 5px;
@@ -280,4 +283,90 @@
 
 .colorNone:hover {
     background-color: rgba(240, 238, 238, 0.966);
+}
+
+.importance {
+    display: flex;
+    gap: 10px;
+}
+
+.importanceText {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.importanceTextActive {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+    background-color: rgba(240, 238, 238, 0.966);
+}
+
+.importanceText:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+    
+}
+
+.importanceMain {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+}
+
+.flexHeader {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.headerBtn {
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
+    transition: 0.3s;
+}
+
+.headerBtn span {
+    font-weight: 600;
+}
+
+.headerBtn:hover {
+    background-color: rgba(240, 238, 238, 0.966);
+}
+
+.containerFlex {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.dateText {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    color: rgb(156, 156, 156);
+    margin-bottom: 5px;
 }

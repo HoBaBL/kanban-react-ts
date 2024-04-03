@@ -87,11 +87,15 @@ const Sidebar: FC<sidebarType> = ({AllTask, supabase, setAllTask, loading}) => {
         setTitle('')
     }
 
+    function miniSidebar() {
+
+    }
+
     return (
         <div className={style.sidebar}>
             <div className={style.sidebarHeader}>
-                <img src='../../images/logo.png' alt="" />
-                <button><CiMenuFries size={26}/></button>
+                <img src="../../images/logo.png" alt="" />
+                <button onClick={() => miniSidebar()}><CiMenuFries size={26}/></button>
             </div>
             <div className={style.menu}>
                 <button className={style.btnMenu}>

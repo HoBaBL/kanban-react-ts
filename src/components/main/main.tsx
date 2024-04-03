@@ -6,6 +6,7 @@ import { FaCheck } from "react-icons/fa6";
 import './taskMain/styleDraggable.css';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
+import CompletedTask from "./completedTask/completedTask";
 
 type AllTask ={
     AllTask:any,
@@ -38,6 +39,7 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     const [currentBoard, setCurrentBoard] = useState<any>(null)
     const [currentItem, setCurrentItem] = useState<any>(null)
     const [indexBoard, setIndexBoard] = useState<any>(null)
+    const [screen, setScreen] = useState(false)
     const BoardH1Ref = useRef<any>(null)
 
     function dragHadler( Task:any) {
@@ -76,10 +78,18 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
         if (BoardH1Ref.current && BoardH1Ref.current.contains(event.target)) {
             setAddCard(true)
         } else {
-            if (event.target.className === 'noneClick' || event.target.className === 'noneClickTwo')
+            if (event.target.id !== 'addBoard')
+           
             setAddCard(false)
+            
         }
     }
+
+    const handleKeyPress = (event:any) => {
+        if(event.key === 'Enter'){
+            AddBoard()
+        }
+    };
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClick)
@@ -107,59 +117,86 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     }
 
     return (
-        <div className='main'>
-                <div>
-                    <h3 className={style.h3Title}>
+        <div className={style.main}>
+                
+                    
                         {loading ? <p>Загрузка</p> :
-                            AllTask[0].todo_data.Baza[numProd].title
+                        <div className={style.flexHeader}>
+                            <h3 className={style.h3Title}>
+                                {AllTask[0].todo_data.Baza[numProd].title}
+                            </h3>
+                            { !screen ? 
+                                <button className={style.headerBtn} onClick={() => setScreen(true)}>
+                                    Завершено задач: <span>{AllTask[0].todo_data.Baza[numProd].completed.length}</span>
+                                </button> :
+                                <button className={style.headerBtn} onClick={() => setScreen(false)}>
+                                    Вернутся к задачам
+                                </button>
+                            }
+                            
+                        </div>
+                            
                         }
-                    </h3>
-                    <div className={style.flexTable}>
-                        <div className="noneClick">
+                        
+                    
+                    
+                    <div className={style.flexTable} >
+                        
                             {loading ? <p>Загрузка</p> :
-                                    AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
+
+                                !screen ?
+                                <div className="noneClick">
+                                    {AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
                                     <div className="noneClickTwo" key={Task.id} 
-                                    draggable={true}
-                                    onDrag={() => dragHadler( Task)}
-                                    // onDragLeave={(e:any) => dragEndHadler(e)}
-                                    // onDragEnd={(e:any) => dragEndHadler(e)}
-                                    onDragOver={(e:any) => dragOverHandler(e)}
-                                    onDrop={(e:any) => {dropHandler(e, Task)}}
-                                    >
+                                        draggable={true}
+                                        onDrag={() => dragHadler( Task)}
+                                        // onDragLeave={(e:any) => dragEndHadler(e)}
+                                        // onDragEnd={(e:any) => dragEndHadler(e)}
+                                        onDragOver={(e:any) => dragOverHandler(e)}
+                                        onDrop={(e:any) => {dropHandler(e, Task)}}
+                                        >
                                         <TaskMini Task={Task} currentBoard={currentBoard} currentItem={currentItem}
                                         setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} supabase={supabase} AllTask={AllTask} setAllTask={setAllTask}
                                          loading={loading} userId={UserId}
                                         />
                                     </div>
                                         
-                                    )
-                                
-                            }
-                            <div className={style.addСolumnPosition}>
-                                {
-                                    addCard ? 
-                                    <div className={style.addBoard} ref={BoardH1Ref}>
-                                        <div className={style.addBoardHeader}>
-                                            <input value={addTitle} onChange={event => setAddTitle(event.target.value)} className={style.TitleInput} type="text"/>
-                                            <button className={style.CheckBtn} onClick={() => AddBoard()}>
-                                                <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
-                                            </button> 
-                                        </div>
+                                    )}
+                                    <div className={style.addСolumnPosition}>
+                                        {
+                                            addCard ? 
+                                            <div className={style.addBoard} ref={BoardH1Ref} id="addBoard">
+                                                <div className={style.addBoardHeader}>
+                                                    <input value={addTitle} onChange={event => setAddTitle(event.target.value)} className={style.TitleInput} type="text" onKeyDown={handleKeyPress}/>
+                                                    <button className={style.CheckBtn} onClick={() => AddBoard()} >
+                                                        <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
+                                                    </button> 
+                                                </div>
+                                                
+                                            </div>
+                                            :
+                                            
+                                            <button onClick={() => setAddCard(true)} className={style.addСolumn}>
+                                                <FiPlus size={22}/>
+                                                Добавить колонку
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                                     :
+                                    <div className={style.containerFlex}>
+                                        
+                                        <CompletedTask AllTask={AllTask} numProd={numProd}/>
                                         
                                     </div>
-                                    :
                                     
-                                    <button onClick={() => setAddCard(true)} className={style.addСolumn}>
-                                        <FiPlus size={22}/>
-                                        Добавить колонку
-                                    </button>
-                                }
-                            </div>
+                            }
+                            
                         
                             
-                        </div>
+                        
                     </div>
-                </div>
+                
         </div>
     )
 }

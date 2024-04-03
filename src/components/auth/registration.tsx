@@ -45,6 +45,7 @@ const Registration: FC = () => {
         Baza: [
             {
                 title: "Первый проект",
+                completed: [],
                 Arrey: [
                     {
                         id: 1,

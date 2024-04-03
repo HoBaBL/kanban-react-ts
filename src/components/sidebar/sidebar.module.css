@@ -1,14 +1,17 @@
 .sidebar {
+    position: fixed;
     color: rgb(212, 208, 208);
     background-color: rgb(31, 29, 36);
     height: 100%;
-    width: 13%;
-    /* position: absolute; */
+    width: 100%;
+    max-width: 250px;
+    min-width: 250px;
     z-index: 1000; 
     top: 0; 
     left: 0;
     overflow-x: hidden;
     padding: 0 20px;
+    transition: 0.4s;
 }
 
 

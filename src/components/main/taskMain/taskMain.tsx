@@ -20,7 +20,7 @@ type TaskMiniProps = {
         items: {
             titleTask: string;
             colorTask: string;
-            importanceTask: string;
+            importanceTask: {color: string, text: string};
     }[]
     },
     currentBoard:any,
@@ -103,12 +103,13 @@ const TaskMini: FC<TaskMiniProps> = ({
             id: Math.random(),
             titleTask: AddTaskDownText,
             colorTask: '',
-            importanceTask: ''
+            importanceTask: {color: "gray", text: "Обычная"}
         }
         Task.items.push(TaskObj)
         setAddTaskDownText('')
         setAddTaskDown(false)
         UpsertData()
+        console.log(AllTask)
     }
    
     async function UpsertData() {
@@ -157,7 +158,12 @@ const TaskMini: FC<TaskMiniProps> = ({
         setAllTask(copy)
     }
 
-    // onMouseEnter={() => {setIsShown(true)}}  onMouseLeave={() => {setIsShown(false)}}
+    const handleKeyPress = (event:any) => {
+        if(event.key === 'Enter'){
+            AddTask()
+        }
+    };
+
   return (
             <div className={style.TodoObjActive} style={{backgroundColor:Task.color}}>
                 <div className={style.TodoObjHeader}>
@@ -175,7 +181,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                     <div>
                         <IoIosMore onClick={() => setDropdown(true)} className={style.TodoObjHeaderMore}/>
                         <ul className={dropdown ? "dropdown" : "dropdownNone"} ref={ref}>
-                            <li><button onClick={() => {setModalActive(true), setDropdown(false)}} className={style.btnDropdown}>Установить цвет колонки</button></li>
+                            <li><button onClick={() => {setModalActive(true), setDropdown(false)}} className={style.btnDropdown}>Настройки</button></li>
                             <li><button onClick={() => deleteBourd(Task.id)} className={style.btnDropdownDelete}>Удалить</button></li>
                         </ul>
                         <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
@@ -216,7 +222,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                 {
                     AddTaskDown ? 
                     <div className={style.TodoObjHeader} ref={AddTaskDownRef}>
-                        <TextareaAutosize value={AddTaskDownText} onChange={event => setAddTaskDownText(event.target.value)} className={style.AddTaskDown} />
+                        <TextareaAutosize onKeyDown={handleKeyPress} value={AddTaskDownText} onChange={event => setAddTaskDownText(event.target.value)} className={style.AddTaskDown} />
                         <button className={style.CheckBtn} onClick={() => AddTask()}>
                             <FaCheck className={style.TodoObjHeaderMore} style={{marginTop:10, color:'gray'}}/>
                         </button>
