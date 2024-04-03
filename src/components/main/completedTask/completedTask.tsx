@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import style from './completedTask.module.css'
 import { LuCalendarDays } from "react-icons/lu";
 import { SlMagnifier } from "react-icons/sl";
