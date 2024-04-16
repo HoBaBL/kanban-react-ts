@@ -155,7 +155,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         setAllTask(copy)
     }
 
-    function importance(Task:any, list:any, block:any) {  /// выжность в виде флагов 
+    function importance(Task:any, list:any, block:any) {  /// важность в виде флагов 
         const copy = [...AllTask]
         const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === Task.id);
         const indexTop = copy[0].todo_data.Baza[numProd].Arrey[index].items.indexOf(list)

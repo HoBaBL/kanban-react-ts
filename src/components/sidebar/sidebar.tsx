@@ -63,13 +63,15 @@ const Sidebar: FC<sidebarType> = ({AllTask, supabase, setAllTask, loading}) => {
                         id: 1,
                         title: "Неразобранное",
                         color: "",
-                        items: []
+                        items: [],
+                        
                     },
                     {
                         id: 2,
                         title: "В работе",
                         color: "",
-                        items: []
+                        items: [],
+                        
                     },
                     {
                         id: 3,
@@ -77,7 +79,8 @@ const Sidebar: FC<sidebarType> = ({AllTask, supabase, setAllTask, loading}) => {
                         color: "",
                         items: []
                     }
-                ]
+                ],
+                completed: []
         }
         const copy = [...AllTask]
         copy[0].todo_data.Baza.push(Baza)

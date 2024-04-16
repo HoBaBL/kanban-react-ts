@@ -7,6 +7,10 @@ import './taskMain/styleDraggable.css';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
 import CompletedTask from "./completedTask/completedTask";
+import { Reorder } from 'framer-motion';
+import { IoMdMore } from "react-icons/io";
+import { IoList } from "react-icons/io5";
+import { BiTable } from "react-icons/bi";
 
 type AllTask ={
     AllTask:any,
@@ -39,6 +43,7 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     const [currentBoard, setCurrentBoard] = useState<any>(null)
     const [currentItem, setCurrentItem] = useState<any>(null)
     const [indexBoard, setIndexBoard] = useState<any>(null)
+    const [dropdownGap, setDropdownGap] = useState(false)
     const [screen, setScreen] = useState(false)
     const BoardH1Ref = useRef<any>(null)
 
@@ -113,18 +118,57 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
             setAddTitle('')
             UpsertData()
         }   
-        
     }
 
+    const [test, setTest] = useState<any>([])
+
+    useEffect(() => {
+        if (!loading) {
+            setTest(AllTask[0].todo_data.Baza[numProd].Arrey)
+            
+        }
+    },[loading])
+    
+    function render() {
+            const copy = [...AllTask]
+            copy[0].todo_data.Baza[numProd].Arrey = test
+            setAllTask(copy)
+    }
+
+    useEffect(() => {
+        if (test[0] !== undefined) {
+            console.log('start')
+            render()
+        }
+    },[test])
+
+    const refTask = useRef<any>();
+
+    const MimoClick = (event:any) => {
+        if (refTask.current && refTask.current.contains(event.target)) {
+            setDropdownGap(true)
+        } else {
+            setDropdownGap(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("mousedown", MimoClick)
+        return () => {
+            document.removeEventListener("mousedown", MimoClick)
+        }
+    },[])
+    
+
     return (
-        <div className={style.main}>
-                
-                    
-                        {loading ? <p>Загрузка</p> :
-                        <div className={style.flexHeader}>
-                            <h3 className={style.h3Title}>
-                                {AllTask[0].todo_data.Baza[numProd].title}
-                            </h3>
+       
+                <div className={style.main}>
+                    {loading ? <p>Загрузка</p> :
+                    <div className={style.flexHeader}>
+                        <h3 className={style.h3Title}>
+                            {AllTask[0].todo_data.Baza[numProd].title}
+                        </h3>
+                        <div className={style.flexHeaderBtn}>
                             { !screen ? 
                                 <button className={style.headerBtn} onClick={() => setScreen(true)}>
                                     Завершено задач: <span>{AllTask[0].todo_data.Baza[numProd].completed.length}</span>
@@ -133,71 +177,85 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
                                     Вернутся к задачам
                                 </button>
                             }
+                            <button className={style.btnHeaderPoint} onClick={() => setDropdownGap(true)}>
+                                <IoMdMore size={18}/>
+                            </button>
+                            <div className={dropdownGap ? style.dropdownMini : style.dropdownNone} ref={refTask}>
+                                <li><button className={style.btnDropdown}><BiTable/> Таблица</button></li>
+                                <li><button className={style.btnDropdown}><IoList/> Список</button></li>
+                            </div> 
                             
                         </div>
-                            
-                        }
-                        
-                    
-                    
-                    <div className={style.flexTable} >
-                        
-                            {loading ? <p>Загрузка</p> :
-
-                                !screen ?
-                                <div className="noneClick">
-                                    {AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
-                                    <div className="noneClickTwo" key={Task.id} 
-                                        draggable={true}
-                                        onDrag={() => dragHadler( Task)}
-                                        // onDragLeave={(e:any) => dragEndHadler(e)}
-                                        // onDragEnd={(e:any) => dragEndHadler(e)}
-                                        onDragOver={(e:any) => dragOverHandler(e)}
-                                        onDrop={(e:any) => {dropHandler(e, Task)}}
-                                        >
-                                        <TaskMini Task={Task} currentBoard={currentBoard} currentItem={currentItem}
-                                        setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} supabase={supabase} AllTask={AllTask} setAllTask={setAllTask}
-                                         loading={loading} userId={UserId}
-                                        />
-                                    </div>
-                                        
-                                    )}
-                                    <div className={style.addСolumnPosition}>
-                                        {
-                                            addCard ? 
-                                            <div className={style.addBoard} ref={BoardH1Ref} id="addBoard">
-                                                <div className={style.addBoardHeader}>
-                                                    <input value={addTitle} onChange={event => setAddTitle(event.target.value)} className={style.TitleInput} type="text" onKeyDown={handleKeyPress}/>
-                                                    <button className={style.CheckBtn} onClick={() => AddBoard()} >
-                                                        <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
-                                                    </button> 
-                                                </div>
-                                                
-                                            </div>
-                                            :
-                                            
-                                            <button onClick={() => setAddCard(true)} className={style.addСolumn}>
-                                                <FiPlus size={22}/>
-                                                Добавить колонку
-                                            </button>
-                                        }
-                                    </div>
-                                </div>
-                                     :
-                                    <div className={style.containerFlex}>
-                                        
-                                        <CompletedTask AllTask={AllTask} numProd={numProd}/>
-                                        
-                                    </div>
-                                    
-                            }
-                            
-                        
-                            
                         
                     </div>
-                
-        </div>
+                    }
+                        <div className={style.flexTable} >
+                            
+                                {loading ? <p>Загрузка</p> :
+
+                                    !screen ?
+                                    <div className="noneClick">
+                                        <Reorder.Group as="div" axis="x" values={AllTask[0].todo_data.Baza[numProd].Arrey} onReorder={setTest} 
+                                            className="noneClickTwo" >
+                                            {AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
+                                            
+                                                <Reorder.Item value={Task} as='div' key={Task.id}>
+                                                    <div 
+                                                        onDrag={() => dragHadler( Task)}
+                                                        onDragOver={(e:any) => dragOverHandler(e)}
+                                                        onDrop={(e:any) => {dropHandler(e, Task)}}>
+                                                        <TaskMini  Task={Task} currentBoard={currentBoard} currentItem={currentItem}
+                                                        setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} supabase={supabase} AllTask={AllTask} setAllTask={setAllTask}
+                                                        loading={loading} userId={UserId}
+                                                        />
+                                                    </div>
+                                                    
+
+                                                </Reorder.Item>
+
+                                            
+                                                
+                                            )}
+                                        </Reorder.Group> 
+                                            
+                                        <div className={style.addСolumnPosition}>
+                                            {
+                                                addCard ? 
+                                                <div className={style.addBoard} ref={BoardH1Ref} id="addBoard">
+                                                    <div className={style.addBoardHeader}>
+                                                        <input value={addTitle} onChange={event => setAddTitle(event.target.value)} className={style.TitleInput} type="text" onKeyDown={handleKeyPress}/>
+                                                        <button className={style.CheckBtn} onClick={() => AddBoard()} >
+                                                            <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
+                                                        </button> 
+                                                    </div>
+                                                    
+                                                </div>
+                                                :
+                                                
+                                                <button onClick={() => setAddCard(true)} className={style.addСolumn}>
+                                                    <FiPlus size={22}/>
+                                                    Добавить колонку
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                        :
+                                        <div className={style.containerFlex}>
+                                            
+                                            <CompletedTask AllTask={AllTask} numProd={numProd}/>
+                                            
+                                        </div>
+                                        
+                                }
+                                
+                            
+                                
+                                
+                        </div>
+                        
+                </div>
+
+        
     )
 }
 

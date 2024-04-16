@@ -370,3 +370,49 @@
     color: rgb(156, 156, 156);
     margin-bottom: 5px;
 }
+
+.flexHeaderBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.btnHeaderPoint {
+    display: flex;
+    justify-content: left;
+    padding: 0;
+    border-radius: 5px;
+    border: solid 1px rgb(182, 181, 181);
+    cursor: pointer;
+    transition: 0.5s;
+    background-color: transparent;
+}
+
+.btnHeaderPoint:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.dropdownMini {
+    border: solid 1px gray;
+    list-style-type:none;
+    padding: 5px;
+    margin: 0;
+    position: absolute;
+    background-color: white;
+    z-index: 20000;
+    cursor: auto;
+    border-radius: 5px;
+    transform: translate(63%, 40px);
+}
+
+.dropdownNone {
+    display: none;
+}
+
+.btnDropdown {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 5px;
+}

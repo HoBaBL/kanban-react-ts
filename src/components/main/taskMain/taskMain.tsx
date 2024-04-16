@@ -9,6 +9,7 @@ import './styleDraggable.css';
 import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../redux/store';
+import { Reorder } from 'framer-motion';
 
 
 type TaskMiniProps = {
@@ -202,7 +203,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                     <p className={style.numTask}>Задачи {Task.items.length}</p>
                 </div>
                 <div
-                className='bigTable'>
+                    className='bigTable'>
                     {
                             
                             Task.items.length > 0 &&(
