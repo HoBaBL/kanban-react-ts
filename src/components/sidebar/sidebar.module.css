@@ -49,7 +49,7 @@
     margin: 20px 0;
 }
 
-.menu p{
+.href{
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -66,6 +66,11 @@
     cursor: pointer;
     border-radius: 10px;
     padding: 5px 10px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
 }
 
 .btnMenu:hover {
@@ -168,6 +173,11 @@
     color: white;
     cursor: pointer;
     border-radius: 5px;
+    width: 25px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }  
 
 .dropdownMini {

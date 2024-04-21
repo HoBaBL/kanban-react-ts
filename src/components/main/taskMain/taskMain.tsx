@@ -9,7 +9,6 @@ import './styleDraggable.css';
 import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../redux/store';
-import { Reorder } from 'framer-motion';
 
 
 type TaskMiniProps = {
@@ -32,7 +31,8 @@ type TaskMiniProps = {
     AllTask:any,
     loading:boolean,
     userId:any,
-    setAllTask:any
+    setAllTask:any,
+    form:boolean
 }
 
 
@@ -46,7 +46,8 @@ const TaskMini: FC<TaskMiniProps> = ({
     AllTask,
     loading,
     userId,
-    setAllTask
+    setAllTask,
+    form
 
     }) => {
     // const [isShown, setIsShown] = useState(true); // показывает всплывающие объекты
@@ -166,7 +167,7 @@ const TaskMini: FC<TaskMiniProps> = ({
     };
 
   return (
-            <div className={style.TodoObjActive} style={{backgroundColor:Task.color}}>
+            <div className={form ? style.TodoObjActive:style.TodoObjColumn } style={{backgroundColor:Task.color}}>
                 <div className={style.TodoObjHeader}>
                     {
                         titleActive ? 
@@ -203,7 +204,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                     <p className={style.numTask}>Задачи {Task.items.length}</p>
                 </div>
                 <div
-                    className='bigTable'>
+                    className='bigTask'>
                     {
                             
                             Task.items.length > 0 &&(
@@ -214,7 +215,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                                 >
                                     <ArrayTask  list={list} currentBoard={currentBoard} currentItem={currentItem}
                                         setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} Task={Task} supabase={supabase} AllTask={AllTask} 
-                                        loading={loading} userId={userId} setAllTask={setAllTask}/> 
+                                        loading={loading} userId={userId} setAllTask={setAllTask} form={form}/> 
                                 </div>
                                     
                             ))
@@ -229,7 +230,7 @@ const TaskMini: FC<TaskMiniProps> = ({
                         </button>
                     </div>
                     :
-                    <button onClick={() => setAddTaskDown(true)} className={ style.btnAddTask}>
+                    <button onClick={() => setAddTaskDown(true)} className={ style.btnAddColumn}>
                         <FiPlus size={16}/> Добавить задачу                       
                     </button>
                 }

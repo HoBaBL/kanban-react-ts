@@ -21,7 +21,8 @@ type TaskMiniProps = {
             color:string,
             text: string
         };
-        date:any
+        date:any,
+        dateСomparison:any
     },
     currentBoard:any,
     currentItem:any,
@@ -32,7 +33,8 @@ type TaskMiniProps = {
     AllTask:any,
     loading:boolean,
     userId:any,
-    setAllTask:any
+    setAllTask:any,
+    form:boolean
 }
 
 const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
@@ -44,7 +46,8 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     AllTask,
     loading,
     userId,
-    setAllTask
+    setAllTask,
+    form
     }) => {
 
     const [isShownMini, setIsShownMini] = useState(false)
@@ -75,13 +78,12 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     },[])
 
     function dragHadler(e:any, Task:any, list:any) {
-        e.target.style.opacity = '0.3'
         setCurrentBoard(Task)
         setCurrentItem(list)
     }
 
     function dragEndHadler(e:any) {
-        if (e.target.className === 'taskMini') {
+        if (e.target.className === 'taskMini' ) {
             e.target.style.boxShadow = 'none'
         }
         
@@ -93,7 +95,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
 
     function dragOverHandler(e:any) {
         e.preventDefault()
-        if (e.target.className ==='taskMini') {
+        if (e.target.className ==='taskMini' ) {
             e.target.style.boxShadow = '0 4px 3px gray'
         }
     }
@@ -125,7 +127,10 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
                 todo_data : AllTask[0].todo_data
             })
             .eq('id', userId)
-            console.log(error) 
+            if (error !== null) {
+                console.log(error) 
+            }
+           
         }
     }
 
@@ -164,7 +169,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     }
 
     const monthArray = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
-
+    
     function completedFunc(id:number, titleTask:string, column:string, Task:any, list:any) { /// дата выполнение добавляется в массив с выполнеными задачами
         const copy = [...AllTask]
         const date = new Date();
@@ -202,7 +207,9 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === Task.id);
         const indexTop = copy[0].todo_data.Baza[numProd].Arrey[index].items.indexOf(list)
         copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].date = currentDate
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].dateСomparison = dateMore
         setAllTask(copy)
+        console.log(dateMore)
     }
 
     function dateTaskDefault(Task:any, list:any) {
@@ -214,7 +221,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
 
         setAllTask(copy)
     }
-
+    
     return(
         <div draggable
         onDrag={(e:any) => dragHadler(e, Task, list)}
@@ -222,15 +229,15 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         onDragEnd={(e:any) => dragEndHadler(e)}
         onDragOver={(e:any) => dragOverHandler(e)}
         onDrop={(e:any) => dropHandler(e, Task, list)} 
-        className='taskMini' style={{backgroundColor:list.colorTask}} onMouseEnter={() => {setIsShownMini(true)}}  onMouseLeave={() => {setIsShownMini(false)}}>
+        className={form ? "taskMini" :'taskTask'} style={{backgroundColor:list.colorTask}} onMouseEnter={() => {setIsShownMini(true)}}  onMouseLeave={() => {setIsShownMini(false)}}>
             {list.date !== undefined ? <p className={style.dateText}>до {list.date}.</p> : ''}
             <p className={style.taskMiniText}>{list.titleTask}</p>
             {list.importanceTask.color === 'gray' ? '' : <FaFlag className={style.importanceMain} size={10} color={list.importanceTask.color}/>}
             
-            <button className={isShownMini ? style.moreMini : style.moreMiniNone} onClick={() => setDropdownGap(true)}>
+            <button className={form ? isShownMini ? style.moreMini : style.moreMiniNone : isShownMini ? style.moreMiniTask : style.moreMiniNoneTask} onClick={() => setDropdownGap(true)}>
                 <IoMdMore size={18}/>
             </button>    
-            <div className={dropdownGap ? "dropdownMini" : "dropdownNone"} ref={refTask}>
+            <div className={form ? dropdownGap ? "dropdownMini" : "dropdownNone" : dropdownGap ? "dropdownMiniTask" : "dropdownNone"} ref={refTask}>
                 <li><button onClick={() => {setModalActive(true), setDropdownGap(false)}} className={style.btnDropdown}>Настройки</button></li>
                 <li><button onClick={() => completedFunc(list.id, list.titleTask, Task.title, Task, list)} className={style.btnDropdown}>Выполнить</button></li>
                 <li><button onClick={() => deleteBourd( Task, list)} className={style.btnDropdownDelete}>Удалить</button></li>

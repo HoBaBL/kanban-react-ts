@@ -6,6 +6,8 @@ import { FiBook } from "react-icons/fi";
 import { setnumProd } from "../../redux/slice/numProd";
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
+import { Link, useParams } from "react-router-dom";
+import { LuClipboardList } from "react-icons/lu";
 
 type TitleSidebarType = {
     title:any,
@@ -57,11 +59,14 @@ const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
         setAllTask(copy)
     }
 
+    
+    // onClick={() =>  dispatch(setnumProd(AllTask[0].todo_data.Baza.indexOf(title)))}
+
     return (
         <div className={style.flexBtn}>
-            <button  className={style.btnMenu} onClick={() =>  dispatch(setnumProd(AllTask[0].todo_data.Baza.indexOf(title)))}>
+            <Link to={`/baza/${AllTask[0].todo_data.Baza.indexOf(title)}`} className={style.btnMenu} >
                 <p className={style.textProject}><FiBook size={22}/> {title.title}</p>
-            </button>
+            </Link>
             <div>
                 <button onClick={() => setDropdownGap(true)} className={style.pointBtn}><IoMdMore size={16}/></button>
                 <ul className={dropdownGap ? style.dropdownMini : style.dropdownNone} ref={refTask}>

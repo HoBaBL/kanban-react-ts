@@ -11,6 +11,11 @@ import { Reorder } from 'framer-motion';
 import { IoMdMore } from "react-icons/io";
 import { IoList } from "react-icons/io5";
 import { BiTable } from "react-icons/bi";
+import { useParams } from "react-router-dom";
+import { useAppDispatch } from '../../hooks';
+import { setnumProd } from "../../redux/slice/numProd";
+import { BsClipboard2Check } from "react-icons/bs";
+import SkeletonBoard from "../skeleton/skeletonBoard";
 
 type AllTask ={
     AllTask:any,
@@ -22,8 +27,14 @@ type AllTask ={
 const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     const UserId = useSelector((state: RootState) => state.UserId.UserId)
     const numProd = useSelector((state: RootState) => state.numProd.numProd)
-
+    const dispatch = useAppDispatch()
     
+    const params = useParams()
+    useEffect(() => {
+        const prodId = params.id
+        dispatch(setnumProd(prodId))
+    })
+
     async function UpsertData() {
         if (!loading) {
             const { error } = await supabase
@@ -42,14 +53,13 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     const [addTitle, setAddTitle] = useState<string>('')
     const [currentBoard, setCurrentBoard] = useState<any>(null)
     const [currentItem, setCurrentItem] = useState<any>(null)
-    const [indexBoard, setIndexBoard] = useState<any>(null)
     const [dropdownGap, setDropdownGap] = useState(false)
     const [screen, setScreen] = useState(false)
+    const [form, setForm] = useState(true)
     const BoardH1Ref = useRef<any>(null)
 
     function dragHadler( Task:any) {
         setCurrentBoard(Task)
-        setIndexBoard(Task)
     }
     
     // function dragEndHadler(e:any) {}
@@ -60,15 +70,7 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
 
     function dropHandler(e:any, Task:any) {
         e.preventDefault()
-        if (e.target.className !== 'bigTable') {
-            const BoardIndex = AllTask[0].todo_data.Baza[numProd].Arrey.indexOf(indexBoard)
-            const BoardDropIndex = AllTask[0].todo_data.Baza[numProd].Arrey.indexOf(Task)
-            const copy = [...AllTask]
-            copy[0].todo_data.Baza[numProd].Arrey.splice(BoardDropIndex, 1, indexBoard)
-            copy[0].todo_data.Baza[numProd].Arrey.splice(BoardIndex, 1, Task)
-            setAllTask(copy)
-            
-        } else if (e.target.className !=='taskMini' && currentItem !== null){
+        if (e.target.className !== 'taskMini' && currentItem !== null){
             e.preventDefault()
             Task.items.push(currentItem)
             const currentIndex = currentBoard.items.indexOf(currentItem)
@@ -137,7 +139,6 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
 
     useEffect(() => {
         if (test[0] !== undefined) {
-            console.log('start')
             render()
         }
     },[test])
@@ -163,96 +164,95 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     return (
        
                 <div className={style.main}>
-                    {loading ? <p>Загрузка</p> :
-                    <div className={style.flexHeader}>
-                        <h3 className={style.h3Title}>
-                            {AllTask[0].todo_data.Baza[numProd].title}
-                        </h3>
-                        <div className={style.flexHeaderBtn}>
-                            { !screen ? 
-                                <button className={style.headerBtn} onClick={() => setScreen(true)}>
-                                    Завершено задач: <span>{AllTask[0].todo_data.Baza[numProd].completed.length}</span>
-                                </button> :
-                                <button className={style.headerBtn} onClick={() => setScreen(false)}>
-                                    Вернутся к задачам
-                                </button>
-                            }
-                            <button className={style.btnHeaderPoint} onClick={() => setDropdownGap(true)}>
-                                <IoMdMore size={18}/>
-                            </button>
-                            <div className={dropdownGap ? style.dropdownMini : style.dropdownNone} ref={refTask}>
-                                <li><button className={style.btnDropdown}><BiTable/> Таблица</button></li>
-                                <li><button className={style.btnDropdown}><IoList/> Список</button></li>
-                            </div> 
-                            
-                        </div>
-                        
-                    </div>
-                    }
-                        <div className={style.flexTable} >
-                            
-                                {loading ? <p>Загрузка</p> :
-
-                                    !screen ?
-                                    <div className="noneClick">
-                                        <Reorder.Group as="div" axis="x" values={AllTask[0].todo_data.Baza[numProd].Arrey} onReorder={setTest} 
-                                            className="noneClickTwo" >
-                                            {AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
-                                            
-                                                <Reorder.Item value={Task} as='div' key={Task.id}>
-                                                    <div 
-                                                        onDrag={() => dragHadler( Task)}
-                                                        onDragOver={(e:any) => dragOverHandler(e)}
-                                                        onDrop={(e:any) => {dropHandler(e, Task)}}>
-                                                        <TaskMini  Task={Task} currentBoard={currentBoard} currentItem={currentItem}
-                                                        setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} supabase={supabase} AllTask={AllTask} setAllTask={setAllTask}
-                                                        loading={loading} userId={UserId}
-                                                        />
-                                                    </div>
-                                                    
-
-                                                </Reorder.Item>
-
-                                            
-                                                
-                                            )}
-                                        </Reorder.Group> 
-                                            
-                                        <div className={style.addСolumnPosition}>
-                                            {
-                                                addCard ? 
-                                                <div className={style.addBoard} ref={BoardH1Ref} id="addBoard">
-                                                    <div className={style.addBoardHeader}>
-                                                        <input value={addTitle} onChange={event => setAddTitle(event.target.value)} className={style.TitleInput} type="text" onKeyDown={handleKeyPress}/>
-                                                        <button className={style.CheckBtn} onClick={() => AddBoard()} >
-                                                            <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
-                                                        </button> 
-                                                    </div>
-                                                    
-                                                </div>
-                                                :
-                                                
-                                                <button onClick={() => setAddCard(true)} className={style.addСolumn}>
-                                                    <FiPlus size={22}/>
-                                                    Добавить колонку
-                                                </button>
-                                            }
-                                        </div>
-                                    </div>
-                                        :
-                                        <div className={style.containerFlex}>
-                                            
-                                            <CompletedTask AllTask={AllTask} numProd={numProd}/>
-                                            
-                                        </div>
+                    {loading ? <SkeletonBoard/> : 
+                        <>
+                            <div className={style.flexHeader}>
+                                    <h3 className={style.h3Title}>
+                                        {AllTask[0].todo_data.Baza[numProd].title}
+                                    </h3>
+                                    <div className={style.flexHeaderBtn}>
+                                        { !screen ? 
+                                            <button className={style.headerBtn} onClick={() => setScreen(true)}>
+                                                <BsClipboard2Check size={18}/>  Завершено задач: <span>{AllTask[0].todo_data.Baza[numProd].completed.length}</span>
+                                            </button> :
+                                            <button className={style.headerBtn} onClick={() => setScreen(false)}>
+                                                Вернутся к задачам
+                                            </button>
+                                        }
+                                        <button className={style.btnHeaderPoint} onClick={() => setDropdownGap(true)}>
+                                            <IoMdMore size={18}/>
+                                        </button>
+                                        <div className={dropdownGap ? style.dropdownMini : style.dropdownNone} ref={refTask}>
+                                            <li><button onClick={() => {setForm(true),setDropdownGap(false)}} className={style.btnDropdown}><BiTable/> Таблица</button></li>
+                                            <li><button onClick={() => {setForm(false),setDropdownGap(false)}} className={style.btnDropdown}><IoList/> Список</button></li>
+                                        </div> 
                                         
-                                }
-                                
-                            
-                                
-                                
-                        </div>
+                                    </div>
+
+                                    </div>
+
+                                    <div className={form ?  style.flexTable : style.Todo} >
+
+                                                {!screen ?
+                                                <div className={form ? "noneClick" : style.todoPosition}>
+                                                    <Reorder.Group as="div"  axis={form ? "x" : "y"} values={AllTask[0].todo_data.Baza[numProd].Arrey} onReorder={setTest} 
+                                                        className={form ? "noneClickTwo" : style.todoColumn} >
+                                                        {AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
+                                                        
+                                                            <Reorder.Item value={Task} as='div' key={Task.id} style={{height:"100%"}}>
+                                                                <div style={{height:"100%"}} 
+                                                                    onDrag={() => dragHadler( Task)}
+                                                                    onDragOver={(e:any) => dragOverHandler(e)}
+                                                                    onDrop={(e:any) => {dropHandler(e, Task)}}>
+                                                                    <TaskMini  Task={Task} currentBoard={currentBoard} currentItem={currentItem}
+                                                                    setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} supabase={supabase} AllTask={AllTask} setAllTask={setAllTask}
+                                                                    loading={loading} userId={UserId} form={form}
+                                                                    />
+                                                                </div>
+                                                                
+
+                                                            </Reorder.Item>
+
+                                                        )}
+                                                    </Reorder.Group> 
+                                                        
+                                                    <div className={style.addСolumnPosition}>
+                                                        {
+                                                            addCard ? 
+                                                            <div className={style.addBoard} ref={BoardH1Ref} id="addBoard">
+                                                                <div className={style.addBoardHeader}>
+                                                                    <input value={addTitle} onChange={event => setAddTitle(event.target.value)} className={style.TitleInput} type="text" onKeyDown={handleKeyPress}/>
+                                                                    <button className={style.CheckBtn} onClick={() => AddBoard()} >
+                                                                        <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
+                                                                    </button> 
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            :
+                                                            
+                                                            <button onClick={() => setAddCard(true)} className={style.addСolumn}>
+                                                                <FiPlus size={22}/>
+                                                                Добавить колонку
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                    :
+                                                    <div className={style.containerFlex}>
+                                                        
+                                                        <CompletedTask AllTask={AllTask} numProd={numProd}/>
+                                                        
+                                                    </div>}
+                                    </div> 
                         
+                        </>
+
+
+
+                    }
+                    
+                    
+                         
                 </div>
 
         

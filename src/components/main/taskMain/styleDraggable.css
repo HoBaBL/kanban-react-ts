@@ -1,11 +1,11 @@
 .item {
-    border-radius: 5px;
+    /* border-radius: 5px; */
     min-height: 42px;
     width: 100%;
-    /* margin-top: 10px; */
-    background-color: white;
-    /* z-index: 100; */
+    background-color: transparent;
     position: relative;
+    
+    margin-bottom: 10px;
 }
 
 .taskMini {
@@ -13,15 +13,17 @@
     min-height: 42px;
     word-wrap: normal;
     word-break: break-word;
-    width: 240px;
+    /* width: 240px; */
     position: relative;
-    margin-top: 10px;
     border-radius: 5px;
+    background-color: white;
     border: solid rgb(219, 219, 219) 1px;
 }
 
 .bigTable {
     min-height: 50px;
+    max-width: 520px;
+    /* overflow-y: auto; */
 }
 
 /* .main {
@@ -137,4 +139,43 @@
 .noneClickTwo {
     display: flex;
     gap: 15px;
+}
+
+/* bigTable  */
+.bigTask {
+    min-height: 50px;
+    /* max-width: 520px; */
+    /* overflow-y: auto; */
+}
+
+/* taskMini */
+.taskTask {
+    padding: 10px;
+    min-height: 42px;
+    word-wrap: normal;
+    word-break: break-word;
+    /* width: 240px; */
+    position: relative;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: solid rgb(219, 219, 219) 1px;
+}
+
+/* dropdownMini */
+.dropdownMiniTask {
+    border: solid 1px gray;
+    list-style-type: none;
+    padding: 5px;
+    margin: 0;
+    position: absolute;
+    background-color: white;
+    z-index: 20000;
+    cursor: auto;
+    border-radius: 5px;
+    transform: translate(1335%, -18px);
+}
+
+.dropdownMiniTask li {
+    width: 100%;
+    text-align: left;
 }

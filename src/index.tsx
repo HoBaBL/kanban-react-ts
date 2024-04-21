@@ -10,15 +10,30 @@ import {
 } from "react-router-dom";
 import Login from './components/auth/login';
 import Registration from './components/auth/registration';
+import { createClient } from "@supabase/supabase-js";
+import Home from './components/home/home';
+import Sidebar from './components/sidebar/sidebar';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+const supabase = createClient("https://ynelcdqjjejcylduvmjy.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluZWxjZHFqamVqY3lsZHV2bWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0ODE0NjcsImV4cCI6MjAyMzA1NzQ2N30.nvBnJPg5HG57sSU2JGLeQIi2zBbbInRnar2qWTIUhKc");
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: <Sidebar supabase={supabase} />,
+    children: [
+      {
+        path:"baza/:id",
+        element: <App/>
+      },
+      {
+        path: "home",
+        element: <Home supabase={supabase}/>
+      }
+    ]
   },
   {
     path: "login",
@@ -27,9 +42,9 @@ const router = createBrowserRouter([
   {
     path: "registration",
     element: <Registration/>,
-  }
-  
+  },
 ]);
+
 
 
 root.render(

@@ -54,6 +54,7 @@
     color: gray;
     cursor: pointer;
     width: 156px;
+    margin-bottom: 30px;
 }
 
 .addСolumn:hover {
@@ -128,7 +129,7 @@
     display: flex;
     gap: 15px;
     /* width: 92.7%; */
-    /* height: 88vh; */
+    height: 88vh;
     margin-top: 100px;
 }
 
@@ -336,6 +337,8 @@
     width: 80%;
     margin-left: 30px;
     margin-right: 30px;
+    background-color: rgb(236, 234, 234);
+    z-index: 100;
 }
 
 .headerBtn {
@@ -347,6 +350,9 @@
     border-radius: 10px;
     padding: 5px;
     transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 3px;
 }
 
 .headerBtn span {
@@ -368,6 +374,14 @@
     margin: 0;
     font-size: 12px;
     color: rgb(156, 156, 156);
+    margin-bottom: 5px;
+}
+
+.dateTextRed {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    color: rgba(252, 64, 39, 0.842);
     margin-bottom: 5px;
 }
 
@@ -415,4 +429,88 @@
     justify-content: left;
     align-items: center;
     gap: 5px;
+}
+
+
+.Todo {
+    margin-top: 100px;
+}
+
+.todoPosition {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-left: 60px;
+    padding-right: 30px;
+    max-width: 90%;
+}
+
+.todoColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* TodoObjActive */
+.TodoObjColumn {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    min-height: 150px;
+    cursor: grab;
+}
+
+
+/* btnAddTask */
+.btnAddColumn {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    /* width: 100%; */
+    justify-content: center;
+    padding: 5px;
+    gap: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 5px;
+    border: none;
+    transition: 0.5s;
+    color: gray;
+}
+
+.btnAddColumn:hover {
+    color: black;
+}
+
+/* moreMini */
+.moreMiniTask {
+    position: absolute;
+    left: 1250px;
+    top: 5px;
+    z-index: 10;
+    display: flex;
+    justify-content: left;
+    padding: 0;
+    border: solid 1px rgb(182, 181, 181);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: 0.5s;
+}
+/* moreMiniNone */
+.moreMiniNoneTask {
+    position: absolute;
+    left: 1250px;
+    top: 5px;
+    z-index: 10;
+    display: flex;
+    justify-content: left;
+    padding: 0;
+    border: solid 1px rgb(182, 181, 181);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: 0.5s;
+    opacity: 0;
 }

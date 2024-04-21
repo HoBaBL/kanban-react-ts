@@ -24,15 +24,15 @@ function App() {
   },[])
 
   async function test() {
-  const { data, error } = await supabase.auth.getSession()
-  Proverka(data.session?.user.id)
-  dispatch(setUserId(data.session?.user.id))
-  if (data.session?.user.id === undefined) {
-      navigate("/login")
-  }
-  if (error !== null) {
-      console.log(error)
-  }
+    const { data, error } = await supabase.auth.getSession()
+    Proverka(data.session?.user.id)
+    dispatch(setUserId(data.session?.user.id))
+    if (data.session?.user.id === undefined) {
+        navigate("/login")
+    }
+    if (error !== null) {
+        console.log(error)
+    }
   }
 
   async function Proverka(userId:any) {
@@ -66,10 +66,11 @@ function App() {
       }
   }
   }
+  
 
   return (
     <div className={style.App}>
-      <Sidebar AllTask={AllTask} setAllTask={setAllTask} supabase={supabase} loading={loading}/>
+      {/* <Sidebar AllTask={AllTask} setAllTask={setAllTask} supabase={supabase} loading={loading}/> */}
       <Main AllTask={AllTask} setAllTask={setAllTask} supabase={supabase} loading={loading}/>
     </div>
   );
