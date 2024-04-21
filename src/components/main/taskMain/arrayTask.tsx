@@ -77,7 +77,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         }
     },[])
 
-    function dragHadler(e:any, Task:any, list:any) {
+    function dragHadler(Task:any, list:any) {
         setCurrentBoard(Task)
         setCurrentItem(list)
     }
@@ -224,7 +224,7 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     
     return(
         <div draggable
-        onDrag={(e:any) => dragHadler(e, Task, list)}
+        onDrag={() => dragHadler(Task, list)}
         onDragLeave={(e:any) => dragLeaveHadler(e)}
         onDragEnd={(e:any) => dragEndHadler(e)}
         onDragOver={(e:any) => dragOverHandler(e)}
