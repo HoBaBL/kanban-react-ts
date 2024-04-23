@@ -9,12 +9,13 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
 import TitleSidebar from "./titleSidebar";
-import { LuClipboardList } from "react-icons/lu";
-
 import { useAppDispatch } from '../../hooks';
 import { useNavigate } from "react-router-dom";
 import {setUserId} from "../../redux/slice/UserId";
 import { Outlet} from "react-router-dom";
+import { setUserName } from "../../redux/slice/userName";
+import { setAllTask } from "../../redux/slice/AllTask";
+import { setLoading } from "../../redux/slice/loading";
 
 type sidebarType = {
     // AllTask:any,
@@ -24,15 +25,17 @@ type sidebarType = {
 }
 
 const Sidebar: FC<sidebarType> = ({supabase}) => {
-    const [name, setName] = useState('')
     const UserId = useSelector((state: RootState) => state.UserId.UserId)
+    const UserName:any = useSelector((state: RootState) => state.UserName.UserName)
+    const AllTask:any = useSelector((state: RootState) => state.AllTask.AllTask)
+    const loading:any = useSelector((state: RootState) => state.loading.loading)
     const [modalActive, setModalActive] = useState(false)
     const [title, setTitle] = useState('')
     //////
-    const [AllTask, setAllTask] = useState<any>([])
+    // const [AllTask, setAllTask] = useState<any>([])
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true)
+    // const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         test()
@@ -51,17 +54,16 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
       }
   
     async function Proverka(userId:any) {
-    const { data, error } = await supabase
-    .from("boba")
-    .select()
-    .eq('id', userId);
-    setAllTask(data);
-    setLoading(false)
-    if (error !== null) {
-        console.log(error)
+        const { data, error } = await supabase
+        .from("boba")
+        .select()
+        .eq('id', userId);
+        dispatch(setAllTask(data));
+        dispatch(setLoading(false))
+        if (error !== null) {
+            console.log(error)
+        }
     }
-    }
-  
   
     useEffect(() => {
     // getData();
@@ -70,12 +72,6 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
   
     /////
 
-    async function exitUser() {
-        const { error } = await supabase.auth.signOut()
-        if (error !== null) {
-            console.log(error)
-        }
-    }
 
     useEffect(() => {
         testName()
@@ -83,7 +79,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
 
     async function testName() {
         const { data, error } = await supabase.auth.getSession()
-        setName(data.session?.user.user_metadata.first_name)
+        dispatch(setUserName(data.session?.user.user_metadata.first_name))
         if (error !== null) {
             console.log(error)
         }
@@ -140,16 +136,16 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
 
     }
 
-    useEffect(() => {
-        Navigator()
-    },[])
+    // useEffect(() => {
+    //     Navigator()
+    // },[])
 
-    async function Navigator() {
-        const currentPath = window.location.pathname;
-        if (currentPath === "/") {
-            navigate("/home")
-        }
-    }
+    // async function Navigator() {
+    //     const currentPath = window.location.pathname;
+    //     if (currentPath === "/") {
+    //         navigate("/home")
+    //     }
+    // }
     
 
     return (
@@ -160,9 +156,11 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                     <button onClick={() => miniSidebar()}><CiMenuFries size={26}/></button>
                 </div>
                 <div className={style.menu}>
-                    <a className={style.btnMenu}>
-                        <MdOutlineAccountCircle size={24}/> {name}
-                    </a>
+                    {loading ? <p>Загрузка</p> :
+                        <Link to={`/account`} className={style.btnMenu}>
+                            <MdOutlineAccountCircle size={24}/> {UserName}
+                        </Link>
+                    }
                     <Link to={`/home`} className={style.btnMenu}>
                         <RiHome2Line size={22}/> Главная
                     </Link>
@@ -192,13 +190,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                         </div>    
                     </div> 
                 </div>
-                <Link to={`login`}>
-                    <button onClick={() => exitUser()}>Выход</button>
-                </Link>
-            
             </div>
-
-
             <Outlet />
         </div>
         

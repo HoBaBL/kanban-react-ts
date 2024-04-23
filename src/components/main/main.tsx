@@ -55,7 +55,7 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     const [currentItem, setCurrentItem] = useState<any>(null)
     const [dropdownGap, setDropdownGap] = useState(false)
     const [screen, setScreen] = useState(false)
-    const [form, setForm] = useState(true)
+    const [form, setForm] = useState<any>(JSON.parse(localStorage.getItem('form')!))
     const BoardH1Ref = useRef<any>(null)
 
     function dragHadler( Task:any) {
@@ -160,6 +160,17 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
         }
     },[])
     
+    function formLocalBoard() {
+        setForm(true)
+        setDropdownGap(false)
+        localStorage.setItem('form', 'true');
+    }   
+
+    function formLocalList() {
+        setForm(false)
+        setDropdownGap(false)
+        localStorage.setItem('form', 'false');
+    }   
 
     return (
        
@@ -183,8 +194,8 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
                                             <IoMdMore size={18}/>
                                         </button>
                                         <div className={dropdownGap ? style.dropdownMini : style.dropdownNone} ref={refTask}>
-                                            <li><button onClick={() => {setForm(true),setDropdownGap(false)}} className={style.btnDropdown}><BiTable/> Таблица</button></li>
-                                            <li><button onClick={() => {setForm(false),setDropdownGap(false)}} className={style.btnDropdown}><IoList/> Список</button></li>
+                                            <li><button onClick={() => formLocalBoard()} className={style.btnDropdown}><BiTable/> Таблица</button></li>
+                                            <li><button onClick={() => formLocalList()} className={style.btnDropdown}><IoList/> Список</button></li>
                                         </div> 
                                         
                                     </div>
@@ -199,7 +210,14 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
                                                         className={form ? "noneClickTwo" : style.todoColumn} >
                                                         {AllTask[0].todo_data.Baza[numProd].Arrey.map((Task:any) => 
                                                         
-                                                            <Reorder.Item value={Task} as='div' key={Task.id} style={{height:"100%"}}>
+                                                            <Reorder.Item 
+                                                                value={Task} as='div' 
+                                                                key={Task.id} style={{height:"100%"}}
+                                                                whileDrag={{
+                                                                    scale:1.03
+                                                                    
+                                                                }}
+                                                                >
                                                                 <div style={{height:"100%"}} 
                                                                     onDrag={() => dragHadler( Task)}
                                                                     onDragOver={(e:any) => dragOverHandler(e)}

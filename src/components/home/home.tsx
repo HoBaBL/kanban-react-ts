@@ -8,25 +8,24 @@ import { RootState } from '../../redux/store';
 import { Link } from "react-router-dom";
 import { LuClipboardList } from "react-icons/lu";
 import { BsClipboard2Check } from "react-icons/bs";
+import Pomodoro from "../pomodoro/pomodoro";
 
 type HomeType ={
     supabase:any, 
 }
 
 const Home:FC<HomeType> = ({supabase}) => {
-    const [AllTask, setAllTask] = useState<any>([])
+    const AllTask:any = useSelector((state: RootState) => state.AllTask.AllTask)
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true)
-    const UserId = useSelector((state: RootState) => state.UserId.UserId)
+    const loading:any = useSelector((state: RootState) => state.loading.loading)
 
     useEffect(() => {
         test()
-      },[])
+    },[])
     
       async function test() {
       const { data, error } = await supabase.auth.getSession()
-      Proverka(data.session?.user.id)
       dispatch(setUserId(data.session?.user.id))
       if (data.session?.user.id === undefined) {
           navigate("/login")
@@ -36,22 +35,12 @@ const Home:FC<HomeType> = ({supabase}) => {
       }
       }
 
-    async function Proverka(userId:any) {
-        const { data, error } = await supabase
-        .from("boba")
-        .select()
-        .eq('id', userId);
-        setAllTask(data);
-        setLoading(false)
-        if (error !== null) {
-            console.log(error)
-        }
-    }
 
     return (
         <div className={style.home}>
             <h2>Главная</h2>
             {loading ? <p>Загрузка</p> :
+            <div>
                 <div className={style.boardFlex}>
                     <h2 className={style.boardFlexH2}>Активные проекты</h2>
                     {AllTask[0].todo_data.Baza.map((board:any) => 
@@ -60,12 +49,14 @@ const Home:FC<HomeType> = ({supabase}) => {
                             {/* <p>Активные задачи {board.Arrey.length}</p> */}
                             <p className={style.p}><BsClipboard2Check size={18}/> Завершено задач {board.completed.length}</p>
                         </Link>
-                    )
-
-                    }
+                    )}
+                    
                 </div>
-
+                <Pomodoro/>
+            </div>
+                
             }
+            
         </div>
     )
 }
