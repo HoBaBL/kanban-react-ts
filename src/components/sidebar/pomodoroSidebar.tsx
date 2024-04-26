@@ -64,7 +64,7 @@ const PomodoroSidebar = () => {
     
     
     useEffect(() => {
-        const timerID = setInterval(() => tick(), 100);
+        const timerID = setInterval(() => tick(), 1000);
         return () => clearInterval(timerID);
     })
 
