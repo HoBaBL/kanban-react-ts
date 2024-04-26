@@ -68,7 +68,7 @@ const Account:FC<AccountType> = ({supabase}) => {
             {loading ? <div>Загрузка</div> :
                 <div className={style.main}>
                     <div className={style.exit}>
-                        <Link to={`login`}>
+                        <Link to={`/login`}>
                             <button onClick={() => exitUser()} className={style.exitText}>Выйти <IoExitOutline size={18}/></button>
                         </Link>
                     </div>
