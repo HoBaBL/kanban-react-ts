@@ -6,16 +6,16 @@ type time = {
     s:any,
     paused:boolean,
     over:boolean,
-    maxValue:number
+    maxValue:number,
 }
 
 const initialState:time  = {
     h: 0,
-    m:localStorage.getItem('workTime'),
+    m: 0,
     s:0,
     paused:true,
     over: false,
-    maxValue:0
+    maxValue:0,
 }
 
 const SearchRedux = createSlice({

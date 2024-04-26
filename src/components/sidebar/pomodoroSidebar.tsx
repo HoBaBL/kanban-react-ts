@@ -5,7 +5,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import style from './sidebar.module.css'
 import { CiPlay1, CiPause1 } from "react-icons/ci";
 import { useAppDispatch } from '../../hooks';
-import { setTimeH, setTimeM, setTimeS, setPaused, setOver, setMaxValue} from '../../redux/slice/pomodoro';
+import { setTimeH, setTimeM, setTimeS, setPaused, setOver} from '../../redux/slice/pomodoro';
 
 
 const PomodoroSidebar = () => {
@@ -15,21 +15,32 @@ const PomodoroSidebar = () => {
     const s = useSelector((state: RootState) => state.s.s)
     const paused = useSelector((state: RootState) => state.paused.paused)
     const over = useSelector((state: RootState) => state.over.over)
-    const minutes:any = useRef(localStorage.getItem('workTime')!)
+    const minutes:any = useRef(+localStorage.getItem('workTime')!)
+    
     let seconds = 0
-    const [timeWork, setTimeWork] = useState(localStorage.getItem('workTime')!)
-    const [timeRest, setTimeRest] = useState(localStorage.getItem('restTime')!)
     const dispatch = useAppDispatch()
-    const [overLocal, setOverLocal] = useState(over);
+    const [timeValue, setTimeValue] = useState<any>()
+    
+
+    useEffect(() => {
+        if (over) {
+            minutes.current = +localStorage.getItem('restTime')!
+        } else if (!over) {
+            minutes.current = +localStorage.getItem('workTime')!
+        }
+        let timeVot = m * 60 + s
+        const timeValue = (timeVot * 100) / (minutes.current * 60 + seconds)
+        setTimeValue(timeValue)
+    })
 
     const tick = () => {
         if (paused) return;
         if (h === 0 && m === 0 && s === 0) {
-            setOverLocal(!overLocal)
-            if (!overLocal) {
-                minutes.current = timeRest
-            } else if (overLocal) {
-                minutes.current = timeWork
+            dispatch(setOver(!over))
+            if (!over) {
+                minutes.current = localStorage.getItem('restTime')!
+            } else if (over) {
+                minutes.current = localStorage.getItem('workTime')!
             }
             dispatch(setOver(!over))
             dispatch(setTimeH(hours))
@@ -50,18 +61,14 @@ const PomodoroSidebar = () => {
         }
       };
 
-    const [timeValue, setTimeValue] = useState<any>()
+    
     
     useEffect(() => {
-        const timerID = setInterval(() => tick(), 1000);
+        const timerID = setInterval(() => tick(), 100);
         return () => clearInterval(timerID);
     })
 
-    useEffect(() => {
-        let timeVot = m * 60 + s
-        const timeValue = (timeVot * 100) / (minutes.current * 60 + seconds)
-        setTimeValue(timeValue)
-    })
+   
 
     return (
         <div className={style.sidebarCirclePosition}>

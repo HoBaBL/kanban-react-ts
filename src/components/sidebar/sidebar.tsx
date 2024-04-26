@@ -17,6 +17,7 @@ import { setUserName } from "../../redux/slice/userName";
 import { setAllTask } from "../../redux/slice/AllTask";
 import { setLoading } from "../../redux/slice/loading";
 import PomodoroSidebar from "./pomodoroSidebar";
+import { setTimeM } from "../../redux/slice/pomodoro";
 
 type sidebarType = {
     // AllTask:any,
@@ -72,6 +73,16 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
     }, [AllTask]);
   
     /////
+
+    useEffect(() => {
+        if (localStorage.getItem('workTime') === null) {
+            localStorage.setItem('workTime', '10');
+            localStorage.setItem('restTime', '3');
+        } else {
+            dispatch(setTimeM(localStorage.getItem('workTime')))
+        }
+        
+    },[])
 
 
     useEffect(() => {
@@ -183,7 +194,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                         }
                     </div>
                     <button onClick={() => setModalActive(true)} className={style.addProject}><FiPlus /> Добавить проект</button>
-                    {/* <PomodoroSidebar/> */}
+                    <PomodoroSidebar/>
                     <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                         <div className='ModalContent' onClick={e => e.stopPropagation()}>
                             <div className={style.flexAdd}>

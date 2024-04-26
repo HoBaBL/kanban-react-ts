@@ -7,7 +7,7 @@ import { GrPowerReset } from "react-icons/gr";
 import { useAppDispatch } from '../../hooks';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
-import { setTimeH, setTimeM, setTimeS, setPaused} from '../../redux/slice/pomodoro';
+import { setTimeH, setTimeM, setTimeS, setPaused, setOver} from '../../redux/slice/pomodoro';
 
 const Pomodoro:FC = () => {
     let hours = 0
@@ -18,37 +18,49 @@ const Pomodoro:FC = () => {
     const paused = useSelector((state: RootState) => state.paused.paused)
     const over = useSelector((state: RootState) => state.over.over)
     const minutes:any = useRef(localStorage.getItem('workTime')!)
-    const maxValue = useSelector((state: RootState) => state.maxValue.maxValue)
     let seconds = 0
-    const [overLocal, setOverLocal] = useState(over);
     const [modalActive, setModalActive] = useState(false)
     const [timeWork, setTimeWork] = useState(localStorage.getItem('workTime')!)
     const [timeRest, setTimeRest] = useState(localStorage.getItem('restTime')!)
   
     const tick = () => {
       if (over) {
-        minutes.current = timeRest
+        minutes.current = +localStorage.getItem('restTime')!
       } else if (!over) {
-        minutes.current = timeWork
+        minutes.current = +localStorage.getItem('workTime')!
       }
     };
+
+    const [timeValue, setTimeValue] = useState<any>()
+    
+    useEffect(() => {
+        let timeVot = m * 60 + s
+        const timeValue = (timeVot * 100) / (minutes.current * 60 + seconds)
+        setTimeValue(timeValue)
+    })
   
     useEffect(() => {
       tick()
     },[over]);
-    
-    let timeVot = m * 60 + s
-    const timeValue = (timeVot * 100) / (minutes.current * 60 + seconds)
 
     function savePomodoro() {
         minutes.current = timeWork
         setModalActive(false)
-        localStorage.setItem('workTime', timeWork);
-        localStorage.setItem('restTime', timeRest);
+        localStorage.setItem('workTime', JSON.stringify(timeWork));
+        localStorage.setItem('restTime', JSON.stringify(timeRest));
+        dispatch(setTimeH(hours))
+        dispatch(setTimeM(timeWork))
+        dispatch(setTimeS(seconds))
+        reset()
+    }
+
+    const reset = () => {
         dispatch(setTimeH(hours))
         dispatch(setTimeM(minutes.current))
         dispatch(setTimeS(seconds))
-    }
+        dispatch(setPaused(false))
+        dispatch(setOver(false))
+    };
         
     return (
       <div className={style.pomodoro}>

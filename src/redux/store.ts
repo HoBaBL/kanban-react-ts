@@ -9,10 +9,10 @@ import m from './slice/pomodoro'
 import s from './slice/pomodoro'
 import paused from './slice/pomodoro'
 import over from './slice/pomodoro'
-import maxValue  from './slice/pomodoro'
+import maxValue from './slice/pomodoro'
 
 export const store = configureStore({
-    reducer: { UserId, numProd, UserName, AllTask, loading, h, m, s, paused, over, maxValue  },
+    reducer: { UserId, numProd, UserName, AllTask, loading, h, m, s, paused, over, maxValue },
 })
 
 export type RootState = ReturnType<typeof store.getState>
