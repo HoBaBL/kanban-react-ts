@@ -46,8 +46,8 @@ const Pomodoro:FC = () => {
     function savePomodoro() {
         minutes.current = timeWork
         setModalActive(false)
-        localStorage.setItem('workTime', JSON.stringify(timeWork));
-        localStorage.setItem('restTime', JSON.stringify(timeRest));
+        localStorage.setItem('workTime', timeWork);
+        localStorage.setItem('restTime',timeRest);
         dispatch(setTimeH(hours))
         dispatch(setTimeM(timeWork))
         dispatch(setTimeS(seconds))
