@@ -183,7 +183,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                         }
                     </div>
                     <button onClick={() => setModalActive(true)} className={style.addProject}><FiPlus /> Добавить проект</button>
-                    <PomodoroSidebar/>
+                    {/* <PomodoroSidebar/> */}
                     <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                         <div className='ModalContent' onClick={e => e.stopPropagation()}>
                             <div className={style.flexAdd}>
