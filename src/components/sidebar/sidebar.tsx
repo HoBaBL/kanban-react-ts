@@ -69,7 +69,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
   
     useEffect(() => {
     // getData();
-    UpsertData()
+        UpsertData()
     }, [AllTask]);
   
     /////
@@ -162,6 +162,8 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
     //     }
     // }
     
+    console.log('laoding', loading)
+    console.log('All', AllTask[0])
 
     return (
         <div>
@@ -187,6 +189,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                     <p className={style.AllProject}>Ваши проекты</p>
                     <div className={style.projectPosition}>
                         {loading ? <p>Загрузка</p> :
+                        AllTask[0] !== undefined &&
                         AllTask[0].todo_data.Baza.map((title:any) => (
                             <TitleSidebar key={title.title} title={title} AllTask={AllTask} setAllTask={setAllTask}/>
                         ))

@@ -43,7 +43,7 @@ const Home:FC<HomeType> = ({supabase}) => {
             <div>
                 <div className={style.boardFlex}>
                     <h2 className={style.boardFlexH2}>Активные проекты</h2>
-                    {AllTask[0].todo_data.Baza.map((board:any) => 
+                    {AllTask[0] !== undefined && AllTask[0].todo_data.Baza.map((board:any) => 
                         <Link to={`/baza/${AllTask[0].todo_data.Baza.indexOf(board)}`} key={board.title} className={style.board}>
                             <h3 className={style.h3}><LuClipboardList size={22}/> {board.title}</h3>
                             {/* <p>Активные задачи {board.Arrey.length}</p> */}
