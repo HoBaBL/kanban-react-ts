@@ -80,7 +80,7 @@ const Registration: FC = () => {
 
     useEffect(() => {
         if (loading) {
-            navigate("/")
+            navigate("/home")
         }
     },[loading])
     

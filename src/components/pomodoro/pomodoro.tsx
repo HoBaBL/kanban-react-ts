@@ -4,52 +4,50 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import { CiPlay1, CiPause1 } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { GrPowerReset } from "react-icons/gr";
+import { useAppDispatch } from '../../hooks';
+import { useSelector } from "react-redux";
+import { RootState } from '../../redux/store';
+import { setTimeH, setTimeM, setTimeS, setPaused} from '../../redux/slice/pomodoro';
 
 const Pomodoro:FC = () => {
     let hours = 0
-    // const [minutes, setMinutes] = useState<any>(1)
-    // let minutes = 1
-    const minutes:any = useRef(1)
+    const dispatch = useAppDispatch()
+    const h = useSelector((state: RootState) => state.h.h)
+    const m = useSelector((state: RootState) => state.m.m)
+    const s = useSelector((state: RootState) => state.s.s)
+    const paused = useSelector((state: RootState) => state.paused.paused)
+    const over = useSelector((state: RootState) => state.over.over)
+    const minutes:any = useRef(localStorage.getItem('workTime')!)
+    const maxValue = useSelector((state: RootState) => state.maxValue.maxValue)
     let seconds = 0
-    const [paused, setPaused] = useState(true);
-    const [over, setOver] = useState(false);
-    const [[h, m, s], setTime] = useState([hours, minutes.current, seconds]);
+    const [overLocal, setOverLocal] = useState(over);
     const [modalActive, setModalActive] = useState(false)
-    const [timeWork, setTimeWork] = useState('1')
-    const [timeRest, setTimeRest] = useState('1')
+    const [timeWork, setTimeWork] = useState(localStorage.getItem('workTime')!)
+    const [timeRest, setTimeRest] = useState(localStorage.getItem('restTime')!)
   
     const tick = () => {
-      if (paused) return;
-      if (h === 0 && m === 0 && s === 0) {
-        setOver(!over);
+      if (over) {
         minutes.current = timeRest
-        setTime([hours, minutes.current, seconds]);
-      } else if (m === 0 && s === 0) {
-        setTime([h - 1, 59, 59]);
-      } else if (s == 0) {
-        setTime([h, m - 1, 59]);
-      } else {
-        setTime([h, m, s - 1]);
+      } else if (!over) {
+        minutes.current = timeWork
       }
     };
   
-    const reset = () => {
-      setTime([hours, minutes.current, seconds]);
-      setPaused(false);
-      setOver(false);
-    };
-  
     useEffect(() => {
-      const timerID = setInterval(() => tick(), 1000);
-      return () => clearInterval(timerID);
-    });
+      tick()
+    },[over]);
+    
     let timeVot = m * 60 + s
     const timeValue = (timeVot * 100) / (minutes.current * 60 + seconds)
 
     function savePomodoro() {
         minutes.current = timeWork
         setModalActive(false)
-        setTime([hours, minutes.current, seconds]);
+        localStorage.setItem('workTime', timeWork);
+        localStorage.setItem('restTime', timeRest);
+        dispatch(setTimeH(hours))
+        dispatch(setTimeM(minutes.current))
+        dispatch(setTimeS(seconds))
     }
         
     return (
@@ -96,7 +94,7 @@ const Pomodoro:FC = () => {
                  </div>
                 }
                 {/* {over ? <button className={style.timerBtn} onClick={() => reset()}><GrPowerReset size={40}/></button> : */}
-                    <button className={style.timerBtn} onClick={() => setPaused(!paused)}>
+                    <button className={style.timerBtn} onClick={() => dispatch(setPaused(!paused))}>
                         {paused ? <CiPlay1 size={40}/> : <CiPause1 size={40}/>}
                     </button>
                 {/* } */}

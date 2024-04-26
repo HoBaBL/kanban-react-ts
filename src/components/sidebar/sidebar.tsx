@@ -16,6 +16,7 @@ import { Outlet} from "react-router-dom";
 import { setUserName } from "../../redux/slice/userName";
 import { setAllTask } from "../../redux/slice/AllTask";
 import { setLoading } from "../../redux/slice/loading";
+import PomodoroSidebar from "./pomodoroSidebar";
 
 type sidebarType = {
     // AllTask:any,
@@ -93,7 +94,10 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                 todo_data : AllTask[0].todo_data
             })
             .eq('id', UserId)
-            console.log(error) 
+            if (error !== null) {
+                console.log(error)
+            }
+             
         }
     }
     
@@ -179,6 +183,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                         }
                     </div>
                     <button onClick={() => setModalActive(true)} className={style.addProject}><FiPlus /> Добавить проект</button>
+                    <PomodoroSidebar/>
                     <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                         <div className='ModalContent' onClick={e => e.stopPropagation()}>
                             <div className={style.flexAdd}>
