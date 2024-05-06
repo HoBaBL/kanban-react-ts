@@ -7,6 +7,7 @@ type time = {
     paused:boolean,
     over:boolean,
     maxValue:number,
+    check:boolean
 }
 
 const initialState:time  = {
@@ -16,6 +17,7 @@ const initialState:time  = {
     paused:true,
     over: false,
     maxValue:0,
+    check:true
 }
 
 const SearchRedux = createSlice({
@@ -40,10 +42,13 @@ const SearchRedux = createSlice({
         setMaxValue(state, action) {
             state.maxValue = action.payload
         },
+        setCheck(state, action) {
+            state.check = action.payload
+        },
     
     }
 })
 
-export const { setTimeH,setTimeM,setTimeS, setPaused, setOver, setMaxValue} = SearchRedux.actions;
+export const { setTimeH,setTimeM,setTimeS, setPaused, setOver, setMaxValue, setCheck} = SearchRedux.actions;
 
 export default SearchRedux.reducer

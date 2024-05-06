@@ -15,6 +15,7 @@ import { createClient } from "@supabase/supabase-js";
 import Home from './components/home/home';
 import Sidebar from './components/sidebar/sidebar';
 import Account from './components/account/account';
+import Diary from './components/diary/diary';
 
 
 const root = ReactDOM.createRoot(
@@ -39,6 +40,10 @@ const router = createHashRouter([
       {
         path:"account",
         element: <Account supabase={supabase}/>
+      },
+      {
+        path:"diary",
+        element: <Diary supabase={supabase}/>
       }
     ]
   },

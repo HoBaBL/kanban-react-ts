@@ -13,8 +13,10 @@
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
     "@reduxjs/toolkit": "^2.2.1",
     "@supabase/supabase-js": "^2.39.7",
+    "dayjs": "^1.11.11",
     "framer-motion": "^11.0.28",
     "react": "^18.2.0",
     "react-calendar": "^4.8.0",

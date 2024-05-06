@@ -125,3 +125,26 @@
     flex-direction: column;
     align-items: center;
 }
+
+.check {
+    width: 18px;
+    height: 18px;
+    border: solid 1px gray;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkFlex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: left;
+    margin-top: 20px;
+}
+
+.checkText {
+    font-size: 14px;
+}

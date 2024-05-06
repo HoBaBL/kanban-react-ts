@@ -7,7 +7,8 @@ import { GrPowerReset } from "react-icons/gr";
 import { useAppDispatch } from '../../hooks';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
-import { setTimeH, setTimeM, setTimeS, setPaused, setOver} from '../../redux/slice/pomodoro';
+import { setTimeH, setTimeM, setTimeS, setPaused, setOver, setCheck} from '../../redux/slice/pomodoro';
+import { FaCheck } from "react-icons/fa";
 
 const Pomodoro:FC = () => {
     let hours = 0
@@ -18,6 +19,7 @@ const Pomodoro:FC = () => {
     const paused = useSelector((state: RootState) => state.paused.paused)
     const over = useSelector((state: RootState) => state.over.over)
     const minutes:any = useRef(localStorage.getItem('workTime')!)
+    const check = useSelector((state: RootState) => state.check.check)
     let seconds = 0
     const [modalActive, setModalActive] = useState(false)
     const [timeWork, setTimeWork] = useState(localStorage.getItem('workTime')!)
@@ -125,10 +127,13 @@ const Pomodoro:FC = () => {
                         <input className={style.inputNum} type="number" min={1} max={60} onChange={e => setTimeWork(e.target.value)} value={timeWork}/>
                         <p>Время отдыха</p>
                         <input className={style.inputNum} type="number" min={1} max={60} onChange={e => setTimeRest(e.target.value)} value={timeRest}/>
+                        <div className={style.checkFlex}>
+                            <div onClick={() => {dispatch(setCheck(!check))}} className={style.check}>{check ? <FaCheck size={12} color='#0066CC'/> : ''}</div>
+                            <p className={style.checkText}>Показывать Pomodoro в меню</p>
+                        </div>
                     </div>
                     <button onClick={() => savePomodoro()} className={style.savePomodoro}>Сохранить</button>
                 </div>
-                
             </div>    
         </div> 
       </div>

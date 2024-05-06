@@ -15,17 +15,24 @@ type HomeType ={
 }
 
 const Home:FC<HomeType> = ({supabase}) => {
-    const AllTask:any = useSelector((state: RootState) => state.AllTask.AllTask)
+    const [AllTask, setAllTask] = useState<any>([])
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
-    const loading:any = useSelector((state: RootState) => state.loading.loading)
+    // const loading:any = useSelector((state: RootState) => state.loading.loading)
+    const [loading, setLoading] = useState(true)
+    const changes = useSelector((state: RootState) => state.changes.changes)
 
     useEffect(() => {
         test()
-    },[])
+      },[])
+
+      useEffect(() => {
+        test()
+      },[changes])
     
       async function test() {
       const { data, error } = await supabase.auth.getSession()
+      Proverka(data.session?.user.id)
       dispatch(setUserId(data.session?.user.id))
       if (data.session?.user.id === undefined) {
           navigate("/login")
@@ -34,6 +41,18 @@ const Home:FC<HomeType> = ({supabase}) => {
           console.log(error)
       }
       }
+  
+    async function Proverka(userId:any) {
+        const { data, error } = await supabase
+        .from("boba")
+        .select()
+        .eq('id', userId);
+        setAllTask(data);
+        setLoading(false)
+        if (error !== null) {
+            console.log(error)
+        }
+    }
 
 
     return (

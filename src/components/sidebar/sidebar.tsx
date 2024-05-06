@@ -14,10 +14,11 @@ import { useNavigate } from "react-router-dom";
 import {setUserId} from "../../redux/slice/UserId";
 import { Outlet} from "react-router-dom";
 import { setUserName } from "../../redux/slice/userName";
-import { setAllTask } from "../../redux/slice/AllTask";
-import { setLoading } from "../../redux/slice/loading";
+// import { setAllTask } from "../../redux/slice/AllTask";
+import {setСhanges} from "../../redux/slice/AllTask"
 import PomodoroSidebar from "./pomodoroSidebar";
 import { setTimeM } from "../../redux/slice/pomodoro";
+import { IoCalendarNumberOutline } from "react-icons/io5";
 
 type sidebarType = {
     // AllTask:any,
@@ -29,15 +30,15 @@ type sidebarType = {
 const Sidebar: FC<sidebarType> = ({supabase}) => {
     const UserId = useSelector((state: RootState) => state.UserId.UserId)
     const UserName:any = useSelector((state: RootState) => state.UserName.UserName)
-    const AllTask:any = useSelector((state: RootState) => state.AllTask.AllTask)
-    const loading:any = useSelector((state: RootState) => state.loading.loading)
+    // const AllTask:any = useSelector((state: RootState) => state.AllTask.AllTask)
+    // const loading:any = useSelector((state: RootState) => state.loading.loading)
+    const changes = useSelector((state: RootState) => state.changes.changes)
+    const [loading, setLoading] = useState(true)
     const [modalActive, setModalActive] = useState(false)
     const [title, setTitle] = useState('')
-    //////
-    // const [AllTask, setAllTask] = useState<any>([])
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
-    // const [loading, setLoading] = useState(true)
+    const [AllTask, setAllTask] = useState<any>([])
 
     useEffect(() => {
         test()
@@ -60,8 +61,8 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
         .from("boba")
         .select()
         .eq('id', userId);
-        dispatch(setAllTask(data));
-        dispatch(setLoading(false))
+        setAllTask(data);
+        setLoading(false)
         if (error !== null) {
             console.log(error)
         }
@@ -139,31 +140,20 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                 ],
                 completed: []
         }
-        const copy = [...AllTask]
+        const copy = AllTask.slice()
+        
         copy[0].todo_data.Baza.push(Baza)
         setAllTask(copy)
         UpsertData()
         setModalActive(false)
         setTitle('')
+        dispatch(setСhanges(changes + 1))
     }
-
+    
     function miniSidebar() {
 
     }
 
-    // useEffect(() => {
-    //     Navigator()
-    // },[])
-
-    // async function Navigator() {
-    //     const currentPath = window.location.pathname;
-    //     if (currentPath === "/") {
-    //         navigate("/home")
-    //     }
-    // }
-    
-    console.log('laoding', loading)
-    console.log('All', AllTask[0])
 
     return (
         <div>
@@ -181,9 +171,9 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                     <Link to={`/home`} className={style.btnMenu}>
                         <RiHome2Line size={22}/> Главная
                     </Link>
-                    <a className={style.btnMenu}>
-                        <BiBell size={22}/> Уведомления
-                    </a>
+                    <Link to={`/diary`} className={style.btnMenu}>
+                        <IoCalendarNumberOutline size={22}/> Ежедневник
+                    </Link>
                 </div>
                 <div className={style.project}>
                     <p className={style.AllProject}>Ваши проекты</p>

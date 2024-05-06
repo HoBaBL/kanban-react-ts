@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale} from  "react-datepicker";
 import { ru } from 'date-fns/locale/ru';
 registerLocale('ru', ru)
+import { Draggable } from '@hello-pangea/dnd';
 
 type TaskMiniProps = {
     list: {
@@ -34,7 +35,8 @@ type TaskMiniProps = {
     loading:boolean,
     userId:any,
     setAllTask:any,
-    form:boolean
+    form:boolean,
+    index:any
 }
 
 const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
@@ -47,7 +49,8 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     loading,
     userId,
     setAllTask,
-    form
+    form,
+    index
     }) => {
 
     const [isShownMini, setIsShownMini] = useState(false)
@@ -76,48 +79,6 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
             document.removeEventListener("mousedown", MimoClick)
         }
     },[])
-
-    function dragHadler(Task:any, list:any) {
-        setCurrentBoard(Task)
-        setCurrentItem(list)
-    }
-
-    function dragEndHadler(e:any) {
-        if (e.target.className === 'taskMini' ) {
-            e.target.style.boxShadow = 'none'
-        }
-        
-    }
-
-    function dragLeaveHadler(e:any) {
-        e.target.style.boxShadow = 'none'
-    }
-
-    function dragOverHandler(e:any) {
-        e.preventDefault()
-        if (e.target.className ==='taskMini' ) {
-            e.target.style.boxShadow = '0 4px 3px gray'
-        }
-    }
-    
-    function dropHandler(e:any, Task:any, list:any) {
-        e.target.style.boxShadow = 'none'
-        e.stopPropagation() 
-        e.preventDefault()
-        if (currentItem !== null) {
-            const currentIndex = currentBoard.items.indexOf(currentItem)
-            const dropIndex = Task.items.indexOf(list)
-            if (Task.id !== currentBoard.id) {
-                currentBoard.items.splice(currentIndex, 1)
-                Task.items.splice(dropIndex , 0, currentItem)
-            } else if(Task.id === currentBoard.id) {
-                Task.items.splice(dropIndex, 1, currentItem)
-                Task.items.splice(currentIndex, 1, list)
-            } 
-        }
-        setCurrentItem(null)
-        UpsertData()
-    }
 
     async function UpsertData() {
         if (!loading) {
@@ -223,57 +184,66 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     }
     
     return(
-        <div 
-        draggable
-        onDrag={() => dragHadler(Task, list)}
-        onDragLeave={(e:any) => dragLeaveHadler(e)}
-        onDragEnd={(e:any) => dragEndHadler(e)}
-        onDragOver={(e:any) => dragOverHandler(e)}
-        onDrop={(e:any) => dropHandler(e, Task, list)} 
-        className={form ? "taskMini" :'taskTask'} style={{backgroundColor:list.colorTask}} onMouseEnter={() => {setIsShownMini(true)}}  onMouseLeave={() => {setIsShownMini(false)}}>
-            {list.date !== undefined ? <p className={style.dateText}>до {list.date}.</p> : ''}
-            <p className={style.taskMiniText}>{list.titleTask}</p>
-            {list.importanceTask.color === 'gray' ? '' : <FaFlag className={style.importanceMain} size={10} color={list.importanceTask.color}/>}
-            
-            <button className={form ? isShownMini ? style.moreMini : style.moreMiniNone : isShownMini ? style.moreMiniTask : style.moreMiniNoneTask} onClick={() => setDropdownGap(true)}>
-                <IoMdMore size={18}/>
-            </button>    
-            <div className={form ? dropdownGap ? "dropdownMini" : "dropdownNone" : dropdownGap ? "dropdownMiniTask" : "dropdownNone"} ref={refTask}>
-                <li><button onClick={() => {setModalActive(true), setDropdownGap(false)}} className={style.btnDropdown}>Настройки</button></li>
-                <li><button onClick={() => completedFunc(list.id, list.titleTask, Task.title, Task, list)} className={style.btnDropdown}>Выполнить</button></li>
-                <li><button onClick={() => deleteBourd( Task, list)} className={style.btnDropdownDelete}>Удалить</button></li>
-            </div> 
+        <Draggable 
+            draggableId={String(list.id)} index={index}>
+            {(provided) => (
+        
+                <div 
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                    className="taskTaskPosition" 
+                    onMouseEnter={() => {setIsShownMini(true)}}  onMouseLeave={() => {setIsShownMini(false)}}
+                    >
+                        <div style={{backgroundColor:list.colorTask}} className={form ? "taskMini" :'taskTask'} >
+
+                        
+                            {list.date !== undefined ? <p className={style.dateText}>до {list.date}.</p> : ''}
+                            <p className={style.taskMiniText}>{list.titleTask}</p>
+                            {list.importanceTask.color === 'gray' ? '' : <FaFlag className={style.importanceMain} size={10} color={list.importanceTask.color}/>}
+                            
+                            <button className={form ? isShownMini ? style.moreMini : style.moreMiniNone : isShownMini ? style.moreMiniTask : style.moreMiniNoneTask} onClick={() => setDropdownGap(true)}>
+                                <IoMdMore size={18}/>
+                            </button>    
+                            <div className={form ? dropdownGap ? "dropdownMini" : "dropdownNone" : dropdownGap ? "dropdownMiniTask" : "dropdownNone"} ref={refTask}>
+                                <li><button onClick={() => {setModalActive(true), setDropdownGap(false)}} className={style.btnDropdown}>Настройки</button></li>
+                                <li><button onClick={() => completedFunc(list.id, list.titleTask, Task.title, Task, list)} className={style.btnDropdown}>Выполнить</button></li>
+                                <li><button onClick={() => deleteBourd( Task, list)} className={style.btnDropdownDelete}>Удалить</button></li>
+                            </div> 
 
 
-            <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
-                <div className='ModalContent' onClick={e => e.stopPropagation()}>
-                    <div>
-                        <p>Установить важность</p>
-                        <div className={style.importance}>
-                            {importanceAll.map((block) => (
-                                <button key={block.text} onClick={() => importance(Task, list, block)} className={list.importanceTask.color === block.color ? style.importanceTextActive : style.importanceText }><FaFlag color={block.color}/> {block.text}</button>
-                            ))
-                            }
-                        </div>
-                    </div>
-                    <div>
-                        <p>Добавить дату</p>
-                        <DatePicker selected={startDate} onChange={(date) => {dateTask(date, Task, list), setStartDate(date)}} locale="ru" dateFormat="dd.MM.yyyy" />
-                        <button onClick={() => dateTaskDefault(Task, list)} className={style.colorNone}><RxCross2 size={16}/> Сбросить дату</button>
-                    </div>
-                    <div>
-                        <p>Установить цвет</p>    
-                        <div className={style.colorFlex}>
-                            {color.map((block) => (
-                                <button onClick={() => colorTask(Task, list, block)} key={block} className={style.color} style={{backgroundColor: block}}></button>
-                            ))}
-                        </div>
-                        <button onClick={() => colorTaskDefault(Task, list)} className={style.colorNone}><RxCross2 size={16}/> Сбросить цвет</button>
-                    </div>
-                    
-                </div>    
-            </div>       
-        </div>
+                            <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
+                                <div className='ModalContent' onClick={e => e.stopPropagation()}>
+                                    <div>
+                                        <p>Установить важность</p>
+                                        <div className={style.importance}>
+                                            {importanceAll.map((block) => (
+                                                <button key={block.text} onClick={() => importance(Task, list, block)} className={list.importanceTask.color === block.color ? style.importanceTextActive : style.importanceText }><FaFlag color={block.color}/> {block.text}</button>
+                                            ))
+                                            }
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p>Добавить дату</p>
+                                        <DatePicker selected={startDate} onChange={(date) => {dateTask(date, Task, list), setStartDate(date)}} locale="ru" dateFormat="dd.MM.yyyy" />
+                                        <button onClick={() => dateTaskDefault(Task, list)} className={style.colorNone}><RxCross2 size={16}/> Сбросить дату</button>
+                                    </div>
+                                    <div>
+                                        <p>Установить цвет</p>    
+                                        <div className={style.colorFlex}>
+                                            {color.map((block) => (
+                                                <button onClick={() => colorTask(Task, list, block)} key={block} className={style.color} style={{backgroundColor: block}}></button>
+                                            ))}
+                                        </div>
+                                        <button onClick={() => colorTaskDefault(Task, list)} className={style.colorNone}><RxCross2 size={16}/> Сбросить цвет</button>
+                                    </div>
+                                    
+                                </div>    
+                            </div> 
+                    </div>      
+                </div>
+            )}
+        </Draggable>
     )
 }
 

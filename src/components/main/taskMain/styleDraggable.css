@@ -18,6 +18,7 @@
     border-radius: 5px;
     background-color: white;
     border: solid rgb(219, 219, 219) 1px;
+    margin-bottom: 10px;
 }
 
 .bigTable {
@@ -86,7 +87,7 @@
     z-index: 20000;
     cursor: auto;
     border-radius: 5px;
-    transform:translate(223%, 3px);
+    transform:translate(210%, 1%);
 }
 
 .dropdownMini li {
@@ -156,7 +157,7 @@
     word-break: break-word;
     /* width: 240px; */
     position: relative;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     border-radius: 5px;
     border: solid rgb(219, 219, 219) 1px;
     background-color: white;
@@ -179,4 +180,10 @@
 .dropdownMiniTask li {
     width: 100%;
     text-align: left;
+}
+
+
+.taskTaskPosition {
+    /* margin-top: 10px; */
+    margin-bottom: 10px;
 }

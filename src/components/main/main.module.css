@@ -64,11 +64,21 @@
 
 .TodoObjActive {
     background-color: white;
-    width: 260px;
-    padding: 15px;
+    /* z-index: -100; */
+    width: 295px;
+    /* padding: 15px; */
+    padding-top: 0px;
     border-radius: 10px;
     min-height: 150px;
-    cursor: grab;
+    -webkit-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    -moz-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    /* cursor: grab; */
+}
+
+.mainPosition {
+    padding: 15px;
+    padding-top: 0;
 }
 
 .TodoObjHeader {
@@ -129,7 +139,7 @@
     display: flex;
     gap: 15px;
     /* width: 92.7%; */
-    height: 88vh;
+    height: 80vh;
     margin-top: 100px;
 }
 
@@ -455,10 +465,13 @@
 /* TodoObjActive */
 .TodoObjColumn {
     background-color: white;
-    padding: 15px;
+    /* padding: 15px; */
     border-radius: 10px;
     min-height: 150px;
-    cursor: grab;
+    /* cursor: grab; */
+    -webkit-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    -moz-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
 }
 
 
@@ -514,3 +527,34 @@
     transition: 0.5s;
     opacity: 0;
 }
+
+.point {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    cursor: grab;
+}
+
+.drop {
+    width: 100%;
+    height: 15px;
+    /* border: 1px solid; */
+    cursor: grab;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    transition: 0.3s;
+}
+
+.ItemZ {
+    position: relative;
+}
+
+*{
+    user-select: none
+}
+
+/* .bigTask {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+} */

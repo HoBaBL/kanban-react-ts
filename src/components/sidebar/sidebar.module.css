@@ -353,6 +353,35 @@
     flex-direction: column;
     align-items: center;
     margin-top: 60px;
-    /* display: none; */
+    position:absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0) 
+}
+
+.sidebarNone {
+    display: none;
+}
+
+.crossPosition {
+    position: absolute;
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+.cross {
+    /* opacity: 0.5; */
+    color: gray;
+}
+
+.crossBtn {
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    background-color: transparent;
 }
 

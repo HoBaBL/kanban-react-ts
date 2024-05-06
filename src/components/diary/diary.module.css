@@ -1,0 +1,138 @@
+.diary {
+    margin-left: 310px;
+    /* width: 100%; */
+}
+
+.h3Diary {
+    /* margin-left: 40px; */
+    font-size: 26px;
+}
+
+.tasks {
+    position: relative;
+    margin-top: 10px;
+    padding: 10px;
+    word-wrap: normal;
+    word-break: break-word;
+    background-color: white;
+    border-radius: 5px;
+    min-height: 42px;
+    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    width: 270px;
+}
+
+.column {
+    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    width: 260px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.diaryFlex {
+    display: flex;
+    gap: 30px;
+}
+
+.h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.btnAddColumn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: gray;
+    transition: 0.3s;
+}
+
+.btnAddColumn:hover {
+    color: #0066CC;
+}
+
+.TodoObjHeader {
+    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    margin-top: 20px;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 42px;
+}
+
+.TodoObjHeaderMore {
+    transition: 0.5s;
+    cursor: pointer;
+    position: relative;
+}
+
+.AddTaskDown {
+    width: 80%;
+    max-width: 238px;
+    /* margin-top: 10px; */
+    border-radius: 8px;
+    border: 1px gray solid;
+    padding: 10px;
+    resize: none;
+}
+
+.TodoObjHeaderMore {
+    transition: 0.5s;
+    cursor: pointer;
+    position: relative;
+}
+
+.CheckBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    color: gray;
+}
+
+.CheckBtn:hover {
+    color: #0066CC;
+}
+
+.taskTest {
+    margin: 0;
+    max-width: 270px;
+}
+
+.dateText {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    color: rgb(156, 156, 156);
+}
+
+.deleteBtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color:gray;
+    transition: 0.3s;
+}
+
+.deleteBtn:hover {
+    color: #0066CC;
+}
+
+.deleteBtnPosition {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}

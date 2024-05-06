@@ -9,7 +9,10 @@ import './styleDraggable.css';
 import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../redux/store';
-
+import { Droppable } from '@hello-pangea/dnd';
+import { DragControls } from "framer-motion";
+import { ReorderIcon } from "./Icon";
+import { Reorder, useDragControls} from 'framer-motion';
 
 type TaskMiniProps = {
     Task:{
@@ -32,7 +35,7 @@ type TaskMiniProps = {
     loading:boolean,
     userId:any,
     setAllTask:any,
-    form:boolean
+    form:boolean,
 }
 
 
@@ -111,7 +114,6 @@ const TaskMini: FC<TaskMiniProps> = ({
         setAddTaskDownText('')
         setAddTaskDown(false)
         UpsertData()
-        console.log(AllTask)
     }
    
     async function UpsertData() {
@@ -165,77 +167,100 @@ const TaskMini: FC<TaskMiniProps> = ({
             AddTask()
         }
     };
-
+    const dragControls = useDragControls();
   return (
+    <Reorder.Item 
+        value={Task} 
+        as='div' 
+        id={String(Task.id)}
+        style={{height:"100%"}}
+        whileDrag={{
+            scale:1.03,
+        }}
+        dragListener={false}
+        dragControls={dragControls} className={style.ItemZ}
+        >
             <div className={form ? style.TodoObjActive:style.TodoObjColumn } style={{backgroundColor:Task.color}}>
-                <div className={style.TodoObjHeader}>
-                    {
-                        titleActive ? 
-                        <div className={style.addBoardHeader}>
-                            <input value={TodoH3} onChange={event => setTodoH3(event.target.value)} className={style.TitleInput} type="text" ref={TodoH3Ref}/>
-                            <button className={style.CheckBtn} onClick={() => cloneTodoH3()}>
-                                <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
-                            </button> 
+                {/* <div
+                    className={style.point}
+                    onPointerDown={(event) => dragControls.start(event)}
+                /> */}
+                <ReorderIcon dragControls={dragControls} />
+                <div className={style.mainPosition}>
+
+                
+                    <div className={style.TodoObjHeader}>
+                        {
+                            titleActive ? 
+                            <div className={style.addBoardHeader}>
+                                <input value={TodoH3} onChange={event => setTodoH3(event.target.value)} className={style.TitleInput} type="text" ref={TodoH3Ref}/>
+                                <button className={style.CheckBtn} onClick={() => cloneTodoH3()}>
+                                    <FaCheck className={style.TodoObjHeaderMore} style={{ color:'gray'}}/>
+                                </button> 
+                            </div>
+                            :
+                            <h3 onClick={() => setTitleActive(true)} className={style.TodoH3}>{Task.title}</h3>
+                        }
+                        <div>
+                            <IoIosMore onClick={() => setDropdown(true)} className={style.TodoObjHeaderMore}/>
+                            <ul className={dropdown ? "dropdown" : "dropdownNone"} ref={ref}>
+                                <li><button onClick={() => {setModalActive(true), setDropdown(false)}} className={style.btnDropdown}>Настройки</button></li>
+                                <li><button onClick={() => deleteBourd(Task.id)} className={style.btnDropdownDelete}>Удалить</button></li>
+                            </ul>
+                            <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
+                                <div className='ModalContent' onClick={e => e.stopPropagation()}>
+                                    <p>Установить цвет</p>    
+                                    <div className={style.colorFlex}>
+                                        {color.map((block) => (
+                                            <button onClick={() => colorTask(Task.id, block)} key={block} className={style.color} style={{backgroundColor: block}}></button>
+                                        ))}
+                                    </div>
+                                    <button onClick={() => colorTaskDefault(Task.id)} className={style.colorNone}><RxCross2 size={16}/> Сбросить цвет</button>
+                                </div>    
+                            </div> 
                         </div>
-                         :
-                        <h3 onClick={() => setTitleActive(true)} className={style.TodoH3}>{Task.title}</h3>
-                    }
-                    <div>
-                        <IoIosMore onClick={() => setDropdown(true)} className={style.TodoObjHeaderMore}/>
-                        <ul className={dropdown ? "dropdown" : "dropdownNone"} ref={ref}>
-                            <li><button onClick={() => {setModalActive(true), setDropdown(false)}} className={style.btnDropdown}>Настройки</button></li>
-                            <li><button onClick={() => deleteBourd(Task.id)} className={style.btnDropdownDelete}>Удалить</button></li>
-                        </ul>
-                        <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
-                            <div className='ModalContent' onClick={e => e.stopPropagation()}>
-                                <p>Установить цвет</p>    
-                                <div className={style.colorFlex}>
-                                    {color.map((block) => (
-                                        <button onClick={() => colorTask(Task.id, block)} key={block} className={style.color} style={{backgroundColor: block}}></button>
-                                    ))}
-                                </div>
-                                <button onClick={() => colorTaskDefault(Task.id)} className={style.colorNone}><RxCross2 size={16}/> Сбросить цвет</button>
-                            </div>    
-                        </div> 
+                        
                     </div>
+                    <div className={style.TodoObjHeader}>
+                        <p className={style.numTask}>Задачи {Task.items.length}</p>
+                    </div>
+                    <Droppable droppableId={String(Task.id)}>
+                        {(provided) => (
+                            <div ref={provided.innerRef} {...provided.droppableProps}
+                                className={style.bigTask}>
+                                {
+                                    
+                                    Task.items.length > 0 &&(
+                                        Task.items.map((list:any, idx) =>
+                                            <ArrayTask key={list.id} index={idx} list={list} currentBoard={currentBoard} currentItem={currentItem}
+                                                setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} Task={Task} supabase={supabase} AllTask={AllTask} 
+                                                loading={loading} userId={userId} setAllTask={setAllTask} form={form}/> 
+                                    ))
+                                }
+                                {provided.placeholder}
+                            </div>
+                            
+                        )}
+                    </Droppable>
+                    
+                    {
+                        AddTaskDown ? 
+                        <div className={style.TodoObjHeader} ref={AddTaskDownRef}>
+                            <TextareaAutosize onKeyDown={handleKeyPress} value={AddTaskDownText} onChange={event => setAddTaskDownText(event.target.value)} className={style.AddTaskDown} />
+                            <button className={style.CheckBtn} onClick={() => AddTask()}>
+                                <FaCheck className={style.TodoObjHeaderMore} style={{marginTop:10, color:'gray'}}/>
+                            </button>
+                        </div>
+                        :
+                        <button onClick={() => setAddTaskDown(true)} className={ style.btnAddColumn}>
+                            <FiPlus size={16}/> Добавить задачу                       
+                        </button>
+                    }
                     
                 </div>
-                <div className={style.TodoObjHeader}>
-                    <p className={style.numTask}>Задачи {Task.items.length}</p>
-                </div>
-                <div
-                    className='bigTask'>
-                    {
-                            
-                            Task.items.length > 0 &&(
-                                Task.items.map((list:any) =>
-                                <div 
-                                    className='item'
-                                    key={Math.random()}
-                                >
-                                    <ArrayTask  list={list} currentBoard={currentBoard} currentItem={currentItem}
-                                        setCurrentBoard={setCurrentBoard} setCurrentItem={setCurrentItem} Task={Task} supabase={supabase} AllTask={AllTask} 
-                                        loading={loading} userId={userId} setAllTask={setAllTask} form={form}/> 
-                                </div>
-                                    
-                            ))
-                        }
-                </div>
-                {
-                    AddTaskDown ? 
-                    <div className={style.TodoObjHeader} ref={AddTaskDownRef}>
-                        <TextareaAutosize onKeyDown={handleKeyPress} value={AddTaskDownText} onChange={event => setAddTaskDownText(event.target.value)} className={style.AddTaskDown} />
-                        <button className={style.CheckBtn} onClick={() => AddTask()}>
-                            <FaCheck className={style.TodoObjHeaderMore} style={{marginTop:10, color:'gray'}}/>
-                        </button>
-                    </div>
-                    :
-                    <button onClick={() => setAddTaskDown(true)} className={ style.btnAddColumn}>
-                        <FiPlus size={16}/> Добавить задачу                       
-                    </button>
-                }
-                
             </div>
+            </Reorder.Item>
+        
   );
 }
 

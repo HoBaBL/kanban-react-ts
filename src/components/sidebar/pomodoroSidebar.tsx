@@ -5,7 +5,8 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import style from './sidebar.module.css'
 import { CiPlay1, CiPause1 } from "react-icons/ci";
 import { useAppDispatch } from '../../hooks';
-import { setTimeH, setTimeM, setTimeS, setPaused, setOver} from '../../redux/slice/pomodoro';
+import { setTimeH, setTimeM, setTimeS, setPaused, setOver, setCheck} from '../../redux/slice/pomodoro';
+import { RxCross2 } from "react-icons/rx";
 
 
 const PomodoroSidebar = () => {
@@ -16,12 +17,16 @@ const PomodoroSidebar = () => {
     const paused = useSelector((state: RootState) => state.paused.paused)
     const over = useSelector((state: RootState) => state.over.over)
     const minutes:any = useRef(+localStorage.getItem('workTime')!)
+    const check = useSelector((state: RootState) => state.check.check)
     
     let seconds = 0
     const dispatch = useAppDispatch()
     const [timeValue, setTimeValue] = useState<any>()
-    
 
+    // useEffect(() => {
+    //     dispatch(setCheck(localStorage.getItem('check')))
+    // },[])
+    
     useEffect(() => {
         if (over) {
             minutes.current = +localStorage.getItem('restTime')!
@@ -71,7 +76,13 @@ const PomodoroSidebar = () => {
    
 
     return (
-        <div className={style.sidebarCirclePosition}>
+        <div className={check ? style.sidebarCirclePosition : style.sidebarNone}>
+            <div className={style.crossPosition}>
+                <button onClick={() => {dispatch(setCheck(false));localStorage.setItem('check', 'false')}} className={style.crossBtn}>
+                    <RxCross2 className={style.cross}/>
+                </button>
+            </div>
+            
             <div className={style.circlePosition}>
                 <div className={style.timerPosition}>
                     {over ? 

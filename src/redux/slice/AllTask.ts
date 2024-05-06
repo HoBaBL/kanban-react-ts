@@ -1,19 +1,19 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState  = {
-    AllTask: []
+    changes: 1
 }
 
 const SearchRedux = createSlice({
-    name: 'AllTask',
+    name: 'changes',
     initialState,
     reducers: {
-        setAllTask(state, action) {
-            state.AllTask = action.payload
+        setСhanges(state, action) {
+            state.changes = action.payload
         }
     }
 })
 
-export const { setAllTask } = SearchRedux.actions;
+export const { setСhanges } = SearchRedux.actions;
 
 export default SearchRedux.reducer

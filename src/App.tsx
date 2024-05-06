@@ -13,15 +13,20 @@ import { RootState } from './redux/store';
 const supabase = createClient("https://ynelcdqjjejcylduvmjy.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluZWxjZHFqamVqY3lsZHV2bWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0ODE0NjcsImV4cCI6MjAyMzA1NzQ2N30.nvBnJPg5HG57sSU2JGLeQIi2zBbbInRnar2qWTIUhKc");
 
 function App() {
-  const [AllTask, setAllTask] = useState<any>([])
+  const [AllTask, setAllTask] = useState<any>(null)
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true)
   const UserId = useSelector((state: RootState) => state.UserId.UserId)
+  const changes = useSelector((state: RootState) => state.changes.changes)
 
   useEffect(() => {
     test()
   },[])
+
+  useEffect(() => {
+    test()
+  },[changes])
 
   async function test() {
     const { data, error } = await supabase.auth.getSession()
@@ -46,6 +51,10 @@ function App() {
       console.log(error)
   }
   }
+
+  // if (AllTask !== null) {
+  //   console.log(AllTask[0].todo_data.Baza) 
+  // }
 
 
   useEffect(() => {

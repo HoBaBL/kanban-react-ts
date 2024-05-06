@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
 import { Link, useParams } from "react-router-dom";
 import { LuClipboardList } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import {setСhanges} from "../../redux/slice/AllTask"
 
 type TitleSidebarType = {
     title:any,
@@ -22,6 +24,8 @@ const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
     const [titleСhange, setTitleСhange] = useState(title.title)
     const [modalActive, setModalActive] = useState(false)
     const numProd = useSelector((state: RootState) => state.numProd.numProd)
+    const navigate = useNavigate();
+    const changes = useSelector((state: RootState) => state.changes.changes)
 
     const MimoClick = (event:any) => {
         if (refTask.current && refTask.current.contains(event.target)) {
@@ -48,19 +52,20 @@ const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
     }
 
     function deleteBaza(index:number) {
-        console.log(index)
+        console.log(AllTask[0].todo_data.Baza.indexOf(title))
         const copy = [...AllTask]
+        if (index === AllTask[0].todo_data.Baza.indexOf(title)) {
+            // dispatch(setnumProd(0))
+            navigate("/home")
+        }
         if (index !== -1) {
             copy[0].todo_data.Baza.splice(index, 1)
+            
         }
-        if (index === numProd) {
-            dispatch(setnumProd(0))
-        }
+        
         setAllTask(copy)
+        dispatch(setСhanges(changes + 1))
     }
-
-    
-    // onClick={() =>  dispatch(setnumProd(AllTask[0].todo_data.Baza.indexOf(title)))}
 
     return (
         <div className={style.flexBtn}>
