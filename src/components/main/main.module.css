@@ -136,7 +136,7 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
 .flexTable {
     display: flex;
     gap: 15px;
-    /* max-width:92.2%; */
+    max-width:92.2%;
     flex-grow: 1;
     padding-top: 20px;
     overflow-x: auto;
@@ -627,4 +627,9 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
     padding: 0;
     color:gray;
     transition: 0.3s;
+}
+
+.bigTask {
+    width: 100%;
+    min-height: 20px;
 }
