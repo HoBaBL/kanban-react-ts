@@ -4,6 +4,8 @@ import { Column } from './/Column';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
+import { BsClipboard2Check } from "react-icons/bs";
+import CompletedDiary from "./CompletedDiary";
 
 type DiaryType = {
     supabase:any
@@ -14,6 +16,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
     const [loading, setLoading] = useState(true)
     const UserId = useSelector((state: RootState) => state.UserId.UserId)
     const [form, setForm] = useState<any>(JSON.parse(localStorage.getItem('form')!))
+    const [screen, setScreen] = useState(false)
 
     // console.log(data)
     useEffect(() => {
@@ -109,15 +112,19 @@ const Diary:FC<DiaryType> = ({supabase}) => {
             })
             //// изменение даты
             if (columnNew.title === "Сегодня") {
-                currentDate = `${day} ${month} ${year}`;
+                currentDate = `${day} ${month}`;
                 newTask.date = currentDate
+                newTask.day = day
+                newTask.monthDate = date.getMonth()
+
             } else if (columnNew.title === "Завтра") {
                 const dateNew = new Date(year, date.getMonth(), day+1 )
                 let dayNew = dateNew.getDate();
                 let monthNew = monthArray[dateNew.getMonth()];
-                let yearNew = dateNew.getFullYear()
-                currentDate = `${dayNew} ${monthNew} ${yearNew}`;
+                currentDate = `${dayNew} ${monthNew}`;
                 newTask.date = currentDate
+                newTask.day = dayNew
+                newTask.monthDate = dateNew.getMonth()
 
             } else if (columnNew.title === "На этой неделе") {
                 const date = new Date(); // текущая дата
@@ -129,11 +136,14 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 date.setHours(23, 59, 59); // устанавливаем время
                 const dateString = ('0' + date.getDate()).slice(-2) ;
                 const dateNew = new Date(year, date.getMonth(), Number(dateString))
+
                 let dayNew = dateNew.getDate();
                 let monthNew = monthArray[dateNew.getMonth()];
-                let yearNew = dateNew.getFullYear()
-                currentDate = `${dayNew} ${monthNew} ${yearNew}`
+                console.log('dateNew', dateNew)
+                currentDate = `${dayNew} ${monthNew}`
                 newTask.date = currentDate
+                newTask.day = dayNew
+                newTask.monthDate = dateNew.getMonth()
 
             }  else if (columnNew.title === "На следующей неделе") {
                 const date = new Date(); // текущая дата
@@ -147,16 +157,20 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 const dateNew = new Date(year, date.getMonth(), Number(dateString)+1)
                 let dayNew = dateNew.getDate();
                 let monthNew = monthArray[dateNew.getMonth()];
-                let yearNew = dateNew.getFullYear()
-                currentDate = `${dayNew} ${monthNew} ${yearNew}`
+                currentDate = `${dayNew} ${monthNew}`
                 newTask.date = currentDate
+                newTask.day = dayNew
+                newTask.monthDate = dateNew.getMonth()
+                console.log('dateNew',dateNew)
+
             } else if (columnNew.title === "Позже") {
                 const dateNew = new Date(year, date.getMonth(), day+14 )
                 let dayNew = dateNew.getDate();
                 let monthNew = monthArray[dateNew.getMonth()];
-                let yearNew = dateNew.getFullYear()
-                currentDate = `${dayNew} ${monthNew} ${yearNew}`;
+                currentDate = `${dayNew} ${monthNew}`;
                 newTask.date = currentDate
+                newTask.day = dayNew
+                newTask.monthDate = dateNew.getMonth()
             }
 
             column.task.splice(source.index, 1)
@@ -170,22 +184,45 @@ const Diary:FC<DiaryType> = ({supabase}) => {
     return (
         <DragDropContext
             onDragEnd={handleDragEnd}>
-            <div className={style.diary}>
-                <h3 className={style.h3Diary}>Ежедневник</h3>
-                <div className={style.diaryFlex}>
-                    { !loading ?
-                        AllTask[0].column.tasks.map((item:any) => {
-                        const tasks = item.task.map((taskId:any) => taskId);
-                        return (
-                            <div key={item.id}>
-                                <Column supabase={supabase} loading={loading} data={item} tasks={tasks} AllTask={AllTask} setAllTask={setAllTask} form={form}/>
-                            </div>
-                        )
-                            
-                        }) : ""
-                    }
-                </div>
-            </div>
+                {!loading ?
+                    <div className={style.diary}>
+                        <div className={style.flexHeader}>
+                            <h3 className={style.h3Diary}>Ежедневник</h3>
+                            { !screen ? 
+                                <button className={style.headerBtn} onClick={() => setScreen(true)}>
+                                    <BsClipboard2Check size={18}/>  Завершено задач: <span>{AllTask[0].column.completed.length}</span>
+                                </button> :
+                                <button className={style.headerBtn} onClick={() => setScreen(false)}>
+                                    <BsClipboard2Check size={18}/>  Вернутся к задачам
+                                </button>
+                            }
+                        </div>
+                        {!screen ?
+                                <div className={style.diaryFlex}>
+                                    {
+                                        AllTask[0].column.tasks.map((item:any) => {
+                                        const tasks = item.task.map((taskId:any) => taskId);
+                                        return (
+                                            <div key={item.id}>
+                                                <Column supabase={supabase} loading={loading} data={item} tasks={tasks} AllTask={AllTask} setAllTask={setAllTask} form={form}/>
+                                            </div>
+                                        )
+                                            
+                                        })
+                                }
+                                </div>
+                                : 
+                                <div className={style.containerFlex}>
+                                    <CompletedDiary AllTask={AllTask} setAllTask={setAllTask}/>
+                                </div>
+                                
+                        }
+                        
+                        
+                    </div>
+                    : ''
+                }
+            
         </DragDropContext>
         
     )

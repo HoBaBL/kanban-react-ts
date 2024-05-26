@@ -1,11 +1,13 @@
 .diary {
     margin-left: 310px;
     /* width: 100%; */
+    padding-top: 20px;
 }
 
 .h3Diary {
     /* margin-left: 40px; */
     font-size: 26px;
+    margin: 0;
 }
 
 .tasks {
@@ -17,12 +19,17 @@
     background-color: white;
     border-radius: 5px;
     min-height: 42px;
-    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    /* box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44); */
+    -webkit-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+-moz-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
     width: 270px;
 }
 
 .column {
-    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    -webkit-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+-moz-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
     width: 260px;
     padding: 15px;
     border-radius: 10px;
@@ -110,11 +117,14 @@
     max-width: 270px;
 }
 
-.dateText {
+.inputCastom {
+    background-color: transparent;
     padding: 0;
     margin: 0;
     font-size: 12px;
     color: rgb(156, 156, 156);
+    border: none;
+    cursor: pointer;
 }
 
 .deleteBtn {
@@ -135,4 +145,124 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
+}
+
+.btnCircle {
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid gray;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: 0.3s;
+    color: gray;
+}
+
+.btnCircle:hover {
+    color: #0066CC;
+    border: 1px solid #0066CC;
+}
+
+.flexHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-right: 30px;
+}
+
+.headerBtn {
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.headerBtn span {
+    font-weight: 600;
+}
+
+.headerBtn:hover {
+    color:#0066CC;
+}
+
+.container {
+    width: 100% - 40px;
+    /* border: solid gray 1px; */
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+    -webkit-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+}
+
+.columnCompleted {
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+}
+
+.input {
+    width: 780px;
+    border: none;
+}
+
+.time {
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer p{
+    margin: 5px 0;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text {
+    font-size: 18px;
+}
+
+.inputFlex {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: solid gray 1px;
+    background-color: white;
+    padding: 10px 10px;
+    gap: 10px;
+}
+
+.noneTasks {
+    text-align: center;
+}
+
+.noneTasksTextBig {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.containerFlex {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
 }

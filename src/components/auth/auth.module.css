@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .window {
@@ -93,4 +94,11 @@
     color: white;
     padding: 10px;
     border-radius: 10px;
+}
+
+.backgroundFon {
+    background-image:url(../../assets/Security-pana.svg), url(../../assets/Multi-deviceTargeting-pana.svg), url(../../assets/llline.svg) ;
+    background-repeat: no-repeat;
+    background-size: 25%, 25%, 40%;
+    background-position: 95% 80%, 5% 70%, 100% 0%;
 }

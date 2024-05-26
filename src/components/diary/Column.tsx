@@ -12,7 +12,6 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
     const [AddTaskDown, setAddTaskDown] = useState(false)
     const AddTaskDownRef = useRef<any>(null)
     const [AddTaskDownText, setAddTaskDownText] = useState('')
-    const UserId = useSelector((state: RootState) => state.UserId.UserId)
 
     const handleClick = (event:any) => {
         if (AddTaskDownRef.current && AddTaskDownRef.current.contains(event.target)) {
@@ -29,21 +28,6 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
         }
     },[])
 
-    async function UpsertData() {
-        console.log(AllTask)
-        if (!loading) {
-            const { error } = await supabase
-            .from('boba')
-            .update({
-                column : AllTask
-            })
-            .eq('id', UserId)
-            if (error !== null) {
-                console.log(error)
-            }
-        }
-    }
-
     const monthArray = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
 
     function AddTask() {
@@ -52,19 +36,22 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
 
         const date = new Date();
 
-        // let day = date.getDate();
+        let monthDate = date.getMonth()
         let day = date.getDate();
         let month = monthArray[date.getMonth()];
         let year = date.getFullYear()
         let currentDate = ''
         if (copy[0].column.tasks[index].title === "Сегодня") {
             currentDate = `${day} ${month} ${year}`;
+
         } else if (copy[0].column.tasks[index].title === "Завтра") {
             const dateNew = new Date(year, date.getMonth(), day+1 )
             let dayNew = dateNew.getDate();
             let monthNew = monthArray[dateNew.getMonth()];
-            let yearNew = dateNew.getFullYear()
-            currentDate = `${dayNew} ${monthNew} ${yearNew}`;
+            currentDate = `${dayNew} ${monthNew}`;
+            day = dayNew
+            monthDate = dateNew.getMonth()
+
         } else if (copy[0].column.tasks[index].title === "На этой неделе") {
             const date = new Date(); // текущая дата
             let dayOfWeek = date.getDay();
@@ -77,8 +64,10 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             const dateNew = new Date(year, date.getMonth(), Number(dateString))
             let dayNew = dateNew.getDate();
             let monthNew = monthArray[dateNew.getMonth()];
-            let yearNew = dateNew.getFullYear()
-            currentDate = `${dayNew} ${monthNew} ${yearNew}`
+            currentDate = `${dayNew} ${monthNew}`
+            day = dayNew
+            monthDate = dateNew.getMonth()
+            
         } else if (copy[0].column.tasks[index].title === "На следующей неделе") {
             const date = new Date(); // текущая дата
             let dayOfWeek = date.getDay();
@@ -91,14 +80,17 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             const dateNew = new Date(year, date.getMonth(), Number(dateString)+1)
             let dayNew = dateNew.getDate();
             let monthNew = monthArray[dateNew.getMonth()];
-            let yearNew = dateNew.getFullYear()
-            currentDate = `${dayNew} ${monthNew} ${yearNew}`
+            currentDate = `${dayNew} ${monthNew}`
+            day = dayNew
+            monthDate = dateNew.getMonth()
+
         } else if (copy[0].column.tasks[index].title === "Позже") {
             const dateNew = new Date(year, date.getMonth(), day+14 )
             let dayNew = dateNew.getDate();
             let monthNew = monthArray[dateNew.getMonth()];
-            let yearNew = dateNew.getFullYear()
-            currentDate = `${dayNew} ${monthNew} ${yearNew}`;
+            currentDate = `${dayNew} ${monthNew}`;
+            day = dayNew
+            monthDate = dateNew.getMonth()
         }
  
 
@@ -107,7 +99,10 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             titleTask: AddTaskDownText,
             colorTask: '',
             importanceTask: {color: "gray", text: "Обычная"},
-            date: currentDate
+            date: currentDate,
+            day:day,
+            monthDate:monthDate,
+            dateFull: date
         }
         
         copy[0].column.tasks[index].task.push(TaskObj)
@@ -120,12 +115,13 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
 
     return (
         <div>
+            <div className={style.column}>
+                <h4 className={style.h4}>{data.title}</h4>
+            </div>
             <Droppable droppableId={String(data.id)}>
                 {(provided) => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
-                        <div className={style.column}>
-                            <h4 className={style.h4}>{data.title}</h4>
-                        </div>
+                        
                         {tasks.map((task:any, idx:any) => <Task Task={data} form={form} setAllTask={setAllTask} AllTask={AllTask} key={task.id} data={task} index={idx}/>)}
                         {provided.placeholder}
                     </div>

@@ -30,8 +30,6 @@ type sidebarType = {
 const Sidebar: FC<sidebarType> = ({supabase}) => {
     const UserId = useSelector((state: RootState) => state.UserId.UserId)
     const UserName:any = useSelector((state: RootState) => state.UserName.UserName)
-    // const AllTask:any = useSelector((state: RootState) => state.AllTask.AllTask)
-    // const loading:any = useSelector((state: RootState) => state.loading.loading)
     const changes = useSelector((state: RootState) => state.changes.changes)
     const [loading, setLoading] = useState(true)
     const [modalActive, setModalActive] = useState(false)
@@ -150,33 +148,29 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
         dispatch(setСhanges(changes + 1))
     }
     
-    function miniSidebar() {
-
-    }
 
 
     return (
-        <div>
+        <div className={style.backgroundFon}>
             <div className={style.sidebar}>
-                <div className={style.sidebarHeader}>
-                    <img src="../../images/logo.png" alt="" />
-                    <button onClick={() => miniSidebar()}><CiMenuFries size={26}/></button>
-                </div>
-                <div className={style.menu}>
-                    {loading ? <p>Загрузка</p> :
-                        <Link to={`/account`} className={style.btnMenu}>
-                            <MdOutlineAccountCircle size={24}/> {UserName}
+                {/* <div className={style.sidebarHeader}>
+                    <button onClick={() => setSidebarActive(!sidebarActive)}><CiMenuFries size={26}/></button>
+                </div> */}
+                    <div className={style.menu}>
+                        {loading ? <p>Загрузка</p> :
+                            <Link to={`/account`} className={style.btnMenu}>
+                                <MdOutlineAccountCircle size={24}/> {UserName}
+                            </Link>
+                        }
+                        <Link to={`/home`} className={style.btnMenu}>
+                            <RiHome2Line size={22}/> Главная
                         </Link>
-                    }
-                    <Link to={`/home`} className={style.btnMenu}>
-                        <RiHome2Line size={22}/> Главная
-                    </Link>
-                    <Link to={`/diary`} className={style.btnMenu}>
-                        <IoCalendarNumberOutline size={22}/> Ежедневник
-                    </Link>
-                </div>
+                        <Link to={`/diary`} className={style.btnMenu}>
+                            <IoCalendarNumberOutline size={22}/> Ежедневник
+                        </Link>
+                    </div>
                 <div className={style.project}>
-                    <p className={style.AllProject}>Ваши проекты</p>
+                        <p className={style.AllProject}>Ваши проекты</p>
                     <div className={style.projectPosition}>
                         {loading ? <p>Загрузка</p> :
                         AllTask[0] !== undefined &&
@@ -186,7 +180,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
                             
                         }
                     </div>
-                    <button onClick={() => setModalActive(true)} className={style.addProject}><FiPlus /> Добавить проект</button>
+                    <button onClick={() => setModalActive(true)} className={style.addProject}><FiPlus size={24}/>Добавить проект</button>
                     <PomodoroSidebar/>
                     <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                         <div className='ModalContent' onClick={e => e.stopPropagation()}>

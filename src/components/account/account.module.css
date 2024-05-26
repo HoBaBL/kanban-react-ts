@@ -1,9 +1,9 @@
 .account {
-    margin-left: 290px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    padding-top: 20px;
+    width: 100%;
 }
 
 .main {
@@ -21,10 +21,10 @@
 
 .h2 {
     width: 95%;
-    padding-left: 60px;
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-bottom: 20px;
 }
 
 .miniText {

@@ -14,7 +14,7 @@ import {setСhanges} from "../../redux/slice/AllTask"
 type TitleSidebarType = {
     title:any,
     AllTask:any,
-    setAllTask:any
+    setAllTask:any,
 }
 
 const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
@@ -69,16 +69,18 @@ const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
 
     return (
         <div className={style.flexBtn}>
-            <Link to={`/baza/${AllTask[0].todo_data.Baza.indexOf(title)}`} className={style.btnMenu} >
-                <p className={style.textProject}><FiBook size={22}/> {title.title}</p>
-            </Link>
-            <div>
-                <button onClick={() => setDropdownGap(true)} className={style.pointBtn}><IoMdMore size={16}/></button>
-                <ul className={dropdownGap ? style.dropdownMini : style.dropdownNone} ref={refTask}>
-                    <li><button onClick={() => setModalActive(true)} className={style.btnDropdown}>Изменить название</button></li>
-                    <li><button onClick={() => deleteBaza(AllTask[0].todo_data.Baza.indexOf(title))} className={style.btnDropdownDelete}>Удалить</button></li>
-                </ul> 
-            </div>
+                <Link to={`/baza/${AllTask[0].todo_data.Baza.indexOf(title)}`} className={style.btnMenu} >
+                    <p className={style.textProject}><FiBook size={22}/> {title.title}</p>
+                </Link>
+                <div>
+                    <button onClick={() => setDropdownGap(true)} className={style.pointBtn}><IoMdMore size={16}/></button>
+                    <ul className={dropdownGap ? style.dropdownMini : style.dropdownNone} ref={refTask}>
+                        <li><button onClick={() => setModalActive(true)} className={style.btnDropdown}>Изменить название</button></li>
+                        <li><button onClick={() => deleteBaza(AllTask[0].todo_data.Baza.indexOf(title))} className={style.btnDropdownDelete}>Удалить</button></li>
+                    </ul> 
+                </div>
+            
+        
             <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                 <div className='ModalContent' onClick={e => e.stopPropagation()}>
                     <div className={style.flexAdd}>

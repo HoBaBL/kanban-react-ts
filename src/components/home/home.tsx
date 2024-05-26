@@ -9,19 +9,45 @@ import { Link } from "react-router-dom";
 import { LuClipboardList } from "react-icons/lu";
 import { BsClipboard2Check } from "react-icons/bs";
 import Pomodoro from "../pomodoro/pomodoro";
+import { FaCheck} from "react-icons/fa6";
 
 type HomeType ={
     supabase:any, 
 }
 
+type todayType = {
+    id:number,
+    titleTask: string,
+    colorTask: string,
+    date: string,
+    importanceTask: {
+        color:string,
+        text:string
+    },
+    monthDate:number
+}
+
 const Home:FC<HomeType> = ({supabase}) => {
     const [AllTask, setAllTask] = useState<any>([])
+    const [myTaskBtn, setMyTaskBtn] = useState('Today')
     const dispatch = useAppDispatch()
+    const UserName:any = useSelector((state: RootState) => state.UserName.UserName)
     const navigate = useNavigate();
     // const loading:any = useSelector((state: RootState) => state.loading.loading)
     const [loading, setLoading] = useState(true)
     const changes = useSelector((state: RootState) => state.changes.changes)
+    const [TodayTask, setTodayTask] = useState<any>([])
+    const [Overdue, setOverdue] = useState<any>([])
+    const [Over, setOver] = useState<any>([])
 
+    const monthArray = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+    
+    const dateToday = new Date()
+    let day = dateToday.getDate();
+    let month = monthArray[dateToday.getMonth()];
+    let currentDateCalendar = `${day} ${month}`;
+
+    
     useEffect(() => {
         test()
       },[])
@@ -54,24 +80,204 @@ const Home:FC<HomeType> = ({supabase}) => {
         }
     }
 
+    useEffect(() => {
+        const copy = [...TodayTask]
+
+        if (AllTask[0] !== undefined) {
+            /// массив дел на сегодня
+
+            for (let i = 0; i < AllTask[0].column.tasks.length; i++) {
+                AllTask[0].column.tasks[i].task.map((item:any) => {
+                    if (item.day === day && item.monthDate === dateToday.getMonth()) {
+                        const objItem = {
+                            id: item.id,
+                            titleTask: item.titleTask,
+                            boardName: "Ежедневник"
+                        }
+                        copy.push(objItem)
+                    }
+                })
+            }
+
+            for (let i = 0; i < AllTask[0].todo_data.Baza.length; i++) {
+               for (let y = 0; y <  AllTask[0].todo_data.Baza[i].Arrey.length; y++) {
+                AllTask[0].todo_data.Baza[i].Arrey[y].items.map((item:any) => {
+                    
+                    if (item.date === currentDateCalendar) {
+                        const objItem = {
+                            id: item.id,
+                            titleTask: item.titleTask,
+                            boardName: AllTask[0].todo_data.Baza[i].title
+                        }
+                        copy.push(objItem)
+                    }
+                })
+               }
+            }
+            setTodayTask(copy)
+
+            /// массив просроченых дел
+
+            const copyOverdue = [...Overdue]
+
+            for (let i = 0; i < AllTask[0].column.tasks.length; i++) {
+                AllTask[0].column.tasks[i].task.map((item:any) => {
+                    if (item.day < day && item.monthDate <= dateToday.getMonth()) {
+                        const objItem = {
+                            id: item.id,
+                            titleTask: item.titleTask,
+                            boardName: "Ежедневник",
+                            date: item.date
+                        }
+                        copyOverdue.push(objItem)
+                    }
+                })
+            }
+            console.log(AllTask[0].todo_data.Baza)
+            for (let i = 0; i < AllTask[0].todo_data.Baza.length; i++) {
+                for (let y = 0; y <  AllTask[0].todo_data.Baza[i].Arrey.length; y++) {
+                AllTask[0].todo_data.Baza[i].Arrey[y].items.map((item:any) => {
+                     if (item.day < day && item.monthDate <= dateToday.getMonth()) {
+                         const objItem = {
+                             id: item.id,
+                             titleTask: item.titleTask,
+                             boardName: AllTask[0].todo_data.Baza[i].title,
+                             date: item.date
+                        }
+                        copyOverdue.push(objItem)
+                     }
+                })
+                }
+            }
+            setOverdue(copyOverdue)
+
+            /// массив для выполненых сегодня задач
+
+            const copyOver = [...Over]
+
+            AllTask[0].column.completed.map((item:any) => {
+                if (item.day === day && item.month === dateToday.getMonth()) {
+                    const objItem = {
+                        id: item.id,
+                        titleTask: item.titleTask,
+                        boardName: "Ежедневник",
+                        date: item.date
+                    }
+                    copyOver.push(objItem)
+                }
+            })
+
+            for (let i = 0; i < AllTask[0].todo_data.Baza.length; i++) {
+                AllTask[0].todo_data.Baza[i].completed.map((item:any) => {
+                    if (item.day === day && item.month === dateToday.getMonth()) {
+                        const objItem = {
+                            id: item.id,
+                            titleTask: item.titleTask,
+                            boardName: AllTask[0].todo_data.Baza[i].title,
+                            date: item.date
+                        }
+                        copyOver.push(objItem)
+                    }
+                    
+                })
+            }
+            setOver(copyOver)
+
+        }
+    }, [loading])
 
     return (
         <div className={style.home}>
-            <h2>Главная</h2>
+            <h2 className={style.h2}>Главная</h2>
             {loading ? <p>Загрузка</p> :
-            <div>
-                <div className={style.boardFlex}>
-                    <h2 className={style.boardFlexH2}>Активные проекты</h2>
-                    {AllTask[0] !== undefined && AllTask[0].todo_data.Baza.map((board:any) => 
-                        <Link to={`/baza/${AllTask[0].todo_data.Baza.indexOf(board)}`} key={board.title} className={style.board}>
-                            <h3 className={style.h3}><LuClipboardList size={22}/> {board.title}</h3>
-                            {/* <p>Активные задачи {board.Arrey.length}</p> */}
-                            <p className={style.p}><BsClipboard2Check size={18}/> Завершено задач {board.completed.length}</p>
-                        </Link>
-                    )}
-                    
+            <div className={style.homeContainer}>
+                <div className={style.headerPosition}>
+                    <p className={style.dataText}>{currentDateCalendar}</p>
+                    <p className={style.headerText}>Здравствуйте, {UserName}</p>
                 </div>
-                <Pomodoro/>
+
+                <div className={style.myTask}>
+                    <h2 className={style.boardFlexH2}>Мои задачи</h2>
+                    <div className={style.flexBtn}>
+                        <button onClick={() => setMyTaskBtn("Today")} className={myTaskBtn === "Today" ? style.btnMyTaskActive : style.btnMyTask}>Задачи на сегодня</button>
+                        <button onClick={() => setMyTaskBtn("Overdue")} className={myTaskBtn === "Overdue" ? style.btnMyTaskActive : style.btnMyTask}>Просрочено</button>
+                        <button onClick={() => setMyTaskBtn("Done")} className={myTaskBtn === "Done" ? style.btnMyTaskActive : style.btnMyTask}>Выполнено сегодня</button>
+                    </div>
+                    <div className={style.positionMenu}>
+                        { myTaskBtn === "Today" ? 
+                            <div className={style.todayBlock}>
+                                { TodayTask.map((today:any) => 
+                                    <div className={style.today} key={today.id}>
+                                        <div className={style.flex}>
+                                            <button className={style.btnCircle}>
+                                                <FaCheck size={12}/>
+                                            </button>
+                                            <p className={style.todayText}>{today.titleTask}</p>
+                                        </div>
+                                        <p className={style.textName}>{today.boardName}</p>
+                                    </div>
+                                )
+                                }
+                            </div>
+                            :  myTaskBtn === "Overdue" ? 
+                                <div className={style.todayBlock}>
+                                    {Overdue.map((today:any) => 
+                                        <div className={style.today} key={today.id}>
+                                            <div className={style.flex}>
+                                                <button className={style.btnCircle}>
+                                                    <FaCheck size={12}/>
+                                                </button>
+                                                <p className={style.todayText}>{today.titleTask}</p>
+                                            </div>
+                                            <div className={style.flexOver}>
+                                                <p className={style.textName}>{today.boardName}</p>
+                                                <p className={style.dateText}>{today.date}</p>
+                                            </div>
+                                            
+                                        </div>
+                                    )
+
+                                    }
+                                </div>
+                                : 
+                                <div className={style.todayBlock}>
+                                    {Over.map((today:any) => 
+                                        <div className={style.today} key={today.id}>
+                                            <div className={style.flex}>
+                                                <button className={style.btnCircle}>
+                                                    <FaCheck size={12}/>
+                                                </button>
+                                                <p className={style.todayText}>{today.titleTask}</p>
+                                            </div>
+                                            <div className={style.flexOver}>
+                                                <p className={style.textName}>{today.boardName}</p>
+                                            </div>
+                                            
+                                        </div>
+                                    )
+
+                                    }
+                                </div>
+                        }
+                    </div>
+                </div>
+
+                <div className={style.flexHome}>
+                    <div className={style.boardFlex}>
+                        <h2 className={style.boardFlexH2}>Проекты</h2>
+                        <div className={style.flexProject}>
+                            {AllTask[0] !== undefined && AllTask[0].todo_data.Baza.map((board:any) => 
+                                <Link to={`/baza/${AllTask[0].todo_data.Baza.indexOf(board)}`} key={board.title} className={style.board}>
+                                    <h3 className={style.h3}><LuClipboardList size={22}/> {board.title}</h3>
+                                </Link>
+                            )}
+                        </div>
+                        
+                        
+                    </div>
+                    <Pomodoro/>
+                </div>
+                
             </div>
                 
             }

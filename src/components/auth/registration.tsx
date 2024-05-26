@@ -85,30 +85,33 @@ const Registration: FC = () => {
     },[loading])
     
     return (
-        <div className={style.windowPosition}>
-            <div className={style.window}>
-                <h3 className={style.authH3}>Выполните вход</h3>
-                <div className={style.inputPosition}>
-                    <div>
-                        <form onSubmit={handleSubmit(onSubmit)} className={style.formLogin}>
-                            <input className={style.input} {...register("email")} type="text" placeholder="Ваша электронная почта"/>
-                            <input className={style.input} {...register("pasword")} type="text" placeholder="Ваш пароль"/>
-                            <input className={style.input} {...register("name")} type="text" placeholder="Ваше имя"/>
-                                <input className={style.btnLogin} type="submit" value={'Регистрация'}/>
-                        </form>
-                        <div className={style.textFotter}>
-                            У вас есть учетная запись? 
-                            <Link to={`/login`}>
-                                <button>Выполните вход</button>
-                            </Link>
-                            
+        <div className={style.backgroundFon}>
+            <div className={style.windowPosition}>
+                <div className={style.window}>
+                    <h3 className={style.authH3}>Выполните вход</h3>
+                    <div className={style.inputPosition}>
+                        <div>
+                            <form onSubmit={handleSubmit(onSubmit)} className={style.formLogin}>
+                                <input className={style.input} {...register("email")} type="text" placeholder="Ваша электронная почта"/>
+                                <input className={style.input} {...register("pasword")} type="text" placeholder="Ваш пароль"/>
+                                <input className={style.input} {...register("name")} type="text" placeholder="Ваше имя"/>
+                                    <input className={style.btnLogin} type="submit" value={'Регистрация'}/>
+                            </form>
+                            <div className={style.textFotter}>
+                                У вас есть учетная запись? 
+                                <Link to={`/login`}>
+                                    <button>Выполните вход</button>
+                                </Link>
+                                
+                            </div>
+                    
                         </div>
-                
                     </div>
-                </div>
                 
+                </div>
             </div>
         </div>
+        
     )
 }
 

@@ -5,7 +5,7 @@ import './styleDraggable.css';
 import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../redux/store';
-import { FaFlag } from "react-icons/fa6";
+import { FaFlag,FaCheck, FaRegTrashCan } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale} from  "react-datepicker";
@@ -23,7 +23,10 @@ type TaskMiniProps = {
             text: string
         };
         date:any,
-        dateСomparison:any
+        dateСomparison:any,
+        day:any,
+        monthDate:any
+
     },
     currentBoard:any,
     currentItem:any,
@@ -137,10 +140,9 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
 
         let day = date.getDate();
         let month = monthArray[date.getMonth()];
-        let year = date.getFullYear()
         let hours = date.getHours()
         let minutes = date.getMinutes()
-        let currentDate = `${day} ${month} ${year}`;
+        let currentDate = `${day} ${month}`;
         let time = `${hours}:${minutes}`
 
         const completedTask = {
@@ -148,7 +150,9 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
             titleTask: titleTask,
             column: column,
             date: currentDate,
-            time: time
+            time: time,
+            day: day,
+            month:date.getMonth()
         }
         copy[0].todo_data.Baza[numProd].completed.unshift(completedTask)
         deleteBourd( Task, list)
@@ -169,6 +173,8 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         const indexTop = copy[0].todo_data.Baza[numProd].Arrey[index].items.indexOf(list)
         copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].date = currentDate
         copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].dateСomparison = dateMore
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].day = day
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].monthDate = dateMore.getMonth()
         setAllTask(copy)
         console.log(dateMore)
     }
@@ -179,9 +185,17 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === Task.id);
         const indexTop = copy[0].todo_data.Baza[numProd].Arrey[index].items.indexOf(list)
         copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].date = undefined
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].dateСomparison = undefined
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].day = undefined
+        copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].monthDate = undefined
 
         setAllTask(copy)
     }
+
+    const dateToday = new Date()
+    let day = dateToday.getDate();
+    let month = dateToday.getMonth();
+    let year = dateToday.getFullYear()
     
     return(
         <Draggable 
@@ -196,20 +210,25 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
                     onMouseEnter={() => {setIsShownMini(true)}}  onMouseLeave={() => {setIsShownMini(false)}}
                     >
                         <div style={{backgroundColor:list.colorTask}} className={form ? "taskMini" :'taskTask'} >
-
-                        
-                            {list.date !== undefined ? <p className={style.dateText}>до {list.date}.</p> : ''}
-                            <p className={style.taskMiniText}>{list.titleTask}</p>
-                            {list.importanceTask.color === 'gray' ? '' : <FaFlag className={style.importanceMain} size={10} color={list.importanceTask.color}/>}
                             
-                            <button className={form ? isShownMini ? style.moreMini : style.moreMiniNone : isShownMini ? style.moreMiniTask : style.moreMiniNoneTask} onClick={() => setDropdownGap(true)}>
+                            <p className={style.taskMiniText}>{list.titleTask}</p>
+                            <div className={style.timePosition}>
+                                {list.date !== undefined ? <p style={(list.day < day && list.monthDate <= month) ? {color:'red'}: {color:'gray'}} className={style.dateText}>до {list.date}.</p> : <div></div>}
+                                {list.importanceTask.color === 'gray' ? '' : <FaFlag className={style.importanceMain} size={10} color={list.importanceTask.color}/>}
+                            </div>
+                            
+                            <div className={style.deleteBtnPosition}>
+                                <button onClick={() => completedFunc(list.id, list.titleTask, Task.title, Task, list)} className={isShownMini ? style.btnCircle : style.btnCircleNone}>
+                                    <FaCheck size={12}/>
+                                </button>
+                                <button className={isShownMini ? style.deleteBtn : style.deleteBtnNone} onClick={() => deleteBourd( Task, list)}>
+                                    <FaRegTrashCan  size={16}/>
+                                </button>
+                            </div>
+                            
+                            <button className={form ? (isShownMini ? style.moreMini : style.moreMiniNone) : (isShownMini ? style.moreMiniTask : style.moreMiniNoneTask)} onClick={() => {setModalActive(true), setDropdownGap(false)}}>
                                 <IoMdMore size={18}/>
-                            </button>    
-                            <div className={form ? dropdownGap ? "dropdownMini" : "dropdownNone" : dropdownGap ? "dropdownMiniTask" : "dropdownNone"} ref={refTask}>
-                                <li><button onClick={() => {setModalActive(true), setDropdownGap(false)}} className={style.btnDropdown}>Настройки</button></li>
-                                <li><button onClick={() => completedFunc(list.id, list.titleTask, Task.title, Task, list)} className={style.btnDropdown}>Выполнить</button></li>
-                                <li><button onClick={() => deleteBourd( Task, list)} className={style.btnDropdownDelete}>Удалить</button></li>
-                            </div> 
+                            </button> 
 
 
                             <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>

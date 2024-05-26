@@ -1,9 +1,7 @@
 
 .main {
-    width: 100%;
-    padding-left: 10px;
-    /* padding-right: 30px; */
-    margin-left: 280px;
+    display: flex;
+    flex-direction: column;
 }
 
 .TodoObj {
@@ -70,9 +68,9 @@
     padding-top: 0px;
     border-radius: 10px;
     min-height: 150px;
-    -webkit-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
-    -moz-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
-    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    -webkit-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+-moz-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
     /* cursor: grab; */
 }
 
@@ -138,9 +136,11 @@
 .flexTable {
     display: flex;
     gap: 15px;
-    /* width: 92.7%; */
-    height: 80vh;
-    margin-top: 100px;
+    /* max-width:92.2%; */
+    flex-grow: 1;
+    padding-top: 20px;
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .TitleInput {
@@ -171,8 +171,8 @@
 
 .moreMini {
     position: absolute;
-    left: 240px;
-    top: 10px;
+    left: 238px;
+    top: 3px;
     z-index: 10;
     display: flex;
     justify-content: left;
@@ -186,8 +186,8 @@
 
 .moreMiniNone {
     position: absolute;
-    left: 240px;
-    top: 10px;
+    left: 238px;
+    top: 3px;
     z-index: 10;
     display: flex;
     justify-content: left;
@@ -333,22 +333,24 @@
     
 }
 
-.importanceMain {
+/* .importanceMain {
     position: absolute;
     right: 8px;
     bottom: 8px;
-}
+} */
 
 .flexHeader {
-    position: fixed;
+    /* position: fixed; */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 80%;
-    margin-left: 30px;
-    margin-right: 30px;
+    width: 81.6vw;
+    padding-left: 30px;
+    padding-right: 30px;
     background-color: rgb(236, 234, 234);
     z-index: 100;
+    /* background-color: transparent; */
+    border-bottom: solid 1px gray;
 }
 
 .headerBtn {
@@ -370,7 +372,7 @@
 }
 
 .headerBtn:hover {
-    background-color: rgba(240, 238, 238, 0.966);
+    color:#0066CC;
 }
 
 .containerFlex {
@@ -443,7 +445,7 @@
 
 
 .Todo {
-    margin-top: 100px;
+    margin-top: 20px;
 }
 
 .todoPosition {
@@ -469,9 +471,9 @@
     border-radius: 10px;
     min-height: 150px;
     /* cursor: grab; */
-    -webkit-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
-    -moz-box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
-    box-shadow: 0px 10px 16px 1px rgba(0, 0, 0, 0.44);
+    -webkit-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+-moz-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
+box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -499,7 +501,7 @@
 /* moreMini */
 .moreMiniTask {
     position: absolute;
-    left: 1250px;
+    left: 98.1%;
     top: 5px;
     z-index: 10;
     display: flex;
@@ -514,7 +516,7 @@
 /* moreMiniNone */
 .moreMiniNoneTask {
     position: absolute;
-    left: 1250px;
+    left: 98.1%;
     top: 5px;
     z-index: 10;
     display: flex;
@@ -553,8 +555,76 @@
     user-select: none
 }
 
-/* .bigTask {
+.btnCircle {
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid gray;
+    width: 20px;
+    height: 20px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-} */
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: 0.3s;
+    color: gray;
+}
+
+.btnCircle:hover {
+    color: #0066CC;
+    border: 1px solid #0066CC;
+}
+
+.deleteBtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color:gray;
+    transition: 0.3s;
+}
+
+.deleteBtn:hover {
+    color: #0066CC;
+}
+
+.deleteBtnPosition {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.timePosition {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.btnCircleNone {
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid gray;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: 0.3s;
+    color: gray;
+    opacity: 0;
+}
+
+.deleteBtnNone {
+    opacity: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color:gray;
+    transition: 0.3s;
+}

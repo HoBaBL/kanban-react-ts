@@ -2,18 +2,17 @@
     position: fixed;
     color: rgb(212, 208, 208);
     background-color: rgb(31, 29, 36);
-    height: 100%;
-    width: 100%;
-    max-width: 250px;
-    min-width: 250px;
-    z-index: 1000; 
+    width: 250px;
     top: 0; 
     left: 0;
     overflow-x: hidden;
     padding: 0 20px;
-    transition: 0.4s;
+    background-image: url(../../assets/todo.svg);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: 50% 100%;
+    height: 100vh;
 }
-
 
 
 .sidebarHeader {
@@ -59,7 +58,7 @@
 
 .btnMenu {
     /* margin-top: 10px; */
-    width: 100%;
+    width: 90%;
     border: none;
     background-color: transparent;
     color: rgb(212, 208, 208);
@@ -114,7 +113,9 @@
 
 .projectPosition {
     margin-bottom: 50px;
-    max-height: 450px;
+    max-height: 200px;
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .flexAdd {
@@ -222,6 +223,54 @@
 
 .btnDropdownDelete:hover {
     background-color: rgba(240, 238, 238, 0.966);
+}
+
+.menuMini {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btnMenuMini {
+    border: none;
+    background-color: transparent;
+    color: rgb(212, 208, 208);
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.btnMenuMini:hover {
+    background-color: rgb(43, 41, 49);
+    transition: 0.4s;
+}
+
+.addProjectMini {
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    color: rgb(212, 208, 208);
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.addProjectMini:hover {
+    background-color: rgb(43, 41, 49);
+    transition: 0.4s;
 }
 
 
@@ -383,5 +432,14 @@
     padding: 0;
     cursor: pointer;
     background-color: transparent;
+}
+
+.backgroundFon {
+    min-height: 100vh;
+    background-image: url(../../assets/llline.svg), url(../../assets/lllineBtn.svg) ;
+    background-repeat: no-repeat;
+    background-size: 40%, 90%;
+    background-position: 100% 0%, 100%;
+    /* display: flex; */
 }
 

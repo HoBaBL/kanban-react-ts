@@ -1,6 +1,8 @@
 .App {
     display: flex;
-    /* height: 100vh; */
-    /* width: 100vw; */
-    /* overflow-x: hidden; */
+    /* flex: 1 0 90%; */
+    /* width: 84.8%; */
+    /* border: solid 1px; */
+    margin-left: 290px;
+    height: 100vh;
 }
