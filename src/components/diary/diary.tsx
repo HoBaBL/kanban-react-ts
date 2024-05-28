@@ -215,10 +215,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                                 <div className={style.containerFlex}>
                                     <CompletedDiary AllTask={AllTask} setAllTask={setAllTask}/>
                                 </div>
-                                
                         }
-                        
-                        
                     </div>
                     : ''
                 }

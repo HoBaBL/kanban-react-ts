@@ -5,8 +5,6 @@ import { Droppable } from '@hello-pangea/dnd';
 import TextareaAutosize from 'react-textarea-autosize';
 import { FiPlus } from "react-icons/fi";
 import { FaCheck } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-import { RootState } from '../../redux/store';
 
 export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supabase, form}) => {
     const [AddTaskDown, setAddTaskDown] = useState(false)
@@ -42,7 +40,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
         let year = date.getFullYear()
         let currentDate = ''
         if (copy[0].column.tasks[index].title === "Сегодня") {
-            currentDate = `${day} ${month} ${year}`;
+            currentDate = `${day} ${month}`;
 
         } else if (copy[0].column.tasks[index].title === "Завтра") {
             const dateNew = new Date(year, date.getMonth(), day+1 )
@@ -113,6 +111,12 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
         // UpsertData()
     }
 
+    const handleKeyPress = (event:any) => {
+        if(event.key === 'Enter'){
+            AddTask()
+        }
+    };
+
     return (
         <div>
             <div className={style.column}>
@@ -130,8 +134,8 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             {
                 AddTaskDown ? 
                 <div className={style.TodoObjHeader} ref={AddTaskDownRef}>
-                    <TextareaAutosize value={AddTaskDownText} onChange={event => setAddTaskDownText(event.target.value)} className={style.AddTaskDown} />
-                    <button className={style.CheckBtn} onClick={() => AddTask()}>
+                    <TextareaAutosize onKeyDown={handleKeyPress} value={AddTaskDownText} onChange={event => setAddTaskDownText(event.target.value)} className={style.AddTaskDown} />
+                    <button className={style.CheckBtn} onClick={() => AddTask()} >
                         <FaCheck className={style.TodoObjHeaderMore} size={18}/>
                     </button>
                 </div>

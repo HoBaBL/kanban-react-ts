@@ -137,6 +137,7 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
     display: flex;
     gap: 15px;
     max-width:92.2%;
+    width: 92vw;
     flex-grow: 1;
     padding-top: 20px;
     overflow-x: auto;

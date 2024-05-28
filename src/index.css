@@ -4,6 +4,7 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: rgb(236, 234, 234);
   height: 100%;
+  scrollbar-width: thin;
 }
 
 html, body {

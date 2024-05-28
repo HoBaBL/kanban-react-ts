@@ -214,7 +214,7 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
                                                 <BsClipboard2Check size={18}/>  Завершено задач: <span>{AllTask[0].todo_data.Baza[numProd].completed.length}</span>
                                             </button> :
                                             <button className={style.headerBtn} onClick={() => setScreen(false)}>
-                                                Вернутся к задачам
+                                               <BsClipboard2Check size={18}/>  Вернутся к задачам
                                             </button>
                                         }
                                         <button className={style.btnHeaderPoint} onClick={() => setDropdownGap(true)}>
@@ -274,7 +274,7 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
                                                     :
                                                     <div className={style.containerFlex}>
                                                         
-                                                        <CompletedTask AllTask={AllTask} numProd={numProd}/>
+                                                        <CompletedTask AllTask={AllTask} setAllTask={setAllTask} numProd={numProd}/>
                                                         
                                                     </div>}
                                     </div> 

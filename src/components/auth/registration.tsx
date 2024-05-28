@@ -70,17 +70,47 @@ const Registration: FC = () => {
         ]
     }
 
+    const diary = {
+        tasks: [{
+            "title": "Сегодня",
+            "id": "1",
+            "task": []
+          },
+          {
+            "title": "Завтра",
+            "id": "2",
+            "task": []
+          },
+          {
+            "title": "На этой неделе",
+            "id": "3",
+            "task": []
+          },
+          {
+            "title": "На следующей неделе",
+            "id": "4",
+            "task": []
+          },
+          {
+            "title": "Позже",
+            "id": "5",
+            "task": []
+        }
+        ],
+        completed: []
+    }
+
     async function AddData(user:any) {
         const { error } = await supabase
         .from('boba')
-        .insert({ id: user, todo_data: sample})
+        .insert({ id: user, todo_data: sample, column:diary})
         .select()
         console.log(error)
     }
 
     useEffect(() => {
         if (loading) {
-            navigate("/")
+            navigate("/home")
         }
     },[loading])
     

@@ -210,3 +210,22 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
     color: red;
     margin: 0;
 }
+
+.linkStyle {
+    color: black;
+}
+
+.imgToday {
+    width: 200px;
+    height: 200px;
+}
+
+.imgPositionCompleted {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imgPositionCompleted p{
+    font-size: 30px;
+}

@@ -7,24 +7,14 @@ import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
 import { Link } from "react-router-dom";
 import { LuClipboardList } from "react-icons/lu";
-import { BsClipboard2Check } from "react-icons/bs";
 import Pomodoro from "../pomodoro/pomodoro";
 import { FaCheck} from "react-icons/fa6";
+import CoffeeBreak from '../../assets/CoffeeBreak.svg'
+import Pana from '../../assets/EnthusiasticPana.svg'
+import blogging from '../../assets/BloggingPana.svg'
 
 type HomeType ={
     supabase:any, 
-}
-
-type todayType = {
-    id:number,
-    titleTask: string,
-    colorTask: string,
-    date: string,
-    importanceTask: {
-        color:string,
-        text:string
-    },
-    monthDate:number
 }
 
 const Home:FC<HomeType> = ({supabase}) => {
@@ -80,7 +70,7 @@ const Home:FC<HomeType> = ({supabase}) => {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => { /// при открытии страницы обновляются массивы на главной вкладке
         const copy = [...TodayTask]
 
         if (AllTask[0] !== undefined) {
@@ -92,7 +82,8 @@ const Home:FC<HomeType> = ({supabase}) => {
                         const objItem = {
                             id: item.id,
                             titleTask: item.titleTask,
-                            boardName: "Ежедневник"
+                            boardName: "Ежедневник",
+                            link: '/diary'
                         }
                         copy.push(objItem)
                     }
@@ -102,12 +93,12 @@ const Home:FC<HomeType> = ({supabase}) => {
             for (let i = 0; i < AllTask[0].todo_data.Baza.length; i++) {
                for (let y = 0; y <  AllTask[0].todo_data.Baza[i].Arrey.length; y++) {
                 AllTask[0].todo_data.Baza[i].Arrey[y].items.map((item:any) => {
-                    
                     if (item.date === currentDateCalendar) {
                         const objItem = {
                             id: item.id,
                             titleTask: item.titleTask,
-                            boardName: AllTask[0].todo_data.Baza[i].title
+                            boardName: AllTask[0].todo_data.Baza[i].title,
+                            link:`/baza/${i}`
                         }
                         copy.push(objItem)
                     }
@@ -127,13 +118,14 @@ const Home:FC<HomeType> = ({supabase}) => {
                             id: item.id,
                             titleTask: item.titleTask,
                             boardName: "Ежедневник",
-                            date: item.date
+                            date: item.date,
+                            link: '/diary'
                         }
                         copyOverdue.push(objItem)
                     }
                 })
             }
-            console.log(AllTask[0].todo_data.Baza)
+
             for (let i = 0; i < AllTask[0].todo_data.Baza.length; i++) {
                 for (let y = 0; y <  AllTask[0].todo_data.Baza[i].Arrey.length; y++) {
                 AllTask[0].todo_data.Baza[i].Arrey[y].items.map((item:any) => {
@@ -142,13 +134,16 @@ const Home:FC<HomeType> = ({supabase}) => {
                              id: item.id,
                              titleTask: item.titleTask,
                              boardName: AllTask[0].todo_data.Baza[i].title,
-                             date: item.date
+                             date: item.date,
+                             link:`/baza/${i}`
                         }
                         copyOverdue.push(objItem)
                      }
                 })
                 }
             }
+            copyOverdue.sort((a, b) => a.date > b.date ? 1 : -1)
+
             setOverdue(copyOverdue)
 
             /// массив для выполненых сегодня задач
@@ -161,7 +156,8 @@ const Home:FC<HomeType> = ({supabase}) => {
                         id: item.id,
                         titleTask: item.titleTask,
                         boardName: "Ежедневник",
-                        date: item.date
+                        date: item.date,
+                        link: '/diary'
                     }
                     copyOver.push(objItem)
                 }
@@ -174,7 +170,8 @@ const Home:FC<HomeType> = ({supabase}) => {
                             id: item.id,
                             titleTask: item.titleTask,
                             boardName: AllTask[0].todo_data.Baza[i].title,
-                            date: item.date
+                            date: item.date,
+                            link:`/baza/${i}`
                         }
                         copyOver.push(objItem)
                     }
@@ -205,23 +202,10 @@ const Home:FC<HomeType> = ({supabase}) => {
                     </div>
                     <div className={style.positionMenu}>
                         { myTaskBtn === "Today" ? 
-                            <div className={style.todayBlock}>
-                                { TodayTask.map((today:any) => 
-                                    <div className={style.today} key={today.id}>
-                                        <div className={style.flex}>
-                                            <button className={style.btnCircle}>
-                                                <FaCheck size={12}/>
-                                            </button>
-                                            <p className={style.todayText}>{today.titleTask}</p>
-                                        </div>
-                                        <p className={style.textName}>{today.boardName}</p>
-                                    </div>
-                                )
-                                }
-                            </div>
-                            :  myTaskBtn === "Overdue" ? 
+                            <div>
+                                {TodayTask.length > 0 ?
                                 <div className={style.todayBlock}>
-                                    {Overdue.map((today:any) => 
+                                    {TodayTask.map((today:any) => 
                                         <div className={style.today} key={today.id}>
                                             <div className={style.flex}>
                                                 <button className={style.btnCircle}>
@@ -229,39 +213,85 @@ const Home:FC<HomeType> = ({supabase}) => {
                                                 </button>
                                                 <p className={style.todayText}>{today.titleTask}</p>
                                             </div>
-                                            <div className={style.flexOver}>
+                                            <Link to={today.link} className={style.linkStyle}>
                                                 <p className={style.textName}>{today.boardName}</p>
-                                                <p className={style.dateText}>{today.date}</p>
-                                            </div>
-                                            
+                                            </Link>
                                         </div>
-                                    )
+                                    )}
+                                </div>
+                                    
+                                :
+                                <div className={style.imgPositionCompleted}>
+                                    <img className={style.imgToday} src={CoffeeBreak} alt="" />
+                                    <p>У вас нет на сегодня задач!</p>
+                                    
+                                </div>
+                                }
+                            </div>
+                            :  myTaskBtn === "Overdue" ? 
+                                <div>
+                                    {Overdue.length > 0 ?
+                                    <div className={style.todayBlock}>
+                                        {
+                                            Overdue.map((today:any) => 
+                                                <div className={style.today} key={today.id}>
+                                                    <div className={style.flex}>
+                                                        <button className={style.btnCircle}>
+                                                            <FaCheck size={12}/>
+                                                        </button>
+                                                        <p className={style.todayText}>{today.titleTask}</p>
+                                                    </div>
+                                                    <div className={style.flexOver}>
+                                                        <Link to={today.link} className={style.linkStyle}>
+                                                            <p className={style.textName}>{today.boardName}</p>
+                                                        </Link>
+                                                        <p className={style.dateText}>{today.date}</p>
+                                                    </div>
+                                                    
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                        
+                                        : 
+                                        <div className={style.imgPositionCompleted}>
+                                            <img className={style.imgToday} src={Pana} alt="" />
+                                            <p>У вас нет просроченых задач. Отлично!</p>
+                                        </div>
 
                                     }
                                 </div>
                                 : 
-                                <div className={style.todayBlock}>
-                                    {Over.map((today:any) => 
-                                        <div className={style.today} key={today.id}>
-                                            <div className={style.flex}>
-                                                <button className={style.btnCircle}>
-                                                    <FaCheck size={12}/>
-                                                </button>
-                                                <p className={style.todayText}>{today.titleTask}</p>
-                                            </div>
-                                            <div className={style.flexOver}>
-                                                <p className={style.textName}>{today.boardName}</p>
-                                            </div>
-                                            
+                                <div>
+                                    {Overdue.length > 0 ?
+                                        <div className={style.todayBlock}>
+                                            {Over.map((today:any) => 
+                                                <div className={style.today} key={today.id}>
+                                                    <div className={style.flex}>
+                                                        <button className={style.btnCircle} style={{border:'solid 1px #0066CC'}}>
+                                                            <FaCheck size={12} color="#0066CC"/>
+                                                        </button>
+                                                        <p className={style.todayText}>{today.titleTask}</p>
+                                                    </div>
+                                                    <div className={style.flexOver}>
+                                                        <Link to={today.link} className={style.linkStyle}>
+                                                            <p className={style.textName}>{today.boardName}</p>
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                    )}
                                         </div>
-                                    )
-
+                                        : 
+                                        <div className={style.imgPositionCompleted}>
+                                            <img className={style.imgToday} src={blogging} alt="" />
+                                            <p>У вас нет просроченых задач. Отлично!</p>
+                                        </div>
                                     }
+                                    
                                 </div>
                         }
                     </div>
                 </div>
-
                 <div className={style.flexHome}>
                     <div className={style.boardFlex}>
                         <h2 className={style.boardFlexH2}>Проекты</h2>
@@ -272,16 +302,11 @@ const Home:FC<HomeType> = ({supabase}) => {
                                 </Link>
                             )}
                         </div>
-                        
-                        
                     </div>
                     <Pomodoro/>
                 </div>
-                
             </div>
-                
             }
-            
         </div>
     )
 }

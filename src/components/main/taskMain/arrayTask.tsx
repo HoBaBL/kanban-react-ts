@@ -83,21 +83,6 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         }
     },[])
 
-    async function UpsertData() {
-        if (!loading) {
-            const { error } = await supabase
-            .from('boba')
-            .update({
-                todo_data : AllTask[0].todo_data
-            })
-            .eq('id', userId)
-            if (error !== null) {
-                console.log(error) 
-            }
-           
-        }
-    }
-
     function deleteBourd( Task:any, list:any) {
         const copy = [...AllTask]
         const index = copy[0].todo_data.Baza[numProd].Arrey.findIndex((n:any) => n.id === Task.id);
@@ -195,7 +180,6 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
     const dateToday = new Date()
     let day = dateToday.getDate();
     let month = dateToday.getMonth();
-    let year = dateToday.getFullYear()
     
     return(
         <Draggable 
