@@ -34,6 +34,8 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
 
         const date = new Date();
 
+        let resetData = date
+
         let monthDate = date.getMonth()
         let day = date.getDate();
         let month = monthArray[date.getMonth()];
@@ -49,6 +51,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             currentDate = `${dayNew} ${monthNew}`;
             day = dayNew
             monthDate = dateNew.getMonth()
+            resetData = dateNew
 
         } else if (copy[0].column.tasks[index].title === "На этой неделе") {
             const date = new Date(); // текущая дата
@@ -65,6 +68,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             currentDate = `${dayNew} ${monthNew}`
             day = dayNew
             monthDate = dateNew.getMonth()
+            resetData = dateNew
             
         } else if (copy[0].column.tasks[index].title === "На следующей неделе") {
             const date = new Date(); // текущая дата
@@ -81,6 +85,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             currentDate = `${dayNew} ${monthNew}`
             day = dayNew
             monthDate = dateNew.getMonth()
+            resetData = dateNew
 
         } else if (copy[0].column.tasks[index].title === "Позже") {
             const dateNew = new Date(year, date.getMonth(), day+14 )
@@ -89,6 +94,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             currentDate = `${dayNew} ${monthNew}`;
             day = dayNew
             monthDate = dateNew.getMonth()
+            resetData = dateNew
         }
  
 
@@ -100,7 +106,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             date: currentDate,
             day:day,
             monthDate:monthDate,
-            dateFull: date
+            dateFull: resetData
         }
         
         copy[0].column.tasks[index].task.push(TaskObj)
@@ -126,7 +132,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
                 {(provided) => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                         
-                        {tasks.map((task:any, idx:any) => <Task Task={data} form={form} setAllTask={setAllTask} AllTask={AllTask} key={task.id} data={task} index={idx}/>)}
+                        {tasks.map((task:any, idx:any) => <Task loading={loading} Task={data} form={form} setAllTask={setAllTask} AllTask={AllTask} key={task.id} data={task} index={idx}/>)}
                         {provided.placeholder}
                     </div>
                 )}

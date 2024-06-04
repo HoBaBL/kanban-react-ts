@@ -194,8 +194,13 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
                     onMouseEnter={() => {setIsShownMini(true)}}  onMouseLeave={() => {setIsShownMini(false)}}
                     >
                         <div style={{backgroundColor:list.colorTask}} className={form ? "taskMini" :'taskTask'} >
+                            <div className={style.flexTextMore}>
+                                <p className={style.taskMiniText}>{list.titleTask}</p>
+                                <button className={form ? (isShownMini ? style.moreMini : style.moreMiniNone) : (isShownMini ? style.moreMiniTask : style.moreMiniNoneTask)} onClick={() => {setModalActive(true), setDropdownGap(false)}}>
+                                    <IoMdMore size={18}/>
+                                </button> 
+                            </div>
                             
-                            <p className={style.taskMiniText}>{list.titleTask}</p>
                             <div className={style.timePosition}>
                                 {list.date !== undefined ? <p style={(list.day < day && list.monthDate <= month) ? {color:'red'}: {color:'gray'}} className={style.dateText}>до {list.date}.</p> : <div></div>}
                                 {list.importanceTask.color === 'gray' ? '' : <FaFlag className={style.importanceMain} size={10} color={list.importanceTask.color}/>}
@@ -210,11 +215,9 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
                                 </button>
                             </div>
                             
-                            <button className={form ? (isShownMini ? style.moreMini : style.moreMiniNone) : (isShownMini ? style.moreMiniTask : style.moreMiniNoneTask)} onClick={() => {setModalActive(true), setDropdownGap(false)}}>
-                                <IoMdMore size={18}/>
-                            </button> 
+                            
 
-
+                            {/* модальное окно */}
                             <div className={modalActive ? "modal active" : 'modal'} onClick={() => setModalActive(false)}>
                                 <div className='ModalContent' onClick={e => e.stopPropagation()}>
                                     <div>

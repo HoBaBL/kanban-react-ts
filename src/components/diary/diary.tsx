@@ -116,6 +116,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = day
                 newTask.monthDate = date.getMonth()
+                newTask.dateFull = date
 
             } else if (columnNew.title === "Завтра") {
                 const dateNew = new Date(year, date.getMonth(), day+1 )
@@ -125,6 +126,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
+                newTask.dateFull = date
 
             } else if (columnNew.title === "На этой неделе") {
                 const date = new Date(); // текущая дата
@@ -144,6 +146,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
+                newTask.dateFull = date
 
             }  else if (columnNew.title === "На следующей неделе") {
                 const date = new Date(); // текущая дата
@@ -161,7 +164,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
-                console.log('dateNew',dateNew)
+                newTask.dateFull = date
 
             } else if (columnNew.title === "Позже") {
                 const dateNew = new Date(year, date.getMonth(), day+14 )
@@ -171,6 +174,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
+                newTask.dateFull = date
             }
 
             column.task.splice(source.index, 1)

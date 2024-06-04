@@ -263,7 +263,7 @@ const Home:FC<HomeType> = ({supabase}) => {
                                 </div>
                                 : 
                                 <div>
-                                    {Overdue.length > 0 ?
+                                    {Over.length > 0 ?
                                         <div className={style.todayBlock}>
                                             {Over.map((today:any) => 
                                                 <div className={style.today} key={today.id}>
@@ -284,7 +284,7 @@ const Home:FC<HomeType> = ({supabase}) => {
                                         : 
                                         <div className={style.imgPositionCompleted}>
                                             <img className={style.imgToday} src={blogging} alt="" />
-                                            <p>У вас нет просроченых задач. Отлично!</p>
+                                            <p>Здесь хранятся выполненые задачи за сегодня.</p>
                                         </div>
                                     }
                                     

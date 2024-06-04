@@ -1,4 +1,4 @@
-import { FC, forwardRef, useRef, useState } from 'react';
+import { FC, forwardRef, useEffect, useRef, useState } from 'react';
 import style from './diary.module.css'
 import { Draggable } from '@hello-pangea/dnd';
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,13 +9,17 @@ import { FaFlag , FaCheck, FaRegTrashCan} from "react-icons/fa6";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task }) => {
+export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task, loading }) => {
     const monthArray = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
     
     const dateToday = new Date()
     let day = dateToday.getDate();
     let month = dateToday.getMonth();
     let year = dateToday.getFullYear()
+
+    // console.log('data', data)
+    const dataDate = new Date(data.dateFull)
+
 
     const [startDate, setStartDate] = useState<any>(new Date(year, data.monthDate, data.day));
 
@@ -55,13 +59,15 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task }) => 
         deleteBourd(list)
     }
 
+    // console.log(dataDate.getDate())
+
     const ExampleCustomInput = forwardRef(({ value, onClick }:any, ref:any) => (
-        <button style={(data.day < day && data.monthDate <= month) ? {color:'red'}: {color:'gray'}} className={style.inputCastom} onClick={onClick} ref={ref}>
+        <button style={(dataDate.getDate() < dateToday.getDate() && dataDate.getMonth() <= dateToday.getMonth()) ? {color:'red'}: {color:'gray'}} className={style.inputCastom} onClick={onClick} ref={ref}>
           {data.date}
         </button>
     ));
 
-    function dateTask( date:any ,list:any) {  /// дата до которой нужно выполнить задачу выводится на главный экран
+    function dateTask( date:any ,list:any) {  /// дата задачи
         const copy = [...AllTask]
 
         let dayCalendar = date.getDate();
@@ -70,10 +76,12 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task }) => 
 
         const index = copy[0].column.tasks.findIndex((n:any) => n.id === Task.id); /// индекс колонки
         const indexTop = copy[0].column.tasks[index].task.indexOf(list) /// индекс таска
+
         copy[0].column.tasks[index].task[indexTop].date = currentDateCalendar
         copy[0].column.tasks[index].task[indexTop].day = dayCalendar
         copy[0].column.tasks[index].task[indexTop].monthDate = date.getMonth()
-        // console.log(copy[0].column.tasks[index].task[indexTop])
+        copy[0].column.tasks[index].task[indexTop].dateFull = date
+
         setAllTask(copy)
 
         let Today = new Date()
@@ -93,26 +101,74 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task }) => 
 
         const dateNextWeek = new Date(year, dateMonth.getMonth(), Number(dateString)+7)
 
-        if (date <= Today) {
+        console.log('dateToday.getDate()', dateToday.getDate())
+        console.log('dateToday.getDate()', date.getDate())
+
+        if (Today.getDate() === date.getDate() && Today.getMonth() === date.getMonth()) {
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[0].task.unshift(list)
-        } else if (date <= dateNewWeek) {
+        } else if (date.getDate() === dateNewWeek.getDate() && date.getMonth() === dateNewWeek.getMonth()) {
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[1].task.unshift(list)
-        } else if (date <= dateMonthNew) {
+        } else if (date.getDate() <= dateMonthNew.getDate()  && date.getMonth() <= dateMonthNew.getMonth()) {
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[2].task.unshift(list)
-        } else if (date <= dateNextWeek) {
+        } else if (date.getDate() <= dateNextWeek.getDate()  && date.getMonth() <= dateNextWeek.getMonth()) {
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[3].task.unshift(list)
         } 
-        if (date > dateNextWeek) {
+        if (date.getDate() > dateNextWeek.getDate()  && date.getMonth() >= dateNextWeek.getMonth()) {
             console.log('po')
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[4].task.unshift(list)
         }
+    }
+
+    // useEffect(() => {
+    //     test()
+    // },[loading])
+
+
+    function test() {
+        const copy = [...AllTask]
+        const index = copy[0].column.tasks.findIndex((n:any) => n.id === Task.id); /// индекс колонки
+        const indexTop = copy[0].column.tasks[index].task.indexOf(data) /// индекс таска
+
+        const dateObj = new Date(year, data.monthDate, data.day)
+
+        let Today = new Date()
+
+        let Tomorrow = new Date(year, month, day+1)
+
+        const dateMonth = new Date(); // текущая дата
+        let dayOfWeek = dateMonth.getDay();
+        if (dayOfWeek === 0) {
+            dayOfWeek = 7; // делаем воскресенье не первым днем, а седьмым
+        }
         
-        
+        dateMonth.setDate(dateMonth.getDate() + (7 - dateMonth.getDay())); // добавляем к текущей дате кол-во оставшийся в этой неделе дней
+        dateMonth.setHours(23, 59, 59); // устанавливаем время
+        const dateString = ('0' + dateMonth.getDate()).slice(-2) ;
+        const dateMonthNew = new Date(year, dateMonth.getMonth(), Number(dateString))
+
+        const dateNextWeek = new Date(year, dateMonth.getMonth(), Number(dateString)+7)
+
+        if (dateObj.getDate() === Today.getDate() && dateObj.getMonth() === Today.getMonth() && index !== 0) {
+            copy[0].column.tasks[index].task.splice(indexTop, 1)
+            copy[0].column.tasks[0].task.push(data)
+        } else if (dateObj.getDate() === Tomorrow.getDate() && dateObj.getMonth() === Tomorrow.getMonth() && index !== 1) {
+            copy[0].column.tasks[index].task.splice(indexTop, 1)
+            copy[0].column.tasks[1].task.push(data)
+        } else if (dateObj.getDate() <= dateMonthNew.getDate()  && dateObj.getMonth() <= dateMonthNew.getMonth()  && index !== 2 && index !== 1) {
+            copy[0].column.tasks[index].task.splice(indexTop, 1)
+            copy[0].column.tasks[2].task.push(data)
+        } else if (dateObj.getDate() <= dateNextWeek.getDate()  && dateObj.getMonth() <= dateNextWeek.getMonth()  && index !== 3 && index !== 1 && index !== 2) {
+            console.log('popa')
+            copy[0].column.tasks[index].task.splice(indexTop, 1)
+            copy[0].column.tasks[3].task.push(data)
+        }
+
+        setAllTask(copy)
     }
 
     return (
@@ -136,11 +192,8 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task }) => 
                         <button className={style.deleteBtn} onClick={() => deleteBourd(data)}>
                             <FaRegTrashCan  size={16}/>
                         </button>
-                    </div>
-                    
+                    </div>      
                  </div>
-
-                 
             )}
         </Draggable>
         
