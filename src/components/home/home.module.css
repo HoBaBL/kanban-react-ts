@@ -158,6 +158,8 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
 
 .todayText {
     margin: 0;
+    max-width: 900px;
+    word-break: break-word;
 }
 
 .textName {
@@ -199,6 +201,8 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
     display: flex;
     gap: 10px;
     align-items: center;
+    /* width: 150px; */
+    justify-content: space-between;
 }
 
 .textName {

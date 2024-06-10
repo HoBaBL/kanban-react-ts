@@ -30,7 +30,6 @@ const CompletedTask:FC<CompletedTaskProps> = ({AllTask, numProd, setAllTask}) =>
                     </div>
 
                     {AllTask[0].todo_data.Baza[numProd].completed.map((completedTask:any) => 
-                        
                         <div className={style.container} key={completedTask.id}>
                             <p className={style.text}>
                                 {completedTask.titleTask}
@@ -47,12 +46,9 @@ const CompletedTask:FC<CompletedTaskProps> = ({AllTask, numProd, setAllTask}) =>
                                         <FaRegTrashCan  size={16}/>
                                     </button>
                                 </div>
-                                
                             </div>
-                            
                         </div>
                     )}
-
                 </div>
                 :
                 <div className={style.noneTasks}>
@@ -60,13 +56,7 @@ const CompletedTask:FC<CompletedTaskProps> = ({AllTask, numProd, setAllTask}) =>
                     <p>В этом разделе хранятся задачи, которые были завершены</p>
                 </div>
             }
-            
-           
         </div>
-        
-            
-            
-        
     )
 }
 

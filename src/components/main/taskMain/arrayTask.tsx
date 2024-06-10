@@ -161,7 +161,6 @@ const ArrayTask: FC<TaskMiniProps> = ({list, currentBoard,
         copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].day = day
         copy[0].todo_data.Baza[numProd].Arrey[index].items[indexTop].monthDate = dateMore.getMonth()
         setAllTask(copy)
-        console.log(dateMore)
     }
 
     function dateTaskDefault(Task:any, list:any) {

@@ -29,14 +29,33 @@ const Home:FC<HomeType> = ({supabase}) => {
     const [TodayTask, setTodayTask] = useState<any>([])
     const [Overdue, setOverdue] = useState<any>([])
     const [Over, setOver] = useState<any>([])
+    const UserId = useSelector((state: RootState) => state.UserId.UserId)
 
     const monthArray = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+
+    useEffect(() => {
+        UpsertData()
+    }, [AllTask]);
+
+    async function UpsertData() {
+        if (!loading) {
+            const { error } = await supabase
+            .from('boba')
+            .update({
+                column : AllTask[0].column,
+                todo_data : AllTask[0].todo_data
+            })
+            .eq('id', UserId)
+            if (error !== null) {
+                console.log(error)
+            }
+        }
+    }
     
     const dateToday = new Date()
     let day = dateToday.getDate();
     let month = monthArray[dateToday.getMonth()];
     let currentDateCalendar = `${day} ${month}`;
-
     
     useEffect(() => {
         test()
@@ -70,8 +89,9 @@ const Home:FC<HomeType> = ({supabase}) => {
         }
     }
 
-    useEffect(() => { /// при открытии страницы обновляются массивы на главной вкладке
+    function renderHome() {
         const copy = [...TodayTask]
+        
 
         if (AllTask[0] !== undefined) {
             /// массив дел на сегодня
@@ -93,7 +113,7 @@ const Home:FC<HomeType> = ({supabase}) => {
             for (let i = 0; i < AllTask[0].todo_data.Baza.length; i++) {
                for (let y = 0; y <  AllTask[0].todo_data.Baza[i].Arrey.length; y++) {
                 AllTask[0].todo_data.Baza[i].Arrey[y].items.map((item:any) => {
-                    if (item.date === currentDateCalendar) {
+                    if (item.day === day && item.monthDate === dateToday.getMonth()) {
                         const objItem = {
                             id: item.id,
                             titleTask: item.titleTask,
@@ -179,9 +199,99 @@ const Home:FC<HomeType> = ({supabase}) => {
                 })
             }
             setOver(copyOver)
-
         }
+    }
+
+    useEffect(() => { /// при открытии страницы обновляются массивы на главной вкладке
+        renderHome()
     }, [loading])
+
+    function CompletedTaskHome(item:any) {
+        const copy = [...AllTask]
+        const copyToday = [...TodayTask]
+        const copyCompleted = [...Over]
+        const copyOverdue = [...Overdue]
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = monthArray[date.getMonth()];
+
+        let hours = date.getHours()
+        let minutes = date.getMinutes()
+        let time = `${hours}:${minutes}`
+        let currentDate = `${day} ${month}`;
+
+        if (item.boardName === "Ежедневник") {
+            
+            for (let i = 0; i < AllTask[0].column.tasks.length; i++) {
+                AllTask[0].column.tasks[i].task.map((task:any) => {
+                    if (task.id === item.id) {
+                        const indexTop = copy[0].column.tasks[i].task.indexOf(task)
+                        copy[0].column.tasks[i].task.splice(indexTop, 1)
+                        if (myTaskBtn === "Today") {
+                            const index = copyToday.indexOf(item)
+                            copyToday.splice(index, 1)
+                            copyCompleted.unshift(item)
+                        } else if (myTaskBtn === "Overdue") {
+                            const index = copyOverdue.indexOf(item)
+                            copyOverdue.splice(index, 1)
+                            copyCompleted.unshift(item)
+                        }
+                        
+                        const obj = {
+                            date: currentDate,
+                            id: task.id,
+                            titleTask: task.titleTask,
+                            time: time,
+                            day: day,
+                            month:date.getMonth()
+                        }
+                        copy[0].column.completed.unshift(obj)
+                        setAllTask(copy)
+                        setTodayTask(copyToday)
+                        setOverdue(copyOverdue)
+                        setOver(copyCompleted)
+                    }
+                })
+            }
+        } else {
+            for (let i = 0; i < AllTask[0].todo_data.Baza.length; i++) {
+                for (let y = 0; y < AllTask[0].todo_data.Baza[i].Arrey.length; y++) {
+                    AllTask[0].todo_data.Baza[i].Arrey[y].items.map((task:any )=> {
+                        if (item.id === task.id) {
+                            const indexTop = copy[0].todo_data.Baza[i].Arrey[y].items.indexOf(task)
+                            copy[0].todo_data.Baza[i].Arrey[y].items.splice(indexTop, 1)
+                            if (myTaskBtn === "Today") {
+                                const index = copyToday.indexOf(item)
+                                copyToday.splice(index, 1)
+                                copyCompleted.unshift(item)
+                            } else if (myTaskBtn === "Overdue") {
+                                const index = copyOverdue.indexOf(item)
+                                copyOverdue.splice(index, 1)
+                                copyCompleted.unshift(item)
+                            }
+                            const obj = {
+                                date: currentDate,
+                                id: task.id,
+                                titleTask: task.titleTask,
+                                time: time,
+                                day: day,
+                                month:date.getMonth()
+                            }
+
+                            copy[0].todo_data.Baza[i].completed.unshift(obj)
+                            setAllTask(copy)
+                            setTodayTask(copyToday)
+                            setOverdue(copyOverdue)
+                            setOver(copyCompleted)
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    
 
     return (
         <div className={style.home}>
@@ -208,7 +318,7 @@ const Home:FC<HomeType> = ({supabase}) => {
                                     {TodayTask.map((today:any) => 
                                         <div className={style.today} key={today.id}>
                                             <div className={style.flex}>
-                                                <button className={style.btnCircle}>
+                                                <button onClick={() => CompletedTaskHome(today)} className={style.btnCircle}>
                                                     <FaCheck size={12}/>
                                                 </button>
                                                 <p className={style.todayText}>{today.titleTask}</p>
@@ -236,7 +346,7 @@ const Home:FC<HomeType> = ({supabase}) => {
                                             Overdue.map((today:any) => 
                                                 <div className={style.today} key={today.id}>
                                                     <div className={style.flex}>
-                                                        <button className={style.btnCircle}>
+                                                        <button onClick={() => CompletedTaskHome(today)} className={style.btnCircle}>
                                                             <FaCheck size={12}/>
                                                         </button>
                                                         <p className={style.todayText}>{today.titleTask}</p>
