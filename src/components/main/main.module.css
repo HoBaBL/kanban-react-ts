@@ -2,6 +2,7 @@
 .main {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .TodoObj {
@@ -136,12 +137,14 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
 .flexTable {
     display: flex;
     gap: 15px;
-    max-width:92.2%;
-    width: 92vw;
+    /* max-width:100%;
+    width: 92.3%; */
     flex-grow: 1;
     padding-top: 20px;
     overflow-x: auto;
     scrollbar-width: thin;
+    margin-left: 289px;
+    /* border: solid 1px; */
 }
 
 .TitleInput {
@@ -348,16 +351,14 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
 } */
 
 .flexHeader {
-    /* position: fixed; */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 81.6vw;
+    /* width: 81.6vw; */
     padding-left: 30px;
     padding-right: 30px;
     background-color: rgb(236, 234, 234);
-    /* z-index: 100; */
-    /* background-color: transparent; */
+    margin-left: 289px;
     border-bottom: solid 1px gray;
 }
 
@@ -454,14 +455,15 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
 
 .Todo {
     margin-top: 20px;
+    margin-left: 289px;
 }
 
 .todoPosition {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* margin-left: 30px;
-    padding-right: 30px; */
+    padding-left: 30px;
+    padding-right: 30px;
     /* max-width: 90%; */
     align-items: center;
 }
@@ -643,4 +645,8 @@ box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.1);
 .bigTask {
     width: 100%;
     min-height: 20px;
+}
+
+.skeleton {
+    margin-left: 310px;
 }

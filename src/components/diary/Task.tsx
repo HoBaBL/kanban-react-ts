@@ -71,7 +71,7 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task, loadi
         const copy = [...AllTask]
 
         let dayCalendar = date.getDate();
-        let monthCalendar = monthArray[date.getMonth()].substring(0, 3);
+        let monthCalendar = monthArray[date.getMonth()];
         let currentDateCalendar = `${dayCalendar} ${monthCalendar}`;
 
         const index = copy[0].column.tasks.findIndex((n:any) => n.id === Task.id); /// индекс колонки

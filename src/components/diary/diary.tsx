@@ -141,7 +141,6 @@ const Diary:FC<DiaryType> = ({supabase}) => {
 
                 let dayNew = dateNew.getDate();
                 let monthNew = monthArray[dateNew.getMonth()];
-                console.log('dateNew', dateNew)
                 currentDate = `${dayNew} ${monthNew}`
                 newTask.date = currentDate
                 newTask.day = dayNew

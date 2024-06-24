@@ -130,8 +130,7 @@ export const Column:FC<any> = ({tasks, data, AllTask, setAllTask, loading, supab
             </div>
             <Droppable droppableId={String(data.id)}>
                 {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                        
+                    <div ref={provided.innerRef} {...provided.droppableProps} className={style.drop}>
                         {tasks.map((task:any, idx:any) => <Task loading={loading} Task={data} form={form} setAllTask={setAllTask} AllTask={AllTask} key={task.id} data={task} index={idx}/>)}
                         {provided.placeholder}
                     </div>

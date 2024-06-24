@@ -201,7 +201,11 @@ const Main: FC<AllTask> = ({AllTask, supabase, setAllTask, loading}) => {
     return (
        
                 <div className={style.main}>
-                    {loading ? <SkeletonBoard/> : 
+                    {loading ? 
+                    <div className={style.skeleton}>
+                        <SkeletonBoard/>
+                    </div>
+                     : 
                         <>
                             <div className={style.flexHeader}>
 

@@ -23,7 +23,6 @@ const TitleSidebar:FC<TitleSidebarType> = ({title, AllTask, setAllTask}) => {
     const refTask = useRef<any>();
     const [titleСhange, setTitleСhange] = useState(title.title)
     const [modalActive, setModalActive] = useState(false)
-    const numProd = useSelector((state: RootState) => state.numProd.numProd)
     const navigate = useNavigate();
     const changes = useSelector((state: RootState) => state.changes.changes)
 
