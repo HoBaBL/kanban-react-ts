@@ -5,7 +5,7 @@
 ## Используемые технологии: 
 React, TS, Vite, CSS.module, Redux-Toolkit, Supabase(бэкенд), React Router, React Icons, React Hook Form
 
-# Возможности
+## Возможности
   Регистрация и вход
   Добавление досок задач 
   Измение цветов досок и списков
