@@ -20,7 +20,6 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task, loadi
     // console.log('data', data)
     const dataDate = new Date(data.dateFull)
 
-
     const [startDate, setStartDate] = useState<any>(new Date(year, data.monthDate, data.day));
 
     function deleteBourd( list:any) {
@@ -62,7 +61,7 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task, loadi
     // console.log(dataDate.getDate())
 
     const ExampleCustomInput = forwardRef(({ value, onClick }:any, ref:any) => (
-        <button style={(dataDate.getDate() < dateToday.getDate() && dataDate.getMonth() <= dateToday.getMonth()) ? {color:'red'}: {color:'gray'}} className={style.inputCastom} onClick={onClick} ref={ref}>
+        <button style={(dataDate.getTime() < dateToday.getTime()) ? {color:'red'}: {color:'gray'}} className={style.inputCastom} onClick={onClick} ref={ref}>
           {data.date}
         </button>
     ));
@@ -82,9 +81,7 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task, loadi
         copy[0].column.tasks[index].task[indexTop].monthDate = date.getMonth()
         copy[0].column.tasks[index].task[indexTop].dateFull = date
 
-        setAllTask(copy)
-
-        let Today = new Date()
+        let Today = new Date(year, month, day)
 
         let dateNewWeek = new Date(year, month, day+1)
 
@@ -98,27 +95,30 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task, loadi
         dateMonth.setHours(23, 59, 59); // устанавливаем время
         const dateString = ('0' + dateMonth.getDate()).slice(-2) ;
         const dateMonthNew = new Date(year, dateMonth.getMonth(), Number(dateString))
-        const startWeek = new Date(year, dateMonthNew.getMonth(), Number(dateString)-7)
 
         const dateNextWeek = new Date(year, dateMonth.getMonth(), Number(dateString)+7)
 
-        if (Today.getDate() === date.getDate() && Today.getMonth() === date.getMonth()) {
+        if (date.getTime() < Today.getTime()) {
+            return
+        } else if (Today.getDate() === date.getDate() && Today.getMonth() === date.getMonth()) {
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[0].task.unshift(list)
-        } else if (date.getDate() === dateNewWeek.getDate() && date.getMonth() === dateNewWeek.getMonth()) {
+        } else if (date.getTime() === dateNewWeek.getTime()) { /// завтра
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[1].task.unshift(list)
-        } else if ((date.getDate() <= dateMonthNew.getDate() && date.getDate() > startWeek.getDate()) && date.getMonth() <= dateMonthNew.getMonth()) {
+        } else if (date.getTime() <= dateMonthNew.getTime()) { /// на этой неделе
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[2].task.unshift(list)
-        } else if ((date.getDate() <= dateNextWeek.getDate() && date.getDate() > dateMonthNew.getDate()) && date.getMonth() <= dateNextWeek.getMonth()) {
+        } else if (date.getTime() <= dateNextWeek.getTime()) { /// на следующей недели
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[3].task.unshift(list)
-        } 
-        if (date.getDate() > dateNextWeek.getDate()  && date.getMonth() >= dateNextWeek.getMonth()) {
+        } else if (date.getTime() > dateNextWeek.getTime()) { /// позже
             copy[0].column.tasks[index].task.splice(indexTop, 1)
             copy[0].column.tasks[4].task.unshift(list)
+        } else if (date.getTime() < Today.getTime()) {
+            return
         }
+        setAllTask(copy)
     }
     
     return (
@@ -146,6 +146,5 @@ export const Task:FC<any>= ({index, data, AllTask, setAllTask, form, Task, loadi
                  </div>
             )}
         </Draggable>
-        
     )
 }

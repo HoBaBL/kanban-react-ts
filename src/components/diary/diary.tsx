@@ -101,7 +101,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
             })
 
             const date = new Date();
-
+            
             let currentDate = ''
             let day = date.getDate();
             let month = monthArray[date.getMonth()];
@@ -112,11 +112,12 @@ const Diary:FC<DiaryType> = ({supabase}) => {
             })
             //// изменение даты
             if (columnNew.title === "Сегодня") {
+                const dateObj = new Date(date.getFullYear(), date.getMonth(), date.getDate())
                 currentDate = `${day} ${month}`;
                 newTask.date = currentDate
                 newTask.day = day
                 newTask.monthDate = date.getMonth()
-                newTask.dateFull = date
+                newTask.dateFull = dateObj
 
             } else if (columnNew.title === "Завтра") {
                 const dateNew = new Date(year, date.getMonth(), day+1 )
@@ -126,7 +127,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
-                newTask.dateFull = date
+                newTask.dateFull = dateNew
 
             } else if (columnNew.title === "На этой неделе") {
                 const date = new Date(); // текущая дата
@@ -145,7 +146,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
-                newTask.dateFull = date
+                newTask.dateFull = dateNew
 
             }  else if (columnNew.title === "На следующей неделе") {
                 const date = new Date(); // текущая дата
@@ -163,7 +164,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
-                newTask.dateFull = date
+                newTask.dateFull = dateNew
 
             } else if (columnNew.title === "Позже") {
                 const dateNew = new Date(year, date.getMonth(), day+14 )
@@ -173,7 +174,7 @@ const Diary:FC<DiaryType> = ({supabase}) => {
                 newTask.date = currentDate
                 newTask.day = dayNew
                 newTask.monthDate = dateNew.getMonth()
-                newTask.dateFull = date
+                newTask.dateFull = dateNew
             }
 
             column.task.splice(source.index, 1)
@@ -181,7 +182,6 @@ const Diary:FC<DiaryType> = ({supabase}) => {
 
             setAllTask(copy)
         }
-        // UpsertData()
     };
 
     return (

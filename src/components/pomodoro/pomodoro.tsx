@@ -3,7 +3,6 @@ import style from './pomodoro.module.css'
 import { CircularProgressbar } from "react-circular-progressbar";
 import { CiPlay1, CiPause1 } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
-import { GrPowerReset } from "react-icons/gr";
 import { useAppDispatch } from '../../hooks';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux/store';
@@ -21,6 +20,7 @@ const Pomodoro:FC = () => {
     const minutes:any = useRef(localStorage.getItem('workTime')!)
     const check = useSelector((state: RootState) => state.check.check)
     let seconds = 0
+    let mins = 0
     const [modalActive, setModalActive] = useState(false)
     const [timeWork, setTimeWork] = useState(localStorage.getItem('workTime')!)
     const [timeRest, setTimeRest] = useState(localStorage.getItem('restTime')!)
@@ -51,7 +51,7 @@ const Pomodoro:FC = () => {
         localStorage.setItem('workTime', timeWork);
         localStorage.setItem('restTime',timeRest);
         dispatch(setTimeH(hours))
-        dispatch(setTimeM(timeWork))
+        dispatch(setTimeM(minutes.current))
         dispatch(setTimeS(seconds))
         reset()
     }

@@ -77,7 +77,7 @@ const Sidebar: FC<sidebarType> = ({supabase}) => {
         if (localStorage.getItem('workTime') === null) {
             localStorage.setItem('workTime', '10');
             localStorage.setItem('restTime', '3');
-        } else {
+        } else if (sessionStorage.getItem('min') === '0') {
             dispatch(setTimeM(localStorage.getItem('workTime')))
         }
         

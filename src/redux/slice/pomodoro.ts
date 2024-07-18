@@ -11,9 +11,9 @@ type time = {
 }
 
 const initialState:time  = {
-    h: 0,
-    m: 0,
-    s:0,
+    h: sessionStorage.getItem('hrs') || 0,
+    m: sessionStorage.getItem('min') || 0,
+    s: sessionStorage.getItem('sec') || 0,
     paused:true,
     over: false,
     maxValue:0,

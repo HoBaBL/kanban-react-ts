@@ -59,17 +59,22 @@ const PomodoroSidebar = () => {
             dispatch(setTimeH(h))
             dispatch(setTimeM(m-1))
             dispatch(setTimeS(59))
+            
         } else {
             dispatch(setTimeH(h))
             dispatch(setTimeM(m))
             dispatch(setTimeS(s-1))
         }
+        
       };
 
     
     
     useEffect(() => {
         const timerID = setInterval(() => tick(), 1000);
+        sessionStorage.setItem('sec', s);
+        sessionStorage.setItem('min', m);
+        sessionStorage.setItem('hrs', h);
         return () => clearInterval(timerID);
     })
 
